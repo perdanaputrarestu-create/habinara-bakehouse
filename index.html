@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Habinara Bakehouse — Kasir & Penjualan Kue</title>
+<title>Habinara Bakehouse — Katalog & Toko Kue Online</title>
 <!-- Supabase JS Client SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- SweetAlert2 untuk Pop-up Keren -->
@@ -53,9 +53,8 @@ button{cursor:pointer}
 /* Tombol Burger */
 .burger-btn {background:var(--p-light);border:0;width:38px;height:38px;border-radius:10px;display:none;place-items:center;color:var(--p);font-size:18px;cursor:pointer;flex-shrink:0;}
 
-.admin{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.admin-area{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .pill{padding:4px 8px;border-radius:20px;background:var(--p-light);color:var(--p);font-size:10px;font-weight:800}
-.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--p-light);color:var(--p);font-size:15px;}
 
 .page{display:none}
 .page.active{display:block}
@@ -166,7 +165,7 @@ button{cursor:pointer}
   .prod .body{padding:10px}
   .tools{flex-direction:column}
   
-  /* Navbar Bawah HP */
+  /* Navbar Bawah HP Katalog Publik */
   .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:65px;background:#fff;border-top:1px solid var(--line);z-index:16;justify-content:space-around;padding:4px}
   .mobile button{text-align:center;font-size:10px;padding:4px;display:flex;flex-direction:column;align-items:center;flex:1}
   .mobile span{font-size:18px}
@@ -189,12 +188,8 @@ button{cursor:pointer}
     </div>
     Habinara
   </div>
-  <div class="nav">
-    <button class="active" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
-    <button onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Produk</button>
-    <button onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Pesanan</button>
-    <button onclick="page('customers'); toggleSidebar()">👥 &nbsp; Pelanggan</button>
-    <button onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan</button>
+  <div class="nav" id="sidebarNav">
+    <!-- Menu akan dirender dinamis sesuai role (Pembeli / Admin) -->
   </div>
 </aside>
 
@@ -206,17 +201,33 @@ button{cursor:pointer}
         <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
       </div>
       <div class="top-text">
-        <h1 id="title">Dashboard</h1>
+        <h1 id="title">Katalog Produk</h1>
         <div class="sub">Habinara Bakehouse ✨</div>
       </div>
     </div>
-    <div class="admin">
-      <span class="pill">ADMIN</span>
-      <div class="avatar">👨‍🍳</div>
+    <div class="admin-area" id="adminArea">
+      <button class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>
     </div>
   </header>
 
-  <section id="dash" class="page active">
+  <!-- HALAMAN 1: KATALOG PRODUK (DEFAULT UNTUK PEMBELI) -->
+  <section id="catalog" class="page active">
+    <div class="section"><h2>🍰 Katalog Kue Pilihan</h2></div>
+    <div class="tools">
+      <input id="q" class="input" placeholder="Cari kue kesukaanmu..." oninput="renderCatalogProducts()">
+      <select id="cat" class="input" onchange="renderCatalogProducts()">
+        <option value="">Semua kategori</option>
+        <option>Cake</option>
+        <option>Roti</option>
+        <option>Kue Basah</option>
+        <option>Kue Kering</option>
+      </select>
+    </div>
+    <div class="products" id="catalogProducts"></div>
+  </section>
+
+  <!-- HALAMAN 2: DASHBOARD ADMIN -->
+  <section id="dash" class="page">
     <div class="stats">
       <div class="card stat"><small>Omzet Hari Ini</small><b id="rev">Rp 0</b><span class="up">↗ Bersih (Excl. Ongkir)</span></div>
       <div class="card stat"><small>Pesanan</small><b id="ord">0</b><span class="up">↗ Total Transaksi</span></div>
@@ -229,28 +240,21 @@ button{cursor:pointer}
     </div>
   </section>
 
+  <!-- HALAMAN 3: KELOLA PRODUK (ADMIN) -->
   <section id="prod" class="page">
-    <div class="section"><h2>🍰 Produk Kue</h2><button class="btn" onclick="openProduct()">＋ Produk</button></div>
-    <div class="tools">
-      <input id="q" class="input" placeholder="Cari produk..." oninput="renderProducts()">
-      <select id="cat" class="input" onchange="renderProducts()">
-        <option value="">Semua kategori</option>
-        <option>Cake</option>
-        <option>Roti</option>
-        <option>Kue Basah</option>
-        <option>Kue Kering</option>
-      </select>
-    </div>
+    <div class="section"><h2>🍰 Kelola Produk Kue</h2><button class="btn" onclick="openProduct()">＋ Produk</button></div>
     <div class="products" id="products"></div>
   </section>
 
+  <!-- HALAMAN 4: PESANAN (ADMIN) -->
   <section id="orders" class="page">
-    <div class="section"><h2>🛍️ Pesanan</h2><span class="pill" id="orderCount">0 pesanan</span></div>
+    <div class="section"><h2>🛍️ Kelola Pesanan Masuk</h2><span class="pill" id="orderCount">0 pesanan</span></div>
     <div class="orders" id="orderList"></div>
   </section>
 
+  <!-- HALAMAN 5: PELANGGAN (ADMIN) -->
   <section id="customers" class="page">
-    <div class="section"><h2>👥 Pelanggan</h2><button class="btn" onclick="openCustomer()">＋ Pelanggan</button></div>
+    <div class="section"><h2>👥 Data Pelanggan</h2><button class="btn" onclick="openCustomer()">＋ Pelanggan</button></div>
     <div class="tablewrap">
       <table class="table">
         <thead>
@@ -261,6 +265,7 @@ button{cursor:pointer}
     </div>
   </section>
 
+  <!-- HALAMAN 6: LAPORAN (ADMIN) -->
   <section id="report" class="page">
     <div class="section"><h2>📊 Laporan Penjualan</h2><button class="btn" onclick="exportCSV()">⬇ Export CSV</button></div>
     <div class="stats">
@@ -283,11 +288,11 @@ button{cursor:pointer}
 
 <button class="cart" onclick="openCart()">🛒 Keranjang <small id="cartCount">0</small></button>
 
-<nav class="mobile">
-  <button class="active" onclick="page('dash')"><span>🏠</span>Home</button>
-  <button onclick="page('prod')"><span>🍰</span>Produk</button>
-  <button onclick="page('orders')"><span>🛍️</span>Pesanan</button>
-  <button onclick="page('report')"><span>📊</span>Laporan</button>
+<!-- Navbar Bawah HP Pembeli Publik -->
+<nav class="mobile" id="mobileNav">
+  <button class="active" onclick="page('catalog')"><span>🍰</span>Katalog</button>
+  <button onclick="openCart()"><span>🛒</span>Keranjang</button>
+  <button onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
 </nav>
 
 <div class="modalbg" id="modal">
@@ -316,6 +321,7 @@ let orders = [];
 let customers = [];
 let cart = {};
 let tempImgBase64 = '';
+let isAdminLoggedIn = false;
 
 const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 
@@ -326,8 +332,90 @@ function toggleSidebar() {
   overlay.classList.toggle('show');
 }
 
+// Render Navigasi Sesuai Status Login
+function renderNavigation() {
+  const navEl = document.getElementById('sidebarNav');
+  const adminArea = document.getElementById('adminArea');
+  const mobileNav = document.getElementById('mobileNav');
+
+  if (!isAdminLoggedIn) {
+    // Menu untuk Pembeli Publik
+    navEl.innerHTML = `
+      <button class="active" onclick="page('catalog'); toggleSidebar()">🍰 &nbsp; Katalog Kue</button>
+      <button onclick="openCart(); toggleSidebar()">🛒 &nbsp; Keranjang Belanja</button>
+      <button onclick="promptLoginAdmin(); toggleSidebar()">🔐 &nbsp; Login Admin</button>
+    `;
+    adminArea.innerHTML = `<button class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>`;
+    mobileNav.innerHTML = `
+      <button class="active" onclick="page('catalog')"><span>🍰</span>Katalog</button>
+      <button onclick="openCart()"><span>🛒</span>Keranjang</button>
+      <button onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
+    `;
+  } else {
+    // Menu untuk Admin
+    navEl.innerHTML = `
+      <button class="active" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
+      <button onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Kelola Produk</button>
+      <button onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Kelola Pesanan</button>
+      <button onclick="page('customers'); toggleSidebar()">👥 &nbsp; Data Pelanggan</button>
+      <button onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan Omzet</button>
+      <button onclick="logoutAdmin(); toggleSidebar()" style="color:var(--p);margin-top:15px">🚪 &nbsp; Keluar Admin</button>
+    `;
+    adminArea.innerHTML = `
+      <span class="pill">ADMIN ACTIVE</span>
+      <button class="btn gray" style="padding:6px 10px;font-size:11px;" onclick="logoutAdmin()">Logout</button>
+    `;
+    mobileNav.innerHTML = `
+      <button class="active" onclick="page('dash')"><span>🏠</span>Dash</button>
+      <button onclick="page('prod')"><span>🍰</span>Produk</button>
+      <button onclick="page('orders')"><span>🛍️</span>Pesanan</button>
+      <button onclick="page('report')"><span>📊</span>Laporan</button>
+    `;
+  }
+}
+
+async function promptLoginAdmin() {
+  const { value: password } = await Swal.fire({
+    title: 'Login Admin Habinara',
+    input: 'password',
+    inputPlaceholder: 'Masukkan Password Admin',
+    inputAttributes: {
+      autocapitalize: 'off',
+      autocorrect: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Masuk',
+    cancelButtonText: 'Batal',
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b'
+  });
+
+  // Password default admin diset "habinara2026" (bisa diubah sesuai keinginan)
+  if (password === 'habinara2026') {
+    isAdminLoggedIn = true;
+    renderNavigation();
+    page('dash');
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil Masuk!',
+      text: 'Selamat datang kembali, Admin Habinara ✨',
+      timer: 1500,
+      showConfirmButton: false
+    });
+  } else if (password !== undefined) {
+    Swal.fire('Gagal!', 'Password admin salah!', 'error');
+  }
+}
+
+function logoutAdmin() {
+  isAdminLoggedIn = false;
+  renderNavigation();
+  page('catalog');
+  toast('Berhasil keluar dari mode admin');
+}
+
 async function loadDataFromSupabase() {
-  let t = toast('Memuat data...');
+  let t = toast('Memuat data toko...');
   
   try {
     if (_supabase) {
@@ -384,17 +472,53 @@ async function loadDataFromSupabase() {
 }
 
 function page(id) {
+  // Proteksi halaman admin jika belum login
+  const adminPages = ['dash', 'prod', 'orders', 'customers', 'report'];
+  if (adminPages.includes(id) && !isAdminLoggedIn) {
+    promptLoginAdmin();
+    return;
+  }
+
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav button, .mobile button').forEach(x => x.classList.remove('active'));
-  document.querySelectorAll(`[onclick*="page('${id}')"]`).forEach(x => x.classList.add('active'));
   
-  const titles = {dash:'Dashboard', prod:'Produk Kue', orders:'Pesanan', customers:'Pelanggan', report:'Laporan'};
-  document.getElementById('title').textContent = titles[id] || 'Dashboard';
+  const titles = {
+    catalog: 'Katalog Produk',
+    dash: 'Dashboard Admin', 
+    prod: 'Kelola Produk Kue', 
+    orders: 'Kelola Pesanan', 
+    customers: 'Data Pelanggan', 
+    report: 'Laporan Penjualan'
+  };
+  document.getElementById('title').textContent = titles[id] || 'Habinara Bakehouse';
   
   if (id === 'report') renderReport();
   if (id === 'dash') renderDashboardStats();
+  if (id === 'catalog') renderCatalogProducts();
   window.scrollTo(0, 0);
+}
+
+// Render Produk di Katalog Pembeli
+function renderCatalogProducts() {
+  const qEl = document.getElementById('q');
+  const catEl = document.getElementById('cat');
+  let q = qEl ? qEl.value.toLowerCase().trim() : '';
+  let c = catEl ? catEl.value : '';
+  
+  let a = products.filter(x => x.n.toLowerCase().includes(q) && (!c || x.c === c));
+  document.getElementById('catalogProducts').innerHTML = a.map(x => `
+    <article class="card prod">
+      <img src="${x.img || defaultPlaceholderImg}" alt="${x.n}">
+      <div class="body">
+        <span class="muted">${x.c} · Stok Tersedia: ${x.s}</span>
+        <h3>${x.n}</h3>
+        <div class="price">
+          <b>${rp(x.p)}</b>
+          <button class="btn" onclick="add(${x.id})" ${x.s <= 0 ? 'disabled' : ''}>${x.s <= 0 ? 'Habis' : '+ Beli'}</button>
+        </div>
+      </div>
+    </article>
+  `).join('') || '<div class="empty">Belum ada kue yang tersedia di kategori ini.</div>';
 }
 
 function renderProducts() {
@@ -414,12 +538,11 @@ function renderProducts() {
           <b>${rp(x.p)}</b>
           <div class="actions">
             <button class="icon dark" onclick="openProduct(${x.id})" title="Edit">✎</button>
-            <button class="icon" onclick="add(${x.id})" ${x.s <= 0 ? 'disabled' : ''} title="${x.s <= 0 ? 'Stok Habis' : 'Tambah'}">＋</button>
           </div>
         </div>
       </div>
     </article>
-  `).join('') || '<div class="empty">Belum ada produk. Klik "+ Produk" di kanan atas untuk menambah.</div>';
+  `).join('') || '<div class="empty">Belum ada produk.</div>';
 }
 
 function add(id) {
@@ -428,12 +551,12 @@ function add(id) {
   let currentQty = cart[id] || 0;
   
   if (p.s <= currentQty) {
-    return toast('Stok tidak mencukupi 😅');
+    return toast('Stok kue tidak mencukupi 😅');
   }
   
   cart[id] = currentQty + 1;
   updateCart();
-  toast('Masuk keranjang 🍰');
+  toast('Kue dimasukkan keranjang 🍰');
 }
 
 function updateCart() {
@@ -468,7 +591,7 @@ function cartHTML() {
         </div>
       </div>
     `;
-  }).join('') : '<div class="empty">Keranjang masih kosong 🛒</div>';
+  }).join('') : '<div class="empty">Keranjang belanja masih kosong 🛒</div>';
 
   let shipping = a.length ? 10000 : 0;
   let grandTotal = sub + shipping;
@@ -477,9 +600,9 @@ function cartHTML() {
     <div class="sum">
       <div><span>Subtotal Produk</span><b>${rp(sub)}</b></div>
       <div><span>Ongkir</span><b>${rp(shipping)}</b></div>
-      <div class="grand"><span>Total Transaksi</span><b>${rp(grandTotal)}</b></div>
+      <div class="grand"><span>Total Pembayaran</span><b>${rp(grandTotal)}</b></div>
     </div>
-    <button class="btn" style="width:100%;margin-top:15px" onclick="openCheckoutModal()" ${!a.length ? 'disabled' : ''}>✓ Lanjut ke Checkout</button>
+    <button class="btn" style="width:100%;margin-top:15px" onclick="openCheckoutModal()" ${!a.length ? 'disabled' : ''}>✓ Lanjut ke Checkout Pesanan</button>
   `;
 }
 
@@ -503,44 +626,23 @@ function chg(id, d) {
 }
 
 function openCheckoutModal() {
-  let custOptions = customers.map(c => `<option value="${c.id}">${c.n} (${c.t})</option>`).join('');
-
-  modal('📋 Data Pelanggan & Pengiriman', `
+  modal('📋 Data Pemesan & Pengiriman', `
     <div class="form">
-      <label>Pilih Pelanggan Terdaftar (Opsional)
-        <select id="coSelectCust" onchange="autoFillCustomer()">
-          <option value="">-- Pelanggan Baru / Ketik Manual --</option>
-          ${custOptions}
-        </select>
-      </label>
-      <label>Nama Pelanggan *
-        <input id="coName" placeholder="Contoh: Budi Santoso">
+      <label>Nama Lengkap *
+        <input id="coName" placeholder="Contoh: Siti Aminah">
       </label>
       <label>No. WhatsApp / Telepon *
         <input id="coPhone" placeholder="Contoh: 08123456789">
       </label>
-      <label>Alamat Pengiriman
-        <textarea id="coAddress" rows="3" placeholder="Jl. Anggrek No. 5, Bekasi Barat..."></textarea>
+      <label>Alamat Lengkap Pengiriman *
+        <textarea id="coAddress" rows="3" placeholder="Jl. Mawar No. 12, Bekasi..."></textarea>
       </label>
     </div>
     <div class="formfoot">
       <button class="btn gray" onclick="openCart()">← Kembali</button>
-      <button class="btn" onclick="checkout()">Proses Pesanan ✓</button>
+      <button class="btn" onclick="checkout()">Kirim Pesanan Sekarang ✓</button>
     </div>
   `);
-}
-
-function autoFillCustomer() {
-  let select = document.getElementById('coSelectCust');
-  let custId = select.value;
-  if (!custId) return;
-  
-  let c = customers.find(x => x.id == custId);
-  if (c) {
-    document.getElementById('coName').value = c.n;
-    document.getElementById('coPhone').value = c.t || '';
-    document.getElementById('coAddress').value = c.a || '';
-  }
 }
 
 async function checkout() {
@@ -548,8 +650,8 @@ async function checkout() {
   let phone = document.getElementById('coPhone').value.trim();
   let address = document.getElementById('coAddress').value.trim();
 
-  if (!name || !phone) {
-    return toast('Nama dan No. WhatsApp wajib diisi! ⚠️');
+  if (!name || !phone || !address) {
+    return toast('Nama, No. WhatsApp, dan Alamat wajib diisi! ⚠️');
   }
 
   if (!Object.keys(cart).length) return toast('Keranjang masih kosong');
@@ -572,20 +674,19 @@ async function checkout() {
 
   try {
     if (_supabase) {
-      // Cek berdasarkan Nama DAN No WhatsApp agar tidak saling menimpa jika nomor sama tapi nama beda
       let existingCust = customers.find(c => c.n.toLowerCase() === name.toLowerCase() && c.t === phone);
       if (existingCust) {
         let newSpend = existingCust.v + grandTotal;
         await _supabase.from('customers').update({ total_spend: newSpend, address: address || existingCust.a }).eq('id', existingCust.id);
       } else {
-        await _supabase.from('customers').insert([{ name, phone, address: address || '-', total_spend: grandTotal }]);
+        await _supabase.from('customers').insert([{ name, phone, address, total_spend: grandTotal }]);
       }
 
       await _supabase.from('orders').insert([{
         id: newId,
         customer_name: name,
         phone: phone,
-        address: address || '-',
+        address: address,
         items: itemsArr,
         subtotal: sub,
         shipping: shipping,
@@ -609,10 +710,17 @@ async function checkout() {
   cart = {};
   closeModal();
   await loadDataFromSupabase();
-  toast('Pesanan berhasil dibuat 🎉');
+  
+  Swal.fire({
+    title: 'Pesanan Berhasil Dibuat! 🎉',
+    html: `ID Pesanan kamu: <b>#${newId}</b><br>Silakan tunggu konfirmasi selanjutnya dari admin ya.`,
+    icon: 'success',
+    confirmButtonColor: '#d31027'
+  });
 }
 
 function printReceipt(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let o = orders.find(x => x.id === id);
   if (!o) return;
 
@@ -620,7 +728,7 @@ function printReceipt(id) {
     ? o.items.map(i => `<tr><td>${i.n} x${i.qty}</td><td style="text-align:right">${rp(i.p * i.qty)}</td></tr>`).join('')
     : `<tr><td colspan="2">${o.items}</td></tr>`;
 
-  modal('🧾 Nota Struk', `
+  modal('🧾 Nota Struk Kasir', `
     <div style="font-family:monospace; font-size:12px;">
       <h3 style="text-align:center;margin:0;color:var(--p)">HABINARA BAKEHOUSE</h3>
       <p style="text-align:center;margin:0 0 10px;font-size:10px">Nota Pembayaran Struk Kasir</p>
@@ -667,10 +775,11 @@ function renderOrders() {
         </div>
       </div>
     `;
-  }).join('') || '<div class="empty">Belum ada pesanan.</div>';
+  }).join('') || '<div class="empty">Belum ada pesanan masuk.</div>';
 }
 
 async function nextStatus(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let o = orders.find(x => x.id === id);
   if (!o) return;
   let next = o.status === 'Baru' ? 'Diproses' : o.status === 'Diproses' ? 'Selesai' : 'Baru';
@@ -682,6 +791,7 @@ async function nextStatus(id) {
 }
 
 async function deleteOrder(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let o = orders.find(x => x.id === id);
   if (!o) return;
 
@@ -730,6 +840,7 @@ async function deleteOrder(id) {
 }
 
 function openProduct(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let p = id ? products.find(x => x.id === id) : {n:'', c:'Cake', p:'', s:10, img:''};
   if (!p) return;
   
@@ -787,6 +898,7 @@ function previewImage(event) {
 }
 
 async function saveProduct(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let name = document.getElementById('fn').value.trim();
   let price = +document.getElementById('fp').value;
   let stock = +document.getElementById('fs').value;
@@ -827,6 +939,7 @@ async function saveProduct(id) {
 }
 
 async function delProduct(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   if (confirm('Hapus produk ini?')) {
     if (_supabase) {
       await _supabase.from('products').delete().eq('id', id);
@@ -855,6 +968,7 @@ function renderCustomers() {
 }
 
 function openCustomer(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let c = id ? customers.find(x => x.id === id) : {n:'', t:'', a:''};
   if (!c) return;
 
@@ -871,6 +985,7 @@ function openCustomer(id) {
 }
 
 async function saveCustomer(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let name = document.getElementById('cn').value.trim();
   let phone = document.getElementById('ct').value.trim();
   let address = document.getElementById('ca').value.trim();
@@ -889,6 +1004,7 @@ async function saveCustomer(id) {
 }
 
 async function delCustomer(id) {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   if (confirm('Hapus pelanggan ini?')) {
     if (_supabase) {
       await _supabase.from('customers').delete().eq('id', id);
@@ -920,6 +1036,7 @@ function renderReport() {
 }
 
 function exportCSV() {
+  if (!isAdminLoggedIn) return promptLoginAdmin();
   let rows = [
     ['ID', 'Pelanggan', 'WhatsApp', 'Alamat', 'Subtotal Produk', 'Ongkir', 'Total Akhir', 'Status', 'Tanggal'],
     ...orders.map(o => [
@@ -1040,6 +1157,8 @@ function renderBestSellers() {
 }
 
 function renderAll() {
+  renderNavigation();
+  renderCatalogProducts();
   renderProducts();
   renderOrders();
   renderCustomers();
@@ -1051,6 +1170,8 @@ document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
+// Inisialisasi awal load data dan set halaman publik
+renderNavigation();
 loadDataFromSupabase();
 </script>
 </body>
