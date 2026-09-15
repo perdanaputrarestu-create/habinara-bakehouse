@@ -37,8 +37,8 @@ button{cursor:pointer}
 .brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:900;padding:4px 10px 25px;color:var(--p)}
 .logo{width:42px;height:42px;border-radius:12px;background:var(--p-light);display:grid;place-items:center;flex-shrink:0;overflow:hidden}
 .logo img{width:100%;height:100%;object-fit:cover}
-.nav{display:grid;gap:6px;flex:1;}
-.nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:13px;border-radius:13px;text-align:left}
+.nav{display:grid;gap:6px;flex:1;overflow-y:auto;}
+.nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:11px 13px;border-radius:13px;text-align:left}
 .nav button.active,.nav button:hover,.mobile button.active{background:var(--p-light);color:var(--p)}
 
 /* Lisensi di Footer Sidebar */
@@ -51,9 +51,9 @@ button{cursor:pointer}
 
 .main{margin-left:250px;padding:25px 32px 110px}
 
-/* Header Rapi & Sejajar */
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:10px}
-.top-left {display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+/* Header Rapi & Responsive Fix */
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:10px;flex-wrap:wrap;}
+.top-left {display:flex;align-items:center;gap:10px;flex:1;min-width:180px;}
 .top-text {display:flex;flex-direction:column;min-width:0;}
 .top h1{margin:0;font-size:22px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -81,7 +81,7 @@ button{cursor:pointer}
 .bw span{font-size:11px;color:var(--muted)}
 .section{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
 .section h2{margin:0}
-.btn{border:0;background:var(--p);color:white;padding:11px 15px;border-radius:12px;font-weight:800}
+.btn{border:0;background:var(--p);color:white;padding:11px 15px;border-radius:12px;font-weight:800;text-align:center;}
 .btn:hover{background:var(--p2)}
 .btn:disabled{background:#ccc;cursor:not-allowed}
 .btn.gray{background:#f5ecec;color:#664d4d}
@@ -99,12 +99,17 @@ button{cursor:pointer}
 .icon{width:33px;height:33px;border-radius:10px;border:0;background:var(--p-light);color:var(--p)}
 .icon.dark{background:#f2e6e6;color:#654d4d}
 .icon:disabled{opacity:0.4;cursor:not-allowed}
+
+/* Layout Pesanan Masuk */
 .orders{display:grid;gap:11px}
-.order{padding:16px;display:grid;grid-template-columns:1fr auto;gap:12px}
-.order h3{margin:0 0 4px;font-size:15px}
-.order p{margin:2px 0;color:var(--muted);font-size:12px}
-.right{text-align:right}
-.status{display:inline-block;margin-top:6px;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800}
+.order{padding:16px;display:flex;flex-direction:column;gap:12px}
+.order-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.order h3{margin:0 0 4px;font-size:15px;word-break:break-word;}
+.order p{margin:3px 0;color:var(--muted);font-size:12px}
+.order-actions{display:grid;grid-template-columns:repeat(auto-fit, minmax(80px, 1fr));gap:6px;margin-top:8px;width:100%;}
+.order-actions .btn{padding:8px 6px;font-size:11px;border-radius:10px;white-space:nowrap;display:flex;align-items:center;justify-content:center;}
+
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap;}
 .baru{background:#fef3c7;color:#b45309}
 .proses{background:#e0f2fe;color:#0369a1}
 .selesai{background:#dcfce7;color:#15803d}
@@ -172,6 +177,19 @@ button{cursor:pointer}
   display: block;
 }
 
+/* Badge Aktivitas Log */
+.log-badge {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.log-order { background: #e0f2fe; color: #0369a1; }
+.log-product { background: #fef3c7; color: #b45309; }
+.log-customer { background: #fceef0; color: #d31027; }
+.log-system { background: #f3f4f6; color: #4b5563; }
+
 @media print {
   body * { visibility: hidden; }
   .modal, .modal * { visibility: visible; }
@@ -184,8 +202,8 @@ button{cursor:pointer}
   .side.open{transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.15);}
   .burger-btn{display:grid;}
   .main{margin:0;padding:14px 12px 100px}
-  .top h1{font-size:18px}
-  .top-left{gap:8px}
+  .top h1{font-size:16px}
+  .top-left{gap:6px}
   .stats{grid-template-columns:1fr 1fr;gap:10px}
   .stat{padding:14px;border-radius:16px}
   .stat b{font-size:20px}
@@ -196,14 +214,13 @@ button{cursor:pointer}
   .prod .body{padding:10px}
   .tools{flex-direction:column}
   
-  .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:65px;background:#fff;border-top:1px solid var(--line);z-index:16;justify-content:space-around;padding:4px}
-  .mobile button{text-align:center;font-size:10px;padding:4px;display:flex;flex-direction:column;align-items:center;flex:1}
-  .mobile span{font-size:18px}
+  .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:65px;background:#fff;border-top:1px solid var(--line);z-index:16;justify-around:space-around;padding:4px}
+  .mobile button{text-align:center;font-size:9px;padding:2px;display:flex;flex-direction:column;align-items:center;flex:1}
+  .mobile span{font-size:16px}
   
-  .order{grid-template-columns:1fr}
-  .right{text-align:left}
   .grid2{grid-template-columns:1fr}
   .cart{bottom:74px;right:12px;padding:10px 14px;font-size:13px;}
+  .order-actions{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -319,11 +336,34 @@ button{cursor:pointer}
       </div>
     </div>
   </section>
+
+  <!-- HALAMAN 7: LOG AKTIVITAS (ADMIN) -->
+  <section id="logs" class="page">
+    <div class="section">
+      <h2>📜 Log Aktivitas Sistem</h2>
+      <button type="button" class="btn danger" onclick="clearLogs()">🗑️ Bersihkan Log Local</button>
+    </div>
+    <div class="card panel">
+      <div class="tablewrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Waktu</th>
+              <th>Kategori</th>
+              <th>Aktor</th>
+              <th>Aktivitas & Rincian</th>
+            </tr>
+          </thead>
+          <tbody id="logList"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 </main>
 
 <button type="button" class="cart" onclick="openCart()">🛒 Keranjang <small id="cartCount">0</small></button>
 
-<!-- Navbar Bawah HP Pembeli Publik -->
+<!-- Navbar Bawah HP -->
 <nav class="mobile" id="mobileNav"></nav>
 
 <div class="modalbg" id="modal">
@@ -350,11 +390,13 @@ const defaultPlaceholderImg = 'https://via.placeholder.com/400x200?text=Foto+Pro
 let products = [];
 let orders = [];
 let customers = [];
+let activityLogs = JSON.parse(localStorage.getItem('habinara_activity_logs') || '[]');
 let cart = {};
 let selectedImageFile = null; 
 let tempImgBase64 = '';
-let isAdminLoggedIn = false;
-let activePageId = 'catalog';
+
+let isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+let activePageId = isAdminLoggedIn ? 'dash' : 'catalog';
 
 let selectedLat = -6.200000; 
 let selectedLng = 106.816666;
@@ -363,7 +405,6 @@ let checkoutMarker = null;
 
 const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 
-// --- SWEETALERT2 TOAST REPLACEMENT ---
 const SwalToast = Swal.mixin({
   toast: true,
   position: 'bottom',
@@ -381,6 +422,89 @@ function toast(msg, icon = 'info') {
   SwalToast.fire({
     icon: icon,
     title: msg
+  });
+}
+
+// --- LOGGING SYSTEM ---
+async function addLog(category, actor, message) {
+  const timestamp = new Date().toLocaleString('id-ID', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+
+  const logEntry = {
+    id: Date.now(),
+    time: timestamp,
+    category: category, // 'Order', 'Product', 'Customer', 'System'
+    actor: actor,       // 'Admin', 'Pembeli', 'Sistem'
+    message: message
+  };
+
+  // Simpan Local
+  activityLogs.unshift(logEntry);
+  if (activityLogs.length > 200) activityLogs.pop(); // limit 200 log
+  localStorage.setItem('habinara_activity_logs', JSON.stringify(activityLogs));
+
+  // Simpan Supabase (Opsional jika tabel 'activity_logs' ada)
+  if (_supabase) {
+    try {
+      await _supabase.from('activity_logs').insert([{
+        category: category,
+        actor: actor,
+        message: message,
+        created_at: new Date().toISOString()
+      }]);
+    } catch(e) {
+      // Ignore jika tabel belum dibuat di Supabase
+    }
+  }
+
+  if (activePageId === 'logs') renderLogs();
+}
+
+function renderLogs() {
+  const listEl = document.getElementById('logList');
+  if (!listEl) return;
+
+  if (activityLogs.length === 0) {
+    listEl.innerHTML = '<tr><td colspan="4" class="empty">Belum ada log aktivitas tercatat.</td></tr>';
+    return;
+  }
+
+  listEl.innerHTML = activityLogs.map(l => {
+    let catClass = 'log-system';
+    if (l.category === 'Order') catClass = 'log-order';
+    if (l.category === 'Product') catClass = 'log-product';
+    if (l.category === 'Customer') catClass = 'log-customer';
+
+    return `
+      <tr>
+        <td style="white-space:nowrap; font-size:11px; color:var(--muted);">${l.time}</td>
+        <td><span class="log-badge ${catClass}">${l.category}</span></td>
+        <td><b>${l.actor}</b></td>
+        <td>${l.message}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function clearLogs() {
+  Swal.fire({
+    title: 'Bersihkan Log?',
+    text: 'Seluruh riwayat log aktivitas di penyimpanan lokal akan dihapus.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b',
+    confirmButtonText: 'Ya, Hapus Log',
+    cancelButtonText: 'Batal'
+  }).then(result => {
+    if (result.isConfirmed) {
+      activityLogs = [];
+      localStorage.removeItem('habinara_activity_logs');
+      renderLogs();
+      toast('Log aktivitas berhasil dibersihkan', 'success');
+    }
   });
 }
 
@@ -417,6 +541,7 @@ function renderNavigation() {
       <button type="button" onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Kelola Pesanan</button>
       <button type="button" onclick="page('customers'); toggleSidebar()">👥 &nbsp; Data Pelanggan</button>
       <button type="button" onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan Omzet</button>
+      <button type="button" onclick="page('logs'); toggleSidebar()">📜 &nbsp; Log Aktivitas</button>
       <button type="button" onclick="logoutAdmin(); toggleSidebar()" style="color:var(--p);margin-top:15px">🚪 &nbsp; Keluar Admin</button>
     `;
     adminArea.innerHTML = `
@@ -428,6 +553,7 @@ function renderNavigation() {
       <button type="button" onclick="page('prod')"><span>🍰</span>Produk</button>
       <button type="button" onclick="page('orders')"><span>🛍️</span>Pesanan</button>
       <button type="button" onclick="page('report')"><span>📊</span>Laporan</button>
+      <button type="button" onclick="page('logs')"><span>📜</span>Log</button>
     `;
   }
   updateActiveNav(activePageId);
@@ -436,7 +562,6 @@ function renderNavigation() {
 function updateActiveNav(pageId) {
   activePageId = pageId;
   
-  // Highlight active Sidebar Nav
   const sidebarButtons = document.querySelectorAll('#sidebarNav button');
   sidebarButtons.forEach(btn => {
     btn.classList.remove('active');
@@ -445,7 +570,6 @@ function updateActiveNav(pageId) {
     }
   });
 
-  // Highlight active Mobile Nav
   const mobileButtons = document.querySelectorAll('#mobileNav button');
   mobileButtons.forEach(btn => {
     btn.classList.remove('active');
@@ -472,6 +596,8 @@ async function promptLoginAdmin() {
 
   if (password === 'habinara2026') {
     isAdminLoggedIn = true;
+    localStorage.setItem('isAdminLoggedIn', 'true');
+    addLog('System', 'Admin', 'Admin berhasil login ke sistem');
     renderNavigation();
     page('dash');
     Swal.fire({
@@ -482,6 +608,7 @@ async function promptLoginAdmin() {
       showConfirmButton: false
     });
   } else if (password !== undefined) {
+    addLog('System', 'Pengguna', 'Percobaan login admin gagal (kata kunci salah)');
     Swal.fire({
       icon: 'error',
       title: 'Gagal Login!',
@@ -504,7 +631,9 @@ async function logoutAdmin() {
   });
 
   if (result.isConfirmed) {
+    addLog('System', 'Admin', 'Admin keluar dari sesi');
     isAdminLoggedIn = false;
+    localStorage.removeItem('isAdminLoggedIn');
     renderNavigation();
     page('catalog');
     toast('Berhasil keluar dari mode admin', 'success');
@@ -566,11 +695,16 @@ async function loadDataFromSupabase() {
     console.warn("Gagal load Supabase:", err);
   } finally {
     renderAll();
+    if (isAdminLoggedIn) {
+      page('dash');
+    } else {
+      page('catalog');
+    }
   }
 }
 
 function page(id) {
-  const adminPages = ['dash', 'prod', 'orders', 'customers', 'report'];
+  const adminPages = ['dash', 'prod', 'orders', 'customers', 'report', 'logs'];
   if (adminPages.includes(id) && !isAdminLoggedIn) {
     promptLoginAdmin();
     return;
@@ -585,7 +719,8 @@ function page(id) {
     prod: 'Kelola Produk Kue', 
     orders: 'Kelola Pesanan', 
     customers: 'Data Pelanggan', 
-    report: 'Laporan Penjualan'
+    report: 'Laporan Penjualan',
+    logs: 'Log Aktivitas Sistem'
   };
   document.getElementById('title').textContent = titles[id] || 'Habinara Bakehouse';
   
@@ -595,6 +730,7 @@ function page(id) {
   if (id === 'dash') renderDashboardStats();
   if (id === 'catalog') renderCatalogProducts();
   if (id === 'prod') renderProducts();
+  if (id === 'logs') renderLogs();
   window.scrollTo(0, 0);
 }
 
@@ -897,6 +1033,10 @@ async function checkout() {
     console.error(e);
   }
 
+  // Catat Log Aktivitas
+  let summaryItems = itemsArr.map(i => `${i.n} (${i.qty})`).join(', ');
+  addLog('Order', 'Pembeli', `Pesanan baru <b>#${newId}</b> oleh <b>${name}</b> (${rp(grandTotal)}). Item: ${summaryItems}`);
+
   cart = {};
   closeModal();
   await loadDataFromSupabase();
@@ -993,6 +1133,8 @@ async function cancelMyOrder(orderId) {
         await _supabase.from('orders').delete().eq('id', orderId);
       }
 
+      addLog('Order', 'Pembeli', `Pesanan <b>#${orderId}</b> dibatalkan oleh pembeli. Stok dipulihkan.`);
+
       await loadDataFromSupabase();
       closeModal();
       
@@ -1014,6 +1156,8 @@ function printReceipt(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
   let o = orders.find(x => x.id === id);
   if (!o) return;
+
+  addLog('Order', 'Admin', `Mencetak nota struk kasir untuk pesanan <b>#${o.id}</b>`);
 
   let itemRows = Array.isArray(o.items) 
     ? o.items.map(i => `<tr><td>${i.n} x${i.qty}</td><td style="text-align:right">${rp(i.p * i.qty)}</td></tr>`).join('')
@@ -1049,26 +1193,28 @@ function renderOrders() {
       : o.items;
 
     let mapsButton = (o.lat && o.lng) ? `
-      <a href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" class="btn gray" style="padding:6px 10px; font-size:11px; text-decoration:none; display:inline-block;">🗺️ Buka Maps</a>
+      <a href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" class="btn gray">🗺️ Maps</a>
     ` : '';
 
     return `
       <div class="card order">
-        <div>
-          <h3>#${o.id} · ${o.name} <small style="font-weight:normal;color:var(--muted)">(${o.phone || '-'})</small></h3>
-          <p><b>Item:</b> ${itemsText}</p>
-          <p><b>Alamat:</b> ${o.address || '-'}</p>
-          <p><b>Tanggal:</b> ${o.date}</p>
-        </div>
-        <div class="right">
-          <b style="color:var(--p)">${rp(o.total)}</b><br>
-          <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
-          <div style="margin-top:8px; display:flex; gap:5px; justify-content:flex-end; flex-wrap:wrap;">
-            ${mapsButton}
-            <button type="button" class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
-            <button type="button" class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
-            <button type="button" class="btn danger" onclick="deleteOrder('${o.id}')" title="Hapus Pesanan">🗑️ Hapus</button>
+        <div class="order-header">
+          <div>
+            <h3>#${o.id} · ${o.name}</h3>
+            <p><b>WA:</b> ${o.phone || '-'}</p>
+            <p><b>Item:</b> ${itemsText}</p>
+            <p><b>Alamat:</b> ${o.address || '-'}</p>
+            <p><b>Tanggal:</b> ${o.date}</p>
+            <b style="color:var(--p);font-size:16px;display:block;margin-top:6px;">${rp(o.total)}</b>
           </div>
+          <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
+        </div>
+
+        <div class="order-actions">
+          ${mapsButton}
+          <button type="button" class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
+          <button type="button" class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
+          <button type="button" class="btn danger" onclick="deleteOrder('${o.id}')">🗑️ Hapus</button>
         </div>
       </div>
     `;
@@ -1084,6 +1230,9 @@ async function nextStatus(id) {
   if (_supabase) {
     await _supabase.from('orders').update({ status: next }).eq('id', id);
   }
+
+  addLog('Order', 'Admin', `Mengubah status pesanan <b>#${id}</b> dari <i>${o.status}</i> menjadi <b>${next}</b>`);
+
   await loadDataFromSupabase();
   toast(`Status pesanan #${id} diubah ke ${next}`, 'success');
 }
@@ -1120,6 +1269,8 @@ async function deleteOrder(id) {
         }
         await _supabase.from('orders').delete().eq('id', id);
       }
+
+      addLog('Order', 'Admin', `Menghapus pesanan <b>#${id}</b> (Pemesan: ${o.name}). Stok dikembalikan.`);
 
       await loadDataFromSupabase();
       
@@ -1274,6 +1425,12 @@ async function saveProduct(id) {
         throw new Error(res.error.message);
       }
     }
+
+    if (id) {
+      addLog('Product', 'Admin', `Memperbarui data produk <b>${name}</b> (Harga: ${rp(price)}, Stok: ${stock})`);
+    } else {
+      addLog('Product', 'Admin', `Menambahkan produk baru <b>${name}</b> (${category}, ${rp(price)}, Stok: ${stock})`);
+    }
     
     toast('Produk berhasil tersimpan 🎉', 'success');
     selectedImageFile = null;
@@ -1290,7 +1447,8 @@ async function saveProduct(id) {
 
 async function delProduct(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
-  
+  let p = products.find(x => x.id === id);
+
   const result = await Swal.fire({
     title: 'Hapus Produk?',
     text: 'Produk yang dihapus tidak dapat dikembalikan!',
@@ -1306,6 +1464,9 @@ async function delProduct(id) {
     if (_supabase) {
       await _supabase.from('products').delete().eq('id', id);
     }
+    
+    addLog('Product', 'Admin', `Menghapus produk <b>${p ? p.n : id}</b> dari katalog`);
+
     closeModal();
     await loadDataFromSupabase();
     toast('Produk berhasil dihapus', 'success');
@@ -1360,6 +1521,13 @@ async function saveCustomer(id) {
       await _supabase.from('customers').insert([{ name, phone: phone || '-', address: address || '-', total_spend: 0 }]);
     }
   }
+
+  if (id) {
+    addLog('Customer', 'Admin', `Memperbarui data pelanggan <b>${name}</b>`);
+  } else {
+    addLog('Customer', 'Admin', `Menambahkan pelanggan baru <b>${name}</b> (${phone || '-'})`);
+  }
+
   closeModal();
   await loadDataFromSupabase();
   toast('Pelanggan tersimpan ✓', 'success');
@@ -1367,7 +1535,8 @@ async function saveCustomer(id) {
 
 async function delCustomer(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
-  
+  let c = customers.find(x => x.id === id);
+
   const result = await Swal.fire({
     title: 'Hapus Pelanggan?',
     text: 'Data pelanggan ini akan dihapus permanen!',
@@ -1383,6 +1552,9 @@ async function delCustomer(id) {
     if (_supabase) {
       await _supabase.from('customers').delete().eq('id', id);
     }
+
+    addLog('Customer', 'Admin', `Menghapus data pelanggan <b>${c ? c.n : id}</b>`);
+
     await loadDataFromSupabase();
     toast('Data pelanggan dihapus', 'success');
   }
@@ -1433,6 +1605,9 @@ function exportCSV() {
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = 'laporan-habinara-bakehouse.csv';
   a.click();
+
+  addLog('System', 'Admin', 'Mengekspor laporan transaksi ke berkas CSV');
+
   toast('Laporan CSV berhasil diunduh 📊', 'success');
 }
 
@@ -1532,6 +1707,7 @@ function renderAll() {
   renderCustomers();
   renderReport();
   renderDashboardStats();
+  renderLogs();
 }
 
 document.getElementById('modal').addEventListener('click', function(e) {
