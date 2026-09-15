@@ -4,11 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Habinara Bakehouse — Katalog & Toko Kue Online</title>
-<!-- Supabase JS Client SDK -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Leaflet CSS & JS -->
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -27,293 +26,785 @@
   --shadow:0 12px 34px rgba(211,16,39,0.06);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif
+}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .app{min-height:100vh}
 
 /* Sidebar Desktop */
-.side{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 15px;z-index:20;transition:transform 0.3s ease;display:flex;flex-direction:column;justify-content:space-between;}
-.brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:900;padding:4px 10px 25px;color:var(--p)}
-.logo{width:42px;height:42px;border-radius:12px;background:var(--p-light);display:grid;place-items:center;flex-shrink:0;overflow:hidden}
-.logo img{width:100%;height:100%;object-fit:cover}
-.nav{display:grid;gap:6px;flex:1;overflow-y:auto;}
-.nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:11px 13px;border-radius:13px;text-align:left}
-.nav button.active,.nav button:hover,.mobile button.active{background:var(--p-light);color:var(--p)}
-
-.sidebar-footer {font-size:10px;color:var(--muted);text-align:center;padding:15px 5px 5px;border-top:1px solid var(--line);line-height:1.4;}
-.sidebar-footer b {color:var(--ink);display:block;margin-top:2px;font-size:11px;}
-
-.overlay {position:fixed;inset:0;background:rgba(45,26,26,0.5);display:none;z-index:18;opacity:0;transition:opacity 0.3s ease;}
-.overlay.show {display:block;opacity:1;}
-
-.main{margin-left:250px;padding:25px 32px 110px}
-
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:10px;flex-wrap:wrap;}
-.top-left {display:flex;align-items:center;gap:10px;flex:1;min-width:180px;}
-.top-text {display:flex;flex-direction:column;min-width:0;}
-.top h1{margin:0;font-size:22px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-.welcome-banner {
-  background: linear-gradient(135deg, #fff5f6 0%, #ffffff 50%, #fceef0 100%);
-  border: 1px solid var(--line);
-  border-left: 6px solid var(--p);
-  border-radius: 20px;
-  padding: 24px 22px;
-  margin-bottom: 24px;
-  text-align: left;
-  box-shadow: 0 10px 30px rgba(211, 16, 39, 0.08);
-  position: relative;
-  overflow: hidden;
+.side{
+  position:fixed;
+  width:250px;
+  height:100vh;
+  background:#fff;
+  border-right:1px solid var(--line);
+  padding:22px 15px;
+  z-index:20;
+  transition:transform .3s ease;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  font-size:18px;
+  font-weight:900;
+  padding:4px 10px 25px;
+  color:var(--p)
+}
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--p-light);
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  overflow:hidden
+}
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.nav{
+  display:grid;
+  gap:6px;
+  flex:1;
+  overflow-y:auto;
+}
+.nav button,.mobile button{
+  background:none;
+  border:0;
+  color:#775b5b;
+  font-weight:700;
+  padding:11px 13px;
+  border-radius:13px;
+  text-align:left
+}
+.nav button.active,.nav button:hover,.mobile button.active{
+  background:var(--p-light);
+  color:var(--p)
+}
+.sidebar-footer{
+  font-size:10px;
+  color:var(--muted);
+  text-align:center;
+  padding:15px 5px 5px;
+  border-top:1px solid var(--line);
+  line-height:1.4;
+}
+.sidebar-footer b{
+  color:var(--ink);
+  display:block;
+  margin-top:2px;
+  font-size:11px;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(45,26,26,.5);
+  display:none;
+  z-index:18;
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.overlay.show{
+  display:block;
+  opacity:1;
 }
 
-.welcome-banner::after {
-  content: "🥐";
-  position: absolute;
-  right: -10px;
-  bottom: -15px;
-  font-size: 80px;
-  opacity: 0.12;
-  transform: rotate(-15deg);
-  pointer-events: none;
+.main{
+  margin-left:250px;
+  padding:25px 32px 110px
 }
 
-.welcome-title {
-  margin: 0 0 10px 0;
-  font-size: 22px;
-  color: var(--ink);
-  font-weight: 900;
-  letter-spacing: -0.3px;
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.top-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1;
+  min-width:180px;
+}
+.top-text{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.top h1{
+  margin:0;
+  font-size:22px;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sub{
+  font-size:12px;
+  color:var(--muted);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.welcome-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--p) 0%, var(--p2) 100%);
-  padding: 6px 14px;
-  border-radius: 30px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 12px rgba(211, 16, 39, 0.25);
-  text-transform: uppercase;
-  animation: pulse-glow 2s infinite alternate;
+.welcome-banner{
+  background:linear-gradient(135deg,#fff5f6 0%,#fff 50%,#fceef0 100%);
+  border:1px solid var(--line);
+  border-left:6px solid var(--p);
+  border-radius:20px;
+  padding:24px 22px;
+  margin-bottom:24px;
+  text-align:left;
+  box-shadow:0 10px 30px rgba(211,16,39,.08);
+  position:relative;
+  overflow:hidden;
+}
+.welcome-banner::after{
+  content:"🥐";
+  position:absolute;
+  right:-10px;
+  bottom:-15px;
+  font-size:80px;
+  opacity:.12;
+  transform:rotate(-15deg);
+  pointer-events:none;
+}
+.welcome-title{
+  margin:0 0 10px;
+  font-size:22px;
+  color:var(--ink);
+  font-weight:900;
+  letter-spacing:-.3px;
+}
+.welcome-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--p) 0%,var(--p2) 100%);
+  padding:6px 14px;
+  border-radius:30px;
+  margin-bottom:12px;
+  box-shadow:0 4px 12px rgba(211,16,39,.25);
+  text-transform:uppercase;
+  animation:pulse-glow 2s infinite alternate;
+}
+.welcome-desc{
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+  max-width:600px;
+}
+@keyframes pulse-glow{
+  0%{box-shadow:0 4px 12px rgba(211,16,39,.25)}
+  100%{box-shadow:0 6px 18px rgba(211,16,39,.45)}
 }
 
-.welcome-desc {
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 600px;
+.burger-btn{
+  background:var(--p-light);
+  border:0;
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:none;
+  place-items:center;
+  color:var(--p);
+  font-size:18px;
+  cursor:pointer;
+  flex-shrink:0;
 }
-
-@keyframes pulse-glow {
-  0% { box-shadow: 0 4px 12px rgba(211, 16, 39, 0.25); }
-  100% { box-shadow: 0 6px 18px rgba(211, 16, 39, 0.45); }
+.admin-area{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
 }
-
-.burger-btn {background:var(--p-light);border:0;width:38px;height:38px;border-radius:10px;display:none;place-items:center;color:var(--p);font-size:18px;cursor:pointer;flex-shrink:0;}
-
-.admin-area{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.pill{padding:4px 8px;border-radius:20px;background:var(--p-light);color:var(--p);font-size:10px;font-weight:800}
+.pill{
+  padding:4px 8px;
+  border-radius:20px;
+  background:var(--p-light);
+  color:var(--p);
+  font-size:10px;
+  font-weight:800
+}
 
 .page{display:none}
 .page.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow)
+}
 .stat{padding:19px}
 .stat small{color:var(--muted)}
-.stat b{display:block;font-size:25px;margin:7px 0;color:var(--p)}
+.stat b{
+  display:block;
+  font-size:25px;
+  margin:7px 0;
+  color:var(--p)
+}
 .up{color:var(--ok);font-size:12px}
-.layout{display:grid;grid-template-columns:1.5fr 1fr;gap:17px;margin-top:17px}
+
+.layout{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:17px;
+  margin-top:17px
+}
 .panel{padding:20px}
-.panel h2{font-size:17px;margin:0 0 15px}
-.bars{height:230px;display:flex;align-items:end;gap:10px}
-.bw{flex:1;height:100%;display:flex;align-items:center;flex-direction:column;justify-content:end;gap:7px}
-.bar{width:min(35px,70%);border-radius:8px 8px 2px 2px;background:linear-gradient(var(--p), var(--p2));min-height:2px;transition:height 0.3s ease}
-.bw span{font-size:11px;color:var(--muted)}
-.section{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+.panel h2{
+  font-size:17px;
+  margin:0 0 15px
+}
+.bars{
+  height:230px;
+  display:flex;
+  align-items:end;
+  gap:10px
+}
+.bw{
+  flex:1;
+  height:100%;
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  justify-content:end;
+  gap:7px
+}
+.bar{
+  width:min(35px,70%);
+  border-radius:8px 8px 2px 2px;
+  background:linear-gradient(var(--p),var(--p2));
+  min-height:2px;
+  transition:height .3s ease
+}
+.bw span{
+  font-size:11px;
+  color:var(--muted)
+}
+
+.section{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:17px
+}
 .section h2{margin:0}
-.btn{border:0;background:var(--p);color:white;padding:11px 15px;border-radius:12px;font-weight:800;text-align:center;}
+
+.btn{
+  border:0;
+  background:var(--p);
+  color:white;
+  padding:11px 15px;
+  border-radius:12px;
+  font-weight:800;
+  text-align:center;
+}
 .btn:hover{background:var(--p2)}
-.btn:disabled{background:#ccc;cursor:not-allowed}
-.btn.gray{background:#f5ecec;color:#664d4d}
-.btn.danger{background:#fde8e8;color:#a33e36}
-.tools{display:flex;gap:9px;margin-bottom:16px}
-.input{width:100%;border:1px solid var(--line);background:white;border-radius:12px;padding:11px 13px;outline:0}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:13px}
+.btn:disabled{
+  background:#ccc;
+  cursor:not-allowed
+}
+.btn.gray{
+  background:#f5ecec;
+  color:#664d4d
+}
+.btn.danger{
+  background:#fde8e8;
+  color:#a33e36
+}
+
+.tools{
+  display:flex;
+  gap:9px;
+  margin-bottom:16px
+}
+.input{
+  width:100%;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:12px;
+  padding:11px 13px;
+  outline:0
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(195px,1fr));
+  gap:13px
+}
 .prod{overflow:hidden}
-.prod img{width:100%;height:145px;object-fit:cover}
+.prod img{
+  width:100%;
+  height:145px;
+  object-fit:cover
+}
 .prod .body{padding:13px}
-.prod h3{font-size:15px;margin:4px 0}
-.muted{color:var(--muted);font-size:12px}
-.price{display:flex;justify-content:space-between;align-items:center;margin-top:11px}
-.actions{display:flex;gap:5px}
-.icon{width:33px;height:33px;border-radius:10px;border:0;background:var(--p-light);color:var(--p)}
-.icon.dark{background:#f2e6e6;color:#654d4d}
-.icon:disabled{opacity:0.4;cursor:not-allowed}
+.prod h3{
+  font-size:15px;
+  margin:4px 0
+}
+.muted{
+  color:var(--muted);
+  font-size:12px
+}
+.price{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:11px
+}
+.actions{
+  display:flex;
+  gap:5px
+}
+.icon{
+  width:33px;
+  height:33px;
+  border-radius:10px;
+  border:0;
+  background:var(--p-light);
+  color:var(--p)
+}
+.icon.dark{
+  background:#f2e6e6;
+  color:#654d4d
+}
+.icon:disabled{
+  opacity:.4;
+  cursor:not-allowed
+}
 
-.orders{display:grid;gap:11px}
-.order{padding:16px;display:flex;flex-direction:column;gap:12px}
-.order-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
-.order h3{margin:0 0 4px;font-size:15px;word-break:break-word;}
-.order p{margin:3px 0;color:var(--muted);font-size:12px}
-.order-actions{display:grid;grid-template-columns:repeat(auto-fit, minmax(80px, 1fr));gap:6px;margin-top:8px;width:100%;}
-.order-actions .btn{padding:8px 6px;font-size:11px;border-radius:10px;white-space:nowrap;display:flex;align-items:center;justify-content:center;}
+.orders{
+  display:grid;
+  gap:11px
+}
+.order{
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px
+}
+.order-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px
+}
+.order h3{
+  margin:0 0 4px;
+  font-size:15px;
+  word-break:break-word
+}
+.order p{
+  margin:3px 0;
+  color:var(--muted);
+  font-size:12px
+}
+.order-actions{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(80px,1fr));
+  gap:6px;
+  margin-top:8px;
+  width:100%
+}
+.order-actions .btn{
+  padding:8px 6px;
+  font-size:11px;
+  border-radius:10px;
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
 
-.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap;}
-.baru{background:#fef3c7;color:#b45309}
-.proses{background:#e0f2fe;color:#0369a1}
-.selesai{background:#dcfce7;color:#15803d}
+.status{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap
+}
+.baru{
+  background:#fef3c7;
+  color:#b45309
+}
+.proses{
+  background:#e0f2fe;
+  color:#0369a1
+}
+.selesai{
+  background:#dcfce7;
+  color:#15803d
+}
+
 .tablewrap{overflow:auto}
-.table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.table th,.table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}
-.table th{color:var(--muted);font-size:11px;text-transform:uppercase}
-.empty{text-align:center;padding:45px;color:var(--muted)}
-.modalbg{position:fixed;inset:0;background:rgba(45,26,26,0.5);display:none;align-items:center;justify-content:center;z-index:30;padding:15px}
+.table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden
+}
+.table th,.table td{
+  text-align:left;
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  font-size:13px
+}
+.table th{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase
+}
+.empty{
+  text-align:center;
+  padding:45px;
+  color:var(--muted)
+}
+
+.modalbg{
+  position:fixed;
+  inset:0;
+  background:rgba(45,26,26,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:30;
+  padding:15px
+}
 .modalbg.show{display:flex}
-.modal{background:white;width:min(600px,100%);max-height:90vh;overflow:auto;border-radius:22px;padding:21px}
-.mh{display:flex;justify-content:space-between;align-items:center}
-.mh h2{margin:0;font-size:19px;color:var(--p)}
-.close{border:0;background:#f5ecec;width:36px;height:36px;border-radius:10px}
-.form{display:grid;gap:11px;margin-top:17px}
-.form label{font-size:12px;color:var(--muted);font-weight:700}
-.form input,.form select,.form textarea{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;background:white}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.formfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
-
-#map {
-  width: 100%;
-  height: 220px;
-  border-radius: 12px;
-  margin-top: 6px;
-  border: 1px solid var(--line);
-  z-index: 99;
+.modal{
+  background:white;
+  width:min(600px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:22px;
+  padding:21px
+}
+.mh{
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+.mh h2{
+  margin:0;
+  font-size:19px;
+  color:var(--p)
+}
+.close{
+  border:0;
+  background:#f5ecec;
+  width:36px;
+  height:36px;
+  border-radius:10px
+}
+.form{
+  display:grid;
+  gap:11px;
+  margin-top:17px
+}
+.form label{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:700
+}
+.form input,.form select,.form textarea{
+  width:100%;
+  margin-top:5px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:10px;
+  background:white
+}
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+.formfoot{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:17px
 }
 
-.bank-box {
-  background: var(--p-light);
-  border: 1px dashed var(--p);
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 10px;
-  font-size: 13px;
-}
-.bank-box b {
-  color: var(--p);
-  font-size: 15px;
-  display: block;
-  margin-top: 2px;
+#map{
+  width:100%;
+  height:220px;
+  border-radius:12px;
+  margin-top:6px;
+  border:1px solid var(--line);
+  z-index:99
 }
 
-.cart{position:fixed;right:20px;bottom:82px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
-.cart small{background:white;color:var(--p);border-radius:12px;padding:2px 6px}
-
-.wa-float {
-  position: fixed;
-  left: 20px;
-  bottom: 82px;
-  background-color: #25d366;
-  color: #fff;
-  border-radius: 50px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 800;
-  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  text-decoration: none;
-  transition: all 0.3s ease;
+.bank-box{
+  background:var(--p-light);
+  border:1px dashed var(--p);
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
+  font-size:13px
 }
-.wa-float:hover {
-  background-color: #128c7e;
-  transform: translateY(-2px);
-  color: #fff;
-}
-.wa-icon {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
+.bank-box b{
+  color:var(--p);
+  font-size:15px;
+  display:block;
+  margin-top:2px
 }
 
-.cartrow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}
-.cartrow img{width:50px;height:50px;border-radius:12px;object-fit:cover}
+.cart{
+  position:fixed;
+  right:20px;
+  bottom:82px;
+  background:var(--p);
+  color:#fff;
+  border:0;
+  border-radius:17px;
+  padding:12px 16px;
+  font-weight:900;
+  box-shadow:0 10px 25px rgba(211,16,39,.3);
+  z-index:15
+}
+.cart small{
+  background:white;
+  color:var(--p);
+  border-radius:12px;
+  padding:2px 6px
+}
+
+.wa-float{
+  position:fixed;
+  left:20px;
+  bottom:82px;
+  background-color:#25d366;
+  color:#fff;
+  border-radius:50px;
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+  box-shadow:0 10px 25px rgba(37,211,102,.3);
+  z-index:15;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 16px;
+  text-decoration:none;
+  transition:all .3s ease
+}
+.wa-float:hover{
+  background-color:#128c7e;
+  transform:translateY(-2px);
+  color:#fff
+}
+.wa-icon{
+  width:20px;
+  height:20px;
+  fill:currentColor
+}
+
+.cartrow{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line)
+}
+.cartrow img{
+  width:50px;
+  height:50px;
+  border-radius:12px;
+  object-fit:cover
+}
 .cartinfo{flex:1}
-.qty{display:flex;align-items:center;gap:7px}
-.qty button{width:27px;height:27px;border:0;border-radius:8px;background:#f5ecec}
-.sum{margin-top:15px;display:grid;gap:9px}
-.sum div{display:flex;justify-content:space-between}
-.sum .grand{font-size:19px;font-weight:900;border-top:1px solid var(--line);padding-top:11px;color:var(--p)}
+.qty{
+  display:flex;
+  align-items:center;
+  gap:7px
+}
+.qty button{
+  width:27px;
+  height:27px;
+  border:0;
+  border-radius:8px;
+  background:#f5ecec
+}
+.sum{
+  margin-top:15px;
+  display:grid;
+  gap:9px
+}
+.sum div{
+  display:flex;
+  justify-content:space-between
+}
+.sum .grand{
+  font-size:19px;
+  font-weight:900;
+  border-top:1px solid var(--line);
+  padding-top:11px;
+  color:var(--p)
+}
 .mobile{display:none}
 
-.img-preview {
-  width: 100%;
-  height: 140px;
-  border-radius: 12px;
-  object-fit: cover;
-  margin-top: 8px;
-  border: 1px dashed var(--line);
-  display: block;
+.img-preview{
+  width:100%;
+  height:140px;
+  border-radius:12px;
+  object-fit:cover;
+  margin-top:8px;
+  border:1px dashed var(--line);
+  display:block
 }
 
-.log-badge {
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
+.log-badge{
+  padding:3px 8px;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase
 }
-.log-order { background: #e0f2fe; color: #0369a1; }
-.log-product { background: #fef3c7; color: #b45309; }
-.log-customer { background: #fceef0; color: #d31027; }
-.log-system { background: #f3f4f6; color: #4b5563; }
+.log-order{
+  background:#e0f2fe;
+  color:#0369a1
+}
+.log-product{
+  background:#fef3c7;
+  color:#b45309
+}
+.log-customer{
+  background:#fceef0;
+  color:#d31027
+}
+.log-system{
+  background:#f3f4f6;
+  color:#4b5563
+}
 
-@media print {
-  body * { visibility: hidden; }
-  .modal, .modal * { visibility: visible; }
-  .modal { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; }
-  .close, .btn { display: none !important; }
+@media print{
+  body *{visibility:hidden}
+  .modal,.modal *{visibility:visible}
+  .modal{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    box-shadow:none;
+    padding:0
+  }
+  .close,.btn{display:none!important}
 }
 
 @media(max-width:850px){
-  .side{transform: translateX(-100%);}
-  .side.open{transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.15);}
-  .burger-btn{display:grid;}
-  .main{margin:0;padding:14px 12px 100px}
+  .side{transform:translateX(-100%)}
+  .side.open{
+    transform:translateX(0);
+    box-shadow:10px 0 30px rgba(0,0,0,.15)
+  }
+  .burger-btn{display:grid}
+  .main{
+    margin:0;
+    padding:14px 12px 100px
+  }
   .top h1{font-size:16px}
   .top-left{gap:6px}
-  .welcome-banner{padding:18px 16px; margin-bottom:18px;}
-  .welcome-title{font-size:18px;}
-  .welcome-desc{font-size:12px;}
-  .stats{grid-template-columns:1fr 1fr;gap:10px}
-  .stat{padding:14px;border-radius:16px}
+  .welcome-banner{
+    padding:18px 16px;
+    margin-bottom:18px
+  }
+  .welcome-title{font-size:18px}
+  .welcome-desc{font-size:12px}
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:10px
+  }
+  .stat{
+    padding:14px;
+    border-radius:16px
+  }
   .stat b{font-size:20px}
   .layout{grid-template-columns:1fr}
-  .products{grid-template-columns:1fr 1fr;gap:10px}
+  .products{
+    grid-template-columns:1fr 1fr;
+    gap:10px
+  }
   .prod{border-radius:16px}
   .prod img{height:115px}
   .prod .body{padding:10px}
   .tools{flex-direction:column}
-  
-  .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:65px;background:#fff;border-top:1px solid var(--line);z-index:16;justify-around:space-around;padding:4px}
-  .mobile button{text-align:center;font-size:9px;padding:2px;display:flex;flex-direction:column;align-items:center;flex:1}
+
+  .mobile{
+    position:fixed;
+    display:flex;
+    left:0;
+    right:0;
+    bottom:0;
+    height:65px;
+    background:#fff;
+    border-top:1px solid var(--line);
+    z-index:16;
+    justify-content:space-around;
+    padding:4px
+  }
+  .mobile button{
+    text-align:center;
+    font-size:9px;
+    padding:2px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex:1
+  }
   .mobile span{font-size:16px}
-  
+
   .grid2{grid-template-columns:1fr}
-  .cart{bottom:74px;right:12px;padding:10px 14px;font-size:13px;}
-  .wa-float{bottom:74px;left:12px;padding:10px 14px;font-size:12px;}
-  .order-actions{grid-template-columns:1fr 1fr;}
+  .cart{
+    bottom:74px;
+    right:12px;
+    padding:10px 14px;
+    font-size:13px
+  }
+  .wa-float{
+    bottom:74px;
+    left:12px;
+    padding:10px 14px;
+    font-size:12px
+  }
+  .order-actions{
+    grid-template-columns:1fr 1fr
+  }
 }
 </style>
 </head>
+
 <body>
 
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
@@ -328,1548 +819,5066 @@ button{cursor:pointer}
     </div>
     <div class="nav" id="sidebarNav"></div>
   </div>
+
   <div class="sidebar-footer">
-    Licensed by<br><b>Restu Putra Perdana</b>
+    Licensed by<br>
+    <b>Restu Putra Perdana</b>
   </div>
 </aside>
 
 <main class="main">
-  <header class="top">
-    <div class="top-left">
-      <button type="button" class="burger-btn" onclick="toggleSidebar()">☰</button>
-      <div class="logo">
-        <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
-      </div>
-      <div class="top-text">
-        <h1 id="title">Katalog Produk</h1>
-        <div class="sub">Habinara Bakehouse ✨</div>
-      </div>
-    </div>
-    <div class="admin-area" id="adminArea">
-      <button type="button" class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>
-    </div>
-  </header>
 
-  <!-- HALAMAN 1: KATALOG PRODUK -->
-  <section id="catalog" class="page active">
-    <div class="welcome-banner">
-      <h2 class="welcome-title">Selamat Datang di Habinara Bakehouse</h2>
-      <span class="welcome-tag">✨ PREMIUM INGREDIENTS & FRESHLY BAKED</span>
-      <p class="welcome-desc">Nikmati kelezatan kue dan roti pilihan buatan kami yang selalu dipanggang segar setiap hari menggunakan bahan-bahan premium berkualitas tinggi.</p>
+<header class="top">
+  <div class="top-left">
+    <button type="button" class="burger-btn" onclick="toggleSidebar()">☰</button>
+
+    <div class="logo">
+      <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
     </div>
 
-    <div class="section">
-      <h2>🍰 Katalog Kue Pilihan</h2>
+    <div class="top-text">
+      <h1 id="title">Katalog Produk</h1>
+      <div class="sub">Habinara Bakehouse ✨</div>
     </div>
-    <div class="tools">
-      <input id="q" class="input" placeholder="Cari kue kesukaanmu..." autocomplete="off" oninput="renderCatalogProducts()">
-      <select id="cat" class="input" onchange="renderCatalogProducts()">
-        <option value="">Semua kategori</option>
-        <option>Cake</option>
-        <option>Roti</option>
-        <option>Kue Basah</option>
-        <option>Kue Kering</option>
-      </select>
+  </div>
+
+  <div class="admin-area" id="adminArea"></div>
+</header>
+
+<!-- KATALOG -->
+<section id="catalog" class="page active">
+
+  <div class="welcome-banner">
+    <h2 class="welcome-title">Selamat Datang di Habinara Bakehouse</h2>
+
+    <span class="welcome-tag">
+      ✨ PREMIUM INGREDIENTS & FRESHLY BAKED
+    </span>
+
+    <p class="welcome-desc">
+      Nikmati kelezatan kue dan roti pilihan buatan kami yang selalu dipanggang segar setiap hari menggunakan bahan-bahan premium berkualitas tinggi.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>🍰 Katalog Kue Pilihan</h2>
+  </div>
+
+  <div class="tools">
+    <input
+      id="q"
+      class="input"
+      placeholder="Cari kue kesukaanmu..."
+      autocomplete="off"
+      oninput="renderCatalogProducts()"
+    >
+
+    <select id="cat" class="input" onchange="renderCatalogProducts()">
+      <option value="">Semua kategori</option>
+      <option>Cake</option>
+      <option>Roti</option>
+      <option>Kue Basah</option>
+      <option>Kue Kering</option>
+    </select>
+  </div>
+
+  <div class="products" id="catalogProducts"></div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dash" class="page">
+
+  <div class="stats">
+    <div class="card stat">
+      <small>Omzet Hari Ini</small>
+      <b id="rev">Rp 0</b>
+      <span class="up">↗ Bersih (Excl. Ongkir)</span>
     </div>
-    <div class="products" id="catalogProducts"></div>
-  </section>
 
-  <!-- HALAMAN 2: DASHBOARD ADMIN -->
-  <section id="dash" class="page">
-    <div class="stats">
-      <div class="card stat"><small>Omzet Hari Ini</small><b id="rev">Rp 0</b><span class="up">↗ Bersih (Excl. Ongkir)</span></div>
-      <div class="card stat"><small>Pesanan</small><b id="ord">0</b><span class="up">↗ Total Transaksi</span></div>
-      <div class="card stat"><small>Produk Terjual</small><b id="itemsSold">0</b><span class="up">↗ Pcs terjual</span></div>
-      <div class="card stat"><small>Pelanggan</small><b id="custStat">0</b><span class="up">↗ Terdaftar</span></div>
+    <div class="card stat">
+      <small>Pesanan</small>
+      <b id="ord">0</b>
+      <span class="up">↗ Total Transaksi</span>
     </div>
-    <div class="layout">
-      <div class="card panel"><h2>📈 Penjualan Mingguan</h2><div class="bars" id="bars"></div></div>
-      <div class="card panel"><h2>🔥 Produk Terlaris</h2><div id="best"></div></div>
+
+    <div class="card stat">
+      <small>Produk Terjual</small>
+      <b id="itemsSold">0</b>
+      <span class="up">↗ Pcs terjual</span>
     </div>
-  </section>
 
-  <!-- HALAMAN 3: KELOLA PRODUK -->
-  <section id="prod" class="page">
-    <div class="section"><h2>🍰 Kelola Produk Kue</h2><button type="button" class="btn" onclick="openProduct()">＋ Produk</button></div>
-    <div class="products" id="products"></div>
-  </section>
+    <div class="card stat">
+      <small>Pelanggan</small>
+      <b id="custStat">0</b>
+      <span class="up">↗ Terdaftar</span>
+    </div>
+  </div>
 
-  <!-- HALAMAN 4: PESANAN -->
-  <section id="orders" class="page">
-    <div class="section"><h2>🛍️ Kelola Pesanan Masuk</h2><span class="pill" id="orderCount">0 pesanan</span></div>
-    <div class="orders" id="orderList"></div>
-  </section>
+  <div class="layout">
+    <div class="card panel">
+      <h2>📈 Penjualan Mingguan</h2>
+      <div class="bars" id="bars"></div>
+    </div>
 
-  <!-- HALAMAN 5: PELANGGAN -->
-  <section id="customers" class="page">
-    <div class="section"><h2>👥 Data Pelanggan</h2><button type="button" class="btn" onclick="openCustomer()">＋ Pelanggan</button></div>
+    <div class="card panel">
+      <h2>🔥 Produk Terlaris</h2>
+      <div id="best"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUK -->
+<section id="prod" class="page">
+
+  <div class="section">
+    <h2>🍰 Kelola Produk Kue</h2>
+    <button type="button" class="btn" onclick="openProduct()">
+      ＋ Produk
+    </button>
+  </div>
+
+  <div class="products" id="products"></div>
+</section>
+
+<!-- PESANAN -->
+<section id="orders" class="page">
+
+  <div class="section">
+    <h2>🛍️ Kelola Pesanan Masuk</h2>
+    <span class="pill" id="orderCount">0 pesanan</span>
+  </div>
+
+  <div class="orders" id="orderList"></div>
+</section>
+
+<!-- PELANGGAN -->
+<section id="customers" class="page">
+
+  <div class="section">
+    <h2>👥 Data Pelanggan</h2>
+
+    <button type="button" class="btn" onclick="openCustomer()">
+      ＋ Pelanggan
+    </button>
+  </div>
+
+  <div class="tablewrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>WhatsApp</th>
+          <th>Alamat</th>
+          <th>Total Belanja</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody id="customerList"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LAPORAN -->
+<section id="report" class="page">
+
+  <div class="section">
+    <h2>📊 Laporan Penjualan</h2>
+
+    <button type="button" class="btn" onclick="exportCSV()">
+      ⬇ Export CSV
+    </button>
+  </div>
+
+  <div class="stats">
+
+    <div class="card stat">
+      <small>Total Omzet</small>
+      <b id="totalRevenue">Rp 0</b>
+    </div>
+
+    <div class="card stat">
+      <small>Total Transaksi</small>
+      <b id="totalTxn">0</b>
+    </div>
+
+    <div class="card stat">
+      <small>Rata-rata Transaksi</small>
+      <b id="avgTxn">Rp 0</b>
+    </div>
+
+    <div class="card stat">
+      <small>Pesanan Selesai</small>
+      <b id="doneTxn">0</b>
+    </div>
+
+  </div>
+
+  <div class="card panel" style="margin-top:17px">
+
+    <h2>Riwayat Transaksi</h2>
+
     <div class="tablewrap">
       <table class="table">
         <thead>
-          <tr><th>Nama</th><th>WhatsApp</th><th>Alamat</th><th>Total Belanja</th><th>Aksi</th></tr>
+          <tr>
+            <th>ID</th>
+            <th>Pelanggan</th>
+            <th>Subtotal</th>
+            <th>Ongkir</th>
+            <th>Total</th>
+            <th>Status</th>
+          </tr>
         </thead>
-        <tbody id="customerList"></tbody>
+
+        <tbody id="reportList"></tbody>
       </table>
     </div>
-  </section>
 
-  <!-- HALAMAN 6: LAPORAN -->
-  <section id="report" class="page">
-    <div class="section"><h2>📊 Laporan Penjualan</h2><button type="button" class="btn" onclick="exportCSV()">⬇ Export CSV</button></div>
-    <div class="stats">
-      <div class="card stat"><small>Total Omzet</small><b id="totalRevenue">Rp 0</b></div>
-      <div class="card stat"><small>Total Transaksi</small><b id="totalTxn">0</b></div>
-      <div class="card stat"><small>Rata-rata Transaksi</small><b id="avgTxn">Rp 0</b></div>
-      <div class="card stat"><small>Pesanan Selesai</small><b id="doneTxn">0</b></div>
-    </div>
-    <div class="card panel" style="margin-top:17px">
-      <h2>Riwayat Transaksi</h2>
-      <div class="tablewrap">
-        <table class="table">
-          <thead><tr><th>ID</th><th>Pelanggan</th><th>Subtotal</th><th>Ongkir</th><th>Total</th><th>Status</th></tr></thead>
-          <tbody id="reportList"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- HALAMAN 7: LOG AKTIVITAS -->
-  <section id="logs" class="page">
-    <div class="section">
-      <h2>📜 Log Aktivitas Sistem</h2>
-      <button type="button" class="btn danger" onclick="clearLogs()">🗑️ Bersihkan Log Local</button>
+<!-- LOG -->
+<section id="logs" class="page">
+
+  <div class="section">
+
+    <h2>📜 Log Aktivitas Sistem</h2>
+
+    <button type="button" class="btn danger" onclick="clearLogs()">
+      🗑️ Bersihkan Log Local
+    </button>
+
+  </div>
+
+  <div class="card panel">
+
+    <div class="tablewrap">
+
+      <table class="table">
+
+        <thead>
+          <tr>
+            <th>Waktu</th>
+            <th>Kategori</th>
+            <th>Aktor</th>
+            <th>Aktivitas & Rincian</th>
+          </tr>
+        </thead>
+
+        <tbody id="logList"></tbody>
+
+      </table>
+
     </div>
-    <div class="card panel">
-      <div class="tablewrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Waktu</th>
-              <th>Kategori</th>
-              <th>Aktor</th>
-              <th>Aktivitas & Rincian</th>
-            </tr>
-          </thead>
-          <tbody id="logList"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+
+  </div>
+</section>
+
 </main>
 
-<!-- Tombol WhatsApp Melayang -->
+<!-- WHATSAPP -->
 <a href="#" class="wa-float" onclick="openWhatsAppAdmin(event)">
+
   <svg class="wa-icon" viewBox="0 0 24 24">
     <path d="M12.031 2c-5.517 0-9.993 4.476-9.993 9.993 0 1.763.459 3.479 1.332 4.996l-1.417 5.176 5.297-1.389c1.464.798 3.116 1.217 4.781 1.217 5.517 0 9.993-4.476 9.993-9.993 0-5.517-4.476-9.993-9.993-9.993zm0 18.293c-1.493 0-2.955-.401-4.232-1.161l-.304-.182-3.143.824.838-3.064-.2-.318c-.832-1.325-1.272-2.863-1.272-4.437 0-4.57 3.718-8.288 8.288-8.288s8.288 3.718 8.288 8.288-3.718 8.288-8.288 8.288zm4.542-6.196c-.249-.125-1.472-.727-1.699-.81-.228-.083-.394-.125-.56.125-.166.249-.643.81-.788.976-.145.166-.291.187-.54.062s-1.053-.388-2.006-1.238c-.742-.662-1.243-1.48-1.388-1.729-.145-.249-.015-.384.109-.508.112-.112.249-.291.374-.436.125-.145.166-.249.249-.415.083-.166.042-.311-.021-.436-.062-.125-.56-1.349-.768-1.847-.203-.487-.41-.42-.56-.428l-.478-.009c-.166 0-.436.062-.664.311s-.871.851-.871 2.075c0 1.224.892 2.407 1.017 2.573.125.166 1.756 2.681 4.254 3.761.594.257 1.058.411 1.42.526.597.19 1.141.163 1.571.099.48-.071 1.472-.602 1.679-1.183.208-.581.208-1.079.145-1.183-.062-.104-.228-.187-.478-.312z"/>
   </svg>
+
   <span>Chat Admin</span>
 </a>
 
-<button type="button" class="cart" onclick="openCart()">🛒 Keranjang <small id="cartCount">0</small></button>
+<!-- CART -->
+<button type="button" class="cart" onclick="openCart()">
+  🛒 Keranjang
+  <small id="cartCount">0</small>
+</button>
 
-<!-- Navbar Bawah HP -->
+<!-- MOBILE NAV -->
 <nav class="mobile" id="mobileNav"></nav>
 
+<!-- MODAL -->
 <div class="modalbg" id="modal">
+
   <div class="modal">
-    <div class="mh"><h2 id="modalTitle"></h2><button type="button" class="close" onclick="closeModal()">✕</button></div>
+
+    <div class="mh">
+      <h2 id="modalTitle"></h2>
+
+      <button type="button" class="close" onclick="closeModal()">
+        ✕
+      </button>
+    </div>
+
     <div id="modalBody"></div>
+
   </div>
 </div>
 
 <script>
-// --- CONFIG SUPABASE ---
-const SUPABASE_URL = 'https://jcwiliyfzsrfrhnknnaa.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impjd2lsaXlmenNyZnJobmtubmFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NjM2MzgsImV4cCI6MjEwNTAzOTYzOH0.KhsH2ZzOcpnKTYX6aI2MGbn91ZQjDFR-b9MI5oawTIg';
+
+/* =========================================================
+   CONFIG SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+'https://jcwiliyfzsrfrhnknnaa.supabase.co';
+
+const SUPABASE_ANON_KEY =
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impjd2lsaXlmenNyZnJobmtubmFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NjM2MzgsImV4cCI6MjEwNTAzOTYzOH0.KhsH2ZzOcpnKTYX6aI2MGbn91ZQjDFR-b9MI5oawTIg';
 
 let _supabase = null;
+
 try {
-  _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  _supabase = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 } catch(e) {
   console.error("Inisialisasi Supabase Gagal:", e);
 }
 
-const defaultPlaceholderImg = 'https://via.placeholder.com/400x200?text=Foto+Produk';
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const defaultPlaceholderImg =
+'https://via.placeholder.com/400x200?text=Foto+Produk';
 
 let products = [];
 let orders = [];
 let customers = [];
-let activityLogs = JSON.parse(localStorage.getItem('habinara_activity_logs') || '[]');
+
+let activityLogs =
+JSON.parse(
+  localStorage.getItem('habinara_activity_logs') || '[]'
+);
+
 let cart = {};
-let selectedImageFile = null; 
+
+let selectedImageFile = null;
 let tempImgBase64 = '';
 
-let isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-let activePageId = isAdminLoggedIn ? 'dash' : 'catalog';
 
-let selectedLat = -6.200000; 
+/* =========================================================
+   ADMIN + HALAMAN AKTIF
+   FIX UTAMA: SIMPAN HALAMAN TERAKHIR
+========================================================= */
+
+let isAdminLoggedIn =
+localStorage.getItem('isAdminLoggedIn') === 'true';
+
+const adminPages = [
+  'dash',
+  'prod',
+  'orders',
+  'customers',
+  'report',
+  'logs'
+];
+
+const savedPage =
+localStorage.getItem('habinara_active_page');
+
+let activePageId =
+isAdminLoggedIn &&
+adminPages.includes(savedPage)
+  ? savedPage
+  : (isAdminLoggedIn ? 'dash' : 'catalog');
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+let selectedLat = -6.200000;
 let selectedLng = 106.816666;
+
 let checkoutMap = null;
 let checkoutMarker = null;
 
-const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+const rp = n =>
+'Rp ' +
+Number(n || 0).toLocaleString('id-ID');
+
 
 const SwalToast = Swal.mixin({
-  toast: true,
-  position: 'bottom',
-  showConfirmButton: false,
-  timer: 2500,
-  timerProgressBar: true,
-  background: '#2d1a1a',
-  color: '#ffffff',
-  customClass: {
-    popup: 'swal2-toast-custom'
+  toast:true,
+  position:'bottom',
+  showConfirmButton:false,
+  timer:2500,
+  timerProgressBar:true,
+  background:'#2d1a1a',
+  color:'#ffffff',
+  customClass:{
+    popup:'swal2-toast-custom'
   }
 });
 
-function toast(msg, icon = 'info') {
+
+function toast(msg, icon='info') {
+
   SwalToast.fire({
-    icon: icon,
-    title: msg
+    icon:icon,
+    title:msg
   });
+
 }
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
 
 function openWhatsAppAdmin(event) {
-  if (event) event.preventDefault();
-  const phoneAdmin = '6287859005758'; 
-  const textMessage = 'Halo Admin Habinara Bakehouse ✨, saya ingin bertanya tentang katalog produk / pesanan kue.';
-  const waUrl = `https://wa.me/${phoneAdmin}?text=${encodeURIComponent(textMessage)}`;
-  window.open(waUrl, '_blank');
+
+  if(event)
+    event.preventDefault();
+
+  const phoneAdmin =
+  '6287859005758';
+
+  const textMessage =
+  'Halo Admin Habinara Bakehouse ✨, saya ingin bertanya tentang katalog produk / pesanan kue.';
+
+  const waUrl =
+  `https://wa.me/${phoneAdmin}?text=${encodeURIComponent(textMessage)}`;
+
+  window.open(waUrl,'_blank');
 }
 
-async function addLog(category, actor, message) {
-  const timestamp = new Date().toLocaleString('id-ID', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
-    hour: '2-digit', minute: '2-digit', second: '2-digit'
-  });
+
+/* =========================================================
+   LOG
+========================================================= */
+
+async function addLog(
+  category,
+  actor,
+  message
+) {
+
+  const timestamp =
+  new Date().toLocaleString(
+    'id-ID',
+    {
+      day:'2-digit',
+      month:'2-digit',
+      year:'numeric',
+      hour:'2-digit',
+      minute:'2-digit',
+      second:'2-digit'
+    }
+  );
 
   const logEntry = {
-    id: Date.now(),
-    time: timestamp,
-    category: category,
-    actor: actor,
-    message: message
+    id:Date.now(),
+    time:timestamp,
+    category:category,
+    actor:actor,
+    message:message
   };
 
   activityLogs.unshift(logEntry);
-  if (activityLogs.length > 200) activityLogs.pop();
-  localStorage.setItem('habinara_activity_logs', JSON.stringify(activityLogs));
 
-  if (_supabase) {
+  if(activityLogs.length > 200)
+    activityLogs.pop();
+
+  localStorage.setItem(
+    'habinara_activity_logs',
+    JSON.stringify(activityLogs)
+  );
+
+  if(_supabase) {
+
     try {
-      await _supabase.from('activity_logs').insert([{
-        category: category,
-        actor: actor,
-        message: message,
-        created_at: new Date().toISOString()
-      }]);
+
+      await _supabase
+        .from('activity_logs')
+        .insert([{
+          category:category,
+          actor:actor,
+          message:message,
+          created_at:new Date().toISOString()
+        }]);
+
     } catch(e) {}
+
   }
 
-  if (activePageId === 'logs') renderLogs();
+  if(activePageId === 'logs')
+    renderLogs();
 }
 
-function renderLogs() {
-  const listEl = document.getElementById('logList');
-  if (!listEl) return;
 
-  if (activityLogs.length === 0) {
-    listEl.innerHTML = '<tr><td colspan="4" class="empty">Belum ada log aktivitas tercatat.</td></tr>';
+function renderLogs() {
+
+  const listEl =
+  document.getElementById('logList');
+
+  if(!listEl)
+    return;
+
+  if(activityLogs.length === 0) {
+
+    listEl.innerHTML =
+    '<tr><td colspan="4" class="empty">Belum ada log aktivitas tercatat.</td></tr>';
+
     return;
   }
 
-  listEl.innerHTML = activityLogs.map(l => {
-    let catClass = 'log-system';
-    if (l.category === 'Order') catClass = 'log-order';
-    if (l.category === 'Product') catClass = 'log-product';
-    if (l.category === 'Customer') catClass = 'log-customer';
+  listEl.innerHTML =
+  activityLogs.map(l => {
+
+    let catClass =
+    'log-system';
+
+    if(l.category === 'Order')
+      catClass = 'log-order';
+
+    if(l.category === 'Product')
+      catClass = 'log-product';
+
+    if(l.category === 'Customer')
+      catClass = 'log-customer';
 
     return `
       <tr>
-        <td style="white-space:nowrap; font-size:11px; color:var(--muted);">${l.time}</td>
-        <td><span class="log-badge ${catClass}">${l.category}</span></td>
-        <td><b>${l.actor}</b></td>
+        <td style="white-space:nowrap;font-size:11px;color:var(--muted)">
+          ${l.time}
+        </td>
+
+        <td>
+          <span class="log-badge ${catClass}">
+            ${l.category}
+          </span>
+        </td>
+
+        <td>
+          <b>${l.actor}</b>
+        </td>
+
         <td>${l.message}</td>
       </tr>
     `;
+
   }).join('');
 }
+
 
 function clearLogs() {
+
   Swal.fire({
-    title: 'Bersihkan Log?',
-    text: 'Seluruh riwayat log aktivitas di penyimpanan lokal akan dihapus.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    confirmButtonText: 'Ya, Hapus Log',
-    cancelButtonText: 'Batal'
+
+    title:'Bersihkan Log?',
+
+    text:
+    'Seluruh riwayat log aktivitas di penyimpanan lokal akan dihapus.',
+
+    icon:'warning',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    confirmButtonText:'Ya, Hapus Log',
+
+    cancelButtonText:'Batal'
+
   }).then(result => {
-    if (result.isConfirmed) {
+
+    if(result.isConfirmed) {
+
       activityLogs = [];
-      localStorage.removeItem('habinara_activity_logs');
+
+      localStorage.removeItem(
+        'habinara_activity_logs'
+      );
+
       renderLogs();
-      toast('Log aktivitas berhasil dibersihkan', 'success');
+
+      toast(
+        'Log aktivitas berhasil dibersihkan',
+        'success'
+      );
+
     }
+
   });
+
 }
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
 function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
+
+  const sidebar =
+  document.getElementById('sidebar');
+
+  const overlay =
+  document.getElementById('overlay');
+
   sidebar.classList.toggle('open');
+
   overlay.classList.toggle('show');
+
 }
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 function renderNavigation() {
-  const navEl = document.getElementById('sidebarNav');
-  const adminArea = document.getElementById('adminArea');
-  const mobileNav = document.getElementById('mobileNav');
 
-  if (!isAdminLoggedIn) {
+  const navEl =
+  document.getElementById('sidebarNav');
+
+  const adminArea =
+  document.getElementById('adminArea');
+
+  const mobileNav =
+  document.getElementById('mobileNav');
+
+
+  if(!isAdminLoggedIn) {
+
     navEl.innerHTML = `
-      <button type="button" onclick="page('catalog'); toggleSidebar()">🍰 &nbsp; Katalog Kue</button>
-      <button type="button" onclick="openCart(); toggleSidebar()">🛒 &nbsp; Keranjang Belanja</button>
-      <button type="button" onclick="openTrackOrderModal(); toggleSidebar()">🔍 &nbsp; Cek & Batalkan Pesanan</button>
-      <button type="button" onclick="promptLoginAdmin(); toggleSidebar()">🔐 &nbsp; Login Admin</button>
+
+      <button type="button"
+        onclick="page('catalog');toggleSidebar()">
+        🍰 &nbsp; Katalog Kue
+      </button>
+
+      <button type="button"
+        onclick="openCart();toggleSidebar()">
+        🛒 &nbsp; Keranjang Belanja
+      </button>
+
+      <button type="button"
+        onclick="openTrackOrderModal();toggleSidebar()">
+        🔍 &nbsp; Cek & Batalkan Pesanan
+      </button>
+
+      <button type="button"
+        onclick="promptLoginAdmin();toggleSidebar()">
+        🔐 &nbsp; Login Admin
+      </button>
+
     `;
-    adminArea.innerHTML = `<button type="button" class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>`;
-    mobileNav.innerHTML = `
-      <button type="button" onclick="page('catalog')"><span>🍰</span>Katalog</button>
-      <button type="button" onclick="openCart()"><span>🛒</span>Keranjang</button>
-      <button type="button" onclick="openTrackOrderModal()"><span>🔍</span>Cek Pesanan</button>
-      <button type="button" onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
-    `;
-  } else {
-    navEl.innerHTML = `
-      <button type="button" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
-      <button type="button" onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Kelola Produk</button>
-      <button type="button" onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Kelola Pesanan</button>
-      <button type="button" onclick="page('customers'); toggleSidebar()">👥 &nbsp; Data Pelanggan</button>
-      <button type="button" onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan Omzet</button>
-      <button type="button" onclick="page('logs'); toggleSidebar()">📜 &nbsp; Log Aktivitas</button>
-      <button type="button" onclick="logoutAdmin(); toggleSidebar()" style="color:var(--p);margin-top:15px">🚪 &nbsp; Keluar Admin</button>
-    `;
+
+
     adminArea.innerHTML = `
-      <span class="pill">ADMIN ACTIVE</span>
-      <button type="button" class="btn gray" style="padding:6px 10px;font-size:11px;" onclick="logoutAdmin()">Logout</button>
+
+      <button type="button"
+        class="btn"
+        style="padding:7px 12px;font-size:11px"
+        onclick="promptLoginAdmin()">
+
+        🔐 Login Admin
+
+      </button>
+
     `;
+
+
     mobileNav.innerHTML = `
-      <button type="button" onclick="page('dash')"><span>🏠</span>Dash</button>
-      <button type="button" onclick="page('prod')"><span>🍰</span>Produk</button>
-      <button type="button" onclick="page('orders')"><span>🛍️</span>Pesanan</button>
-      <button type="button" onclick="page('report')"><span>📊</span>Laporan</button>
-      <button type="button" onclick="page('logs')"><span>📜</span>Log</button>
+
+      <button type="button"
+        onclick="page('catalog')">
+
+        <span>🍰</span>
+        Katalog
+
+      </button>
+
+      <button type="button"
+        onclick="openCart()">
+
+        <span>🛒</span>
+        Keranjang
+
+      </button>
+
+      <button type="button"
+        onclick="openTrackOrderModal()">
+
+        <span>🔍</span>
+        Cek Pesanan
+
+      </button>
+
+      <button type="button"
+        onclick="promptLoginAdmin()">
+
+        <span>🔐</span>
+        Admin
+
+      </button>
+
     `;
+
+  } else {
+
+    navEl.innerHTML = `
+
+      <button type="button"
+        onclick="page('dash');toggleSidebar()">
+        🏠 &nbsp; Dashboard
+      </button>
+
+      <button type="button"
+        onclick="page('prod');toggleSidebar()">
+        🍰 &nbsp; Kelola Produk
+      </button>
+
+      <button type="button"
+        onclick="page('orders');toggleSidebar()">
+        🛍️ &nbsp; Kelola Pesanan
+      </button>
+
+      <button type="button"
+        onclick="page('customers');toggleSidebar()">
+        👥 &nbsp; Data Pelanggan
+      </button>
+
+      <button type="button"
+        onclick="page('report');toggleSidebar()">
+        📊 &nbsp; Laporan Omzet
+      </button>
+
+      <button type="button"
+        onclick="page('logs');toggleSidebar()">
+        📜 &nbsp; Log Aktivitas
+      </button>
+
+      <button type="button"
+        onclick="logoutAdmin();toggleSidebar()"
+        style="color:var(--p);margin-top:15px">
+
+        🚪 &nbsp; Keluar Admin
+
+      </button>
+
+    `;
+
+
+    adminArea.innerHTML = `
+
+      <span class="pill">
+        ADMIN ACTIVE
+      </span>
+
+      <button type="button"
+        class="btn gray"
+        style="padding:6px 10px;font-size:11px"
+        onclick="logoutAdmin()">
+
+        Logout
+
+      </button>
+
+    `;
+
+
+    mobileNav.innerHTML = `
+
+      <button type="button"
+        onclick="page('dash')">
+
+        <span>🏠</span>
+        Dash
+
+      </button>
+
+      <button type="button"
+        onclick="page('prod')">
+
+        <span>🍰</span>
+        Produk
+
+      </button>
+
+      <button type="button"
+        onclick="page('orders')">
+
+        <span>🛍️</span>
+        Pesanan
+
+      </button>
+
+      <button type="button"
+        onclick="page('report')">
+
+        <span>📊</span>
+        Laporan
+
+      </button>
+
+      <button type="button"
+        onclick="page('logs')">
+
+        <span>📜</span>
+        Log
+
+      </button>
+
+    `;
+
   }
+
   updateActiveNav(activePageId);
+
 }
+
 
 function updateActiveNav(pageId) {
+
   activePageId = pageId;
-  
-  const sidebarButtons = document.querySelectorAll('#sidebarNav button');
+
+  const sidebarButtons =
+  document.querySelectorAll(
+    '#sidebarNav button'
+  );
+
   sidebarButtons.forEach(btn => {
+
     btn.classList.remove('active');
-    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${pageId}'`)) {
+
+    if(
+      btn.getAttribute('onclick') &&
+      btn.getAttribute('onclick')
+        .includes(`'${pageId}'`)
+    ) {
+
       btn.classList.add('active');
+
     }
+
   });
 
-  const mobileButtons = document.querySelectorAll('#mobileNav button');
+
+  const mobileButtons =
+  document.querySelectorAll(
+    '#mobileNav button'
+  );
+
   mobileButtons.forEach(btn => {
+
     btn.classList.remove('active');
-    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${pageId}'`)) {
+
+    if(
+      btn.getAttribute('onclick') &&
+      btn.getAttribute('onclick')
+        .includes(`'${pageId}'`)
+    ) {
+
       btn.classList.add('active');
+
     }
+
   });
+
 }
+
+
+/* =========================================================
+   LOGIN ADMIN
+========================================================= */
 
 async function promptLoginAdmin() {
-  const { value: password } = await Swal.fire({
-    title: 'Login Admin Habinara',
-    html: `<input type="text" style="-webkit-text-security: disc;" id="swal-admin-pass" class="swal2-input" placeholder="Masukkan Kode Kunci Admin" autocomplete="off" autocorrect="off" spellcheck="false">`,
-    focusConfirm: false,
-    showCancelButton: true,
-    confirmButtonText: 'Masuk',
-    cancelButtonText: 'Batal',
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    preConfirm: () => {
-      return document.getElementById('swal-admin-pass').value;
+
+  const {
+    value:password
+  } = await Swal.fire({
+
+    title:'Login Admin Habinara',
+
+    html:`
+      <input
+        type="text"
+        style="-webkit-text-security:disc"
+        id="swal-admin-pass"
+        class="swal2-input"
+        placeholder="Masukkan Kode Kunci Admin"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false">
+    `,
+
+    focusConfirm:false,
+
+    showCancelButton:true,
+
+    confirmButtonText:'Masuk',
+
+    cancelButtonText:'Batal',
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    preConfirm:() => {
+
+      return document
+        .getElementById('swal-admin-pass')
+        .value;
+
     }
+
   });
 
-  if (password === 'habinara2026') {
+
+  if(password === 'habinara2026') {
+
     isAdminLoggedIn = true;
-    localStorage.setItem('isAdminLoggedIn', 'true');
-    addLog('System', 'Admin', 'Admin berhasil login ke sistem');
+
+    localStorage.setItem(
+      'isAdminLoggedIn',
+      'true'
+    );
+
+    /*
+      Saat login baru:
+      selalu masuk Dashboard.
+    */
+    localStorage.setItem(
+      'habinara_active_page',
+      'dash'
+    );
+
+    activePageId = 'dash';
+
+    await addLog(
+      'System',
+      'Admin',
+      'Admin berhasil login ke sistem'
+    );
+
     renderNavigation();
+
     page('dash');
+
+
     Swal.fire({
-      icon: 'success',
-      title: 'Berhasil Masuk!',
-      text: 'Selamat datang kembali, Admin Habinara ✨',
-      timer: 1500,
-      showConfirmButton: false
+
+      icon:'success',
+
+      title:'Berhasil Masuk!',
+
+      text:
+      'Selamat datang kembali, Admin Habinara ✨',
+
+      timer:1500,
+
+      showConfirmButton:false
+
     });
-  } else if (password !== undefined) {
-    addLog('System', 'Pengguna', 'Percobaan login admin gagal (kata kunci salah)');
-    Swal.fire({
-      icon: 'error',
-      title: 'Gagal Login!',
-      text: 'Kode kunci admin yang dimasukkan salah.',
-      confirmButtonColor: '#d31027'
-    });
+
   }
+
+  else if(password !== undefined) {
+
+    await addLog(
+      'System',
+      'Pengguna',
+      'Percobaan login admin gagal (kata kunci salah)'
+    );
+
+    Swal.fire({
+
+      icon:'error',
+
+      title:'Gagal Login!',
+
+      text:
+      'Kode kunci admin yang dimasukkan salah.',
+
+      confirmButtonColor:'#d31027'
+
+    });
+
+  }
+
 }
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 async function logoutAdmin() {
-  const result = await Swal.fire({
-    title: 'Keluar Admin?',
-    text: 'Anda akan keluar dari sesi admin dan kembali ke tampilan pembeli.',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    confirmButtonText: 'Ya, Keluar',
-    cancelButtonText: 'Batal'
+
+  const result =
+  await Swal.fire({
+
+    title:'Keluar Admin?',
+
+    text:
+    'Anda akan keluar dari sesi admin dan kembali ke tampilan pembeli.',
+
+    icon:'question',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    confirmButtonText:'Ya, Keluar',
+
+    cancelButtonText:'Batal'
+
   });
 
-  if (result.isConfirmed) {
-    addLog('System', 'Admin', 'Admin keluar dari sesi');
+
+  if(result.isConfirmed) {
+
+    await addLog(
+      'System',
+      'Admin',
+      'Admin keluar dari sesi'
+    );
+
     isAdminLoggedIn = false;
-    localStorage.removeItem('isAdminLoggedIn');
+
+    localStorage.removeItem(
+      'isAdminLoggedIn'
+    );
+
+    /*
+      Hapus halaman admin terakhir.
+      Saat login lagi -> Dashboard.
+    */
+    localStorage.removeItem(
+      'habinara_active_page'
+    );
+
+    activePageId = 'catalog';
+
     renderNavigation();
+
     page('catalog');
-    toast('Berhasil keluar dari mode admin', 'success');
+
+    toast(
+      'Berhasil keluar dari mode admin',
+      'success'
+    );
+
   }
+
 }
+
+
+/* =========================================================
+   LOAD DATA SUPABASE
+   FIX UTAMA ADA DI SINI
+========================================================= */
 
 async function loadDataFromSupabase() {
-  toast('Memuat data toko...', 'info');
-  
+
+  toast(
+    'Memuat data toko...',
+    'info'
+  );
+
+
+  /*
+    SIMPAN HALAMAN YANG SEDANG AKTIF
+    SEBELUM DATA DIRENDER ULANG.
+  */
+  const currentPage =
+  activePageId;
+
+
   try {
-    if (_supabase) {
-      const { data: pData, error: pErr } = await _supabase.from('products').select('*').order('id', { ascending: true });
-      if (pErr) console.error("Error Load Products:", pErr.message);
-      
-      if (pData && pData.length > 0) {
-        products = pData.map(x => ({
-          id: x.id,
-          n: x.name,
-          c: x.category,
-          p: Number(x.price),
-          s: x.stock,
-          img: x.image_url || defaultPlaceholderImg
-        }));
-      } else {
-        products = [];
-      }
 
-      const { data: cData } = await _supabase.from('customers').select('*').order('id', { ascending: true });
-      if (cData) {
-        customers = cData.map(x => ({
-          id: x.id,
-          n: x.name,
-          t: x.phone,
-          a: x.address,
-          v: Number(x.total_spend)
-        }));
-      }
+    if(_supabase) {
 
-      const { data: oData } = await _supabase.from('orders').select('*').order('created_at', { ascending: false });
-      if (oData) {
-        orders = oData.map(x => {
-          let parsedItems = x.items;
-          if (typeof parsedItems === 'string') {
-            try { parsedItems = JSON.parse(parsedItems); } catch(e){}
-          }
-          return {
-            id: x.id,
-            name: x.customer_name,
-            phone: x.phone,
-            address: x.address,
-            lat: x.lat || null,
-            lng: x.lng || null,
-            items: parsedItems,
-            subtotal: Number(x.subtotal),
-            shipping: Number(x.shipping),
-            total: Number(x.total),
-            status: x.status,
-            date: x.order_date,
-            createdAt: x.created_at ? new Date(x.created_at) : new Date()
-          };
+      /* PRODUCTS */
+
+      const {
+        data:pData,
+        error:pErr
+      } =
+      await _supabase
+        .from('products')
+        .select('*')
+        .order('id',{
+          ascending:true
         });
+
+      if(pErr)
+        console.error(
+          "Error Load Products:",
+          pErr.message
+        );
+
+
+      if(pData && pData.length > 0) {
+
+        products =
+        pData.map(x => ({
+
+          id:x.id,
+
+          n:x.name,
+
+          c:x.category,
+
+          p:Number(x.price),
+
+          s:x.stock,
+
+          img:
+          x.image_url ||
+          defaultPlaceholderImg
+
+        }));
+
+      } else {
+
+        products = [];
+
       }
+
+
+      /* CUSTOMERS */
+
+      const {
+        data:cData
+      } =
+      await _supabase
+        .from('customers')
+        .select('*')
+        .order('id',{
+          ascending:true
+        });
+
+
+      if(cData) {
+
+        customers =
+        cData.map(x => ({
+
+          id:x.id,
+
+          n:x.name,
+
+          t:x.phone,
+
+          a:x.address,
+
+          v:Number(x.total_spend)
+
+        }));
+
+      }
+
+
+      /* ORDERS */
+
+      const {
+        data:oData
+      } =
+      await _supabase
+        .from('orders')
+        .select('*')
+        .order('created_at',{
+          ascending:false
+        });
+
+
+      if(oData) {
+
+        orders =
+        oData.map(x => {
+
+          let parsedItems =
+          x.items;
+
+          if(typeof parsedItems === 'string') {
+
+            try {
+              parsedItems =
+              JSON.parse(parsedItems);
+            } catch(e) {}
+
+          }
+
+
+          return {
+
+            id:x.id,
+
+            name:x.customer_name,
+
+            phone:x.phone,
+
+            address:x.address,
+
+            lat:x.lat || null,
+
+            lng:x.lng || null,
+
+            items:parsedItems,
+
+            subtotal:Number(x.subtotal),
+
+            shipping:Number(x.shipping),
+
+            total:Number(x.total),
+
+            status:x.status,
+
+            date:x.order_date,
+
+            createdAt:
+            x.created_at
+              ? new Date(x.created_at)
+              : new Date()
+
+          };
+
+        });
+
+      }
+
     }
-  } catch(err) {
-    console.warn("Gagal load Supabase:", err);
-  } finally {
-    renderAll();
-    if (isAdminLoggedIn) {
-      page('dash');
-    } else {
-      page('catalog');
-    }
+
   }
+
+  catch(err) {
+
+    console.warn(
+      "Gagal load Supabase:",
+      err
+    );
+
+  }
+
+  finally {
+
+    /*
+      JANGAN LAGI:
+      page('dash');
+
+      Karena itu penyebab utama
+      halaman admin selalu mental
+      ke Dashboard.
+    */
+
+    renderAll();
+
+
+    /*
+      Kembalikan halaman yang sebelumnya aktif.
+    */
+
+    if(isAdminLoggedIn) {
+
+      const target =
+      adminPages.includes(currentPage)
+        ? currentPage
+        : 'dash';
+
+      page(target);
+
+    } else {
+
+      page('catalog');
+
+    }
+
+  }
+
 }
+
+
+/* =========================================================
+   PAGE NAVIGATION
+   FIX: SIMPAN PAGE KE LOCALSTORAGE
+========================================================= */
 
 function page(id) {
-  const adminPages = ['dash', 'prod', 'orders', 'customers', 'report', 'logs'];
-  if (adminPages.includes(id) && !isAdminLoggedIn) {
+
+  const adminPagesLocal = [
+    'dash',
+    'prod',
+    'orders',
+    'customers',
+    'report',
+    'logs'
+  ];
+
+
+  if(
+    adminPagesLocal.includes(id) &&
+    !isAdminLoggedIn
+  ) {
+
     promptLoginAdmin();
+
     return;
+
   }
 
-  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  
+
+  const target =
+  document.getElementById(id);
+
+  if(!target)
+    return;
+
+
+  document
+    .querySelectorAll('.page')
+    .forEach(x =>
+      x.classList.remove('active')
+    );
+
+
+  target.classList.add('active');
+
+
   const titles = {
-    catalog: 'Katalog Produk',
-    dash: 'Dashboard Admin', 
-    prod: 'Kelola Produk Kue', 
-    orders: 'Kelola Pesanan', 
-    customers: 'Data Pelanggan', 
-    report: 'Laporan Penjualan',
-    logs: 'Log Aktivitas Sistem'
+
+    catalog:'Katalog Produk',
+
+    dash:'Dashboard Admin',
+
+    prod:'Kelola Produk Kue',
+
+    orders:'Kelola Pesanan',
+
+    customers:'Data Pelanggan',
+
+    report:'Laporan Penjualan',
+
+    logs:'Log Aktivitas Sistem'
+
   };
-  document.getElementById('title').textContent = titles[id] || 'Habinara Bakehouse';
-  
+
+
+  document
+    .getElementById('title')
+    .textContent =
+    titles[id] ||
+    'Habinara Bakehouse';
+
+
+  /*
+    SIMPAN HALAMAN AKTIF.
+    INI YANG MEMBUAT REFRESH
+    TETAP DI HALAMAN TERAKHIR.
+  */
+
+  activePageId = id;
+
+
+  if(isAdminLoggedIn) {
+
+    localStorage.setItem(
+      'habinara_active_page',
+      id
+    );
+
+  } else {
+
+    localStorage.setItem(
+      'habinara_active_page',
+      'catalog'
+    );
+
+  }
+
+
   updateActiveNav(id);
 
-  if (id === 'report') renderReport();
-  if (id === 'dash') renderDashboardStats();
-  if (id === 'catalog') renderCatalogProducts();
-  if (id === 'prod') renderProducts();
-  if (id === 'logs') renderLogs();
-  window.scrollTo(0, 0);
+
+  if(id === 'report')
+    renderReport();
+
+  if(id === 'dash')
+    renderDashboardStats();
+
+  if(id === 'catalog')
+    renderCatalogProducts();
+
+  if(id === 'prod')
+    renderProducts();
+
+  if(id === 'orders')
+    renderOrders();
+
+  if(id === 'customers')
+    renderCustomers();
+
+  if(id === 'logs')
+    renderLogs();
+
+
+  window.scrollTo(0,0);
+
 }
+
+
+/* =========================================================
+   KATALOG
+========================================================= */
 
 function renderCatalogProducts() {
-  const qEl = document.getElementById('q');
-  const catEl = document.getElementById('cat');
-  let q = qEl ? qEl.value.toLowerCase().trim() : '';
-  let c = catEl ? catEl.value : '';
-  
-  let a = products.filter(x => x.n.toLowerCase().includes(q) && (!c || x.c === c));
-  document.getElementById('catalogProducts').innerHTML = a.map(x => `
-    <article class="card prod">
-      <img src="${x.img || defaultPlaceholderImg}" alt="${x.n}">
-      <div class="body">
-        <span class="muted">${x.c} · Stok Tersedia: ${x.s}</span>
-        <h3>${x.n}</h3>
-        <div class="price">
-          <b>${rp(x.p)}</b>
-          <button type="button" class="btn" onclick="add(${x.id})" ${x.s <= 0 ? 'disabled' : ''}>${x.s <= 0 ? 'Habis' : '+ Beli'}</button>
+
+  const qEl =
+  document.getElementById('q');
+
+  const catEl =
+  document.getElementById('cat');
+
+
+  let q =
+  qEl
+    ? qEl.value.toLowerCase().trim()
+    : '';
+
+  let c =
+  catEl
+    ? catEl.value
+    : '';
+
+
+  let a =
+  products.filter(x =>
+    x.n.toLowerCase().includes(q) &&
+    (!c || x.c === c)
+  );
+
+
+  document
+    .getElementById('catalogProducts')
+    .innerHTML =
+
+    a.map(x => `
+
+      <article class="card prod">
+
+        <img
+          src="${x.img || defaultPlaceholderImg}"
+          alt="${x.n}">
+
+        <div class="body">
+
+          <span class="muted">
+            ${x.c} · Stok Tersedia: ${x.s}
+          </span>
+
+          <h3>${x.n}</h3>
+
+          <div class="price">
+
+            <b>${rp(x.p)}</b>
+
+            <button
+              type="button"
+              class="btn"
+              onclick="add(${x.id})"
+              ${x.s <= 0 ? 'disabled' : ''}>
+
+              ${
+                x.s <= 0
+                  ? 'Habis'
+                  : '+ Beli'
+              }
+
+            </button>
+
+          </div>
+
         </div>
-      </div>
-    </article>
-  `).join('') || '<div class="empty">Belum ada kue yang tersedia di kategori ini.</div>';
+
+      </article>
+
+    `).join('')
+
+    ||
+
+    '<div class="empty">Belum ada kue yang tersedia di kategori ini.</div>';
+
 }
+
+
+/* =========================================================
+   PRODUK ADMIN
+========================================================= */
 
 function renderProducts() {
-  document.getElementById('products').innerHTML = products.map(x => `
-    <article class="card prod">
-      <img src="${x.img || defaultPlaceholderImg}" alt="${x.n}">
-      <div class="body">
-        <span class="muted">${x.c} · Stok ${x.s}</span>
-        <h3>${x.n}</h3>
-        <div class="price">
-          <b>${rp(x.p)}</b>
-          <div class="actions">
-            <button type="button" class="icon dark" onclick="openProduct(${x.id})" title="Edit">✎</button>
+
+  document
+    .getElementById('products')
+    .innerHTML =
+
+    products.map(x => `
+
+      <article class="card prod">
+
+        <img
+          src="${x.img || defaultPlaceholderImg}"
+          alt="${x.n}">
+
+        <div class="body">
+
+          <span class="muted">
+            ${x.c} · Stok ${x.s}
+          </span>
+
+          <h3>${x.n}</h3>
+
+          <div class="price">
+
+            <b>${rp(x.p)}</b>
+
+            <div class="actions">
+
+              <button
+                type="button"
+                class="icon dark"
+                onclick="openProduct(${x.id})"
+                title="Edit">
+
+                ✎
+
+              </button>
+
+            </div>
+
           </div>
+
         </div>
-      </div>
-    </article>
-  `).join('') || '<div class="empty">Belum ada produk.</div>';
+
+      </article>
+
+    `).join('')
+
+    ||
+
+    '<div class="empty">Belum ada produk.</div>';
+
 }
+
+
+/* =========================================================
+   CART
+========================================================= */
 
 function add(id) {
-  let p = products.find(x => x.id === id);
-  if (!p) return;
-  let currentQty = cart[id] || 0;
-  
-  if (p.s <= currentQty) {
-    return toast('Stok kue tidak mencukupi 😅', 'warning');
+
+  let p =
+  products.find(x => x.id === id);
+
+  if(!p)
+    return;
+
+
+  let currentQty =
+  cart[id] || 0;
+
+
+  if(p.s <= currentQty) {
+
+    return toast(
+      'Stok kue tidak mencukupi 😅',
+      'warning'
+    );
+
   }
-  
-  cart[id] = currentQty + 1;
+
+
+  cart[id] =
+  currentQty + 1;
+
+
   updateCart();
-  toast('Kue dimasukkan keranjang 🍰', 'success');
+
+
+  toast(
+    'Kue dimasukkan keranjang 🍰',
+    'success'
+  );
+
 }
+
 
 function updateCart() {
-  document.getElementById('cartCount').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+
+  document
+    .getElementById('cartCount')
+    .textContent =
+    Object.values(cart)
+      .reduce((a,b) => a+b,0);
+
 }
+
 
 function openCart() {
-  modal('🛒 Keranjang Belanja', cartHTML());
+
+  modal(
+    '🛒 Keranjang Belanja',
+    cartHTML()
+  );
+
 }
+
 
 function cartHTML() {
-  let a = Object.entries(cart);
-  let sub = a.reduce((s, [id, q]) => {
-    let p = products.find(x => x.id == id);
-    return s + (p ? p.p * q : 0);
-  }, 0);
-  
-  let list = a.length ? a.map(([id, q]) => {
-    let p = products.find(x => x.id == id);
-    if (!p) return '';
+
+  let a =
+  Object.entries(cart);
+
+
+  let sub =
+  a.reduce((s,[id,q]) => {
+
+    let p =
+    products.find(x => x.id == id);
+
+    return s +
+      (p ? p.p * q : 0);
+
+  },0);
+
+
+  let list =
+  a.length
+
+  ?
+
+  a.map(([id,q]) => {
+
+    let p =
+    products.find(x => x.id == id);
+
+    if(!p)
+      return '';
+
+
     return `
+
       <div class="cartrow">
-        <img src="${p.img || defaultPlaceholderImg}" alt="${p.n}">
+
+        <img
+          src="${p.img || defaultPlaceholderImg}"
+          alt="${p.n}">
+
         <div class="cartinfo">
+
           <b>${p.n}</b>
-          <div class="muted">${rp(p.p)}</div>
+
+          <div class="muted">
+            ${rp(p.p)}
+          </div>
+
         </div>
+
         <div class="qty">
-          <button type="button" onclick="chg(${p.id}, -1)">−</button>
+
+          <button
+            type="button"
+            onclick="chg(${p.id},-1)">
+            −
+          </button>
+
           <b>${q}</b>
-          <button type="button" onclick="chg(${p.id}, 1)">＋</button>
+
+          <button
+            type="button"
+            onclick="chg(${p.id},1)">
+            ＋
+          </button>
+
         </div>
+
       </div>
+
     `;
-  }).join('') : '<div class="empty">Keranjang belanja masih kosong 🛒</div>';
 
-  let shipping = a.length ? 10000 : 0;
-  let grandTotal = sub + shipping;
+  }).join('')
 
-  return list + `
+  :
+
+  '<div class="empty">Keranjang belanja masih kosong 🛒</div>';
+
+
+  let shipping =
+  a.length
+    ? 10000
+    : 0;
+
+
+  let grandTotal =
+  sub + shipping;
+
+
+  return list +
+
+  `
+
     <div class="sum">
-      <div><span>Subtotal Produk</span><b>${rp(sub)}</b></div>
-      <div><span>Ongkir</span><b>${rp(shipping)}</b></div>
-      <div class="grand"><span>Total Pembayaran</span><b>${rp(grandTotal)}</b></div>
+
+      <div>
+        <span>Subtotal Produk</span>
+        <b>${rp(sub)}</b>
+      </div>
+
+      <div>
+        <span>Ongkir</span>
+        <b>${rp(shipping)}</b>
+      </div>
+
+      <div class="grand">
+        <span>Total Pembayaran</span>
+        <b>${rp(grandTotal)}</b>
+      </div>
+
     </div>
-    <button type="button" class="btn" style="width:100%;margin-top:15px" onclick="openCheckoutModal()" ${!a.length ? 'disabled' : ''}>✓ Lanjut ke Checkout Pesanan</button>
+
+    <button
+      type="button"
+      class="btn"
+      style="width:100%;margin-top:15px"
+      onclick="openCheckoutModal()"
+      ${!a.length ? 'disabled' : ''}>
+
+      ✓ Lanjut ke Checkout Pesanan
+
+    </button>
+
   `;
+
 }
 
-function chg(id, d) {
-  let p = products.find(x => x.id == id);
-  let currentQty = cart[id] || 0;
-  let newQty = currentQty + d;
 
-  if (d > 0 && p && newQty > p.s) {
-    return toast('Stok maksimal tercapai 😅', 'warning');
+function chg(id,d) {
+
+  let p =
+  products.find(x => x.id == id);
+
+  let currentQty =
+  cart[id] || 0;
+
+  let newQty =
+  currentQty + d;
+
+
+  if(
+    d > 0 &&
+    p &&
+    newQty > p.s
+  ) {
+
+    return toast(
+      'Stok maksimal tercapai 😅',
+      'warning'
+    );
+
   }
 
-  if (newQty <= 0) {
+
+  if(newQty <= 0) {
+
     delete cart[id];
+
   } else {
+
     cart[id] = newQty;
+
   }
-  
+
+
   updateCart();
+
   openCart();
+
 }
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
 
 function openCheckoutModal() {
-  let sub = Object.entries(cart).reduce((s, [id, q]) => {
-    let p = products.find(x => x.id == id);
-    return s + (p ? p.p * q : 0);
-  }, 0);
-  let grandTotal = sub + (Object.keys(cart).length ? 10000 : 0);
 
-  modal('📋 Data Pemesan & Pembayaran', `
-    <form class="form" onsubmit="return false;" autocomplete="off">
-      <label>Nama Lengkap *
-        <input id="coName" placeholder="Contoh: Siti Aminah" autocomplete="off">
+  let sub =
+  Object.entries(cart)
+    .reduce((s,[id,q]) => {
+
+      let p =
+      products.find(x => x.id == id);
+
+      return s +
+        (p ? p.p * q : 0);
+
+    },0);
+
+
+  let grandTotal =
+  sub +
+  (
+    Object.keys(cart).length
+      ? 10000
+      : 0
+  );
+
+
+  modal(
+    '📋 Data Pemesan & Pembayaran',
+
+    `
+
+    <form
+      class="form"
+      onsubmit="return false;"
+      autocomplete="off">
+
+      <label>
+        Nama Lengkap *
+
+        <input
+          id="coName"
+          placeholder="Contoh: Siti Aminah"
+          autocomplete="off">
+
       </label>
-      <label>No. WhatsApp / Telepon *
-        <input id="coPhone" placeholder="Contoh: 08123456789" autocomplete="off">
+
+
+      <label>
+        No. WhatsApp / Telepon *
+
+        <input
+          id="coPhone"
+          placeholder="Contoh: 08123456789"
+          autocomplete="off">
+
       </label>
-      <label>Alamat Lengkap & Patokan *
-        <textarea id="coAddress" rows="2" placeholder="Jl. Mawar No. 12, samping masjid..." autocomplete="off"></textarea>
+
+
+      <label>
+        Alamat Lengkap & Patokan *
+
+        <textarea
+          id="coAddress"
+          rows="2"
+          placeholder="Jl. Mawar No. 12, samping masjid..."
+          autocomplete="off"></textarea>
+
       </label>
+
 
       <div class="bank-box">
-        <span><b>💳 Instruksi Pembayaran Transfer Bank:</b></span>
-        <p style="margin:5px 0 0; color:var(--ink);">Silakan transfer sebesar <b>${rp(grandTotal)}</b> ke rekening berikut:</p>
-        <b>BCA: 0661194218 a.n. Wulan Noviani</b>
-        <p style="margin:5px 0 0; font-size:11px; color:var(--muted);">Pesanan akan segera diproses setelah pembayaran dikonfirmasi.</p>
+
+        <span>
+          <b>💳 Instruksi Pembayaran Transfer Bank:</b>
+        </span>
+
+        <p style="margin:5px 0 0;color:var(--ink)">
+          Silakan transfer sebesar
+          <b>${rp(grandTotal)}</b>
+          ke rekening berikut:
+        </p>
+
+        <b>
+          BCA: 0661194218 a.n. Wulan Noviani
+        </b>
+
+        <p style="margin:5px 0 0;font-size:11px;color:var(--muted)">
+          Pesanan akan segera diproses setelah pembayaran dikonfirmasi.
+        </p>
+
       </div>
-      
-      <label style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
-        <span>Tandai Titik Lokasi (Tikor) di Peta:</span>
-        <button type="button" class="btn gray" style="padding:4px 8px; font-size:10px;" onclick="getMyLocationGPS()">📍 Gunakan Lokasi Saat Ini</button>
+
+
+      <label
+        style="display:flex;justify-content:space-between;align-items:center;margin-top:5px">
+
+        <span>
+          Tandai Titik Lokasi (Tikor) di Peta:
+        </span>
+
+        <button
+          type="button"
+          class="btn gray"
+          style="padding:4px 8px;font-size:10px"
+          onclick="getMyLocationGPS()">
+
+          📍 Gunakan Lokasi Saat Ini
+
+        </button>
+
       </label>
+
+
       <div id="map"></div>
-      <div style="font-size:10px; color:var(--muted); text-align:center; margin-top:2px;">Geser peta atau klik pada lokasi tujuan pengiriman kue Anda.</div>
+
+      <div
+        style="font-size:10px;color:var(--muted);text-align:center;margin-top:2px">
+
+        Geser peta atau klik pada lokasi tujuan pengiriman kue Anda.
+
+      </div>
+
     </form>
+
+
     <div class="formfoot">
-      <button type="button" class="btn gray" onclick="openCart()">← Kembali</button>
-      <button type="button" class="btn" onclick="checkout()">Kirim Pesanan Sekarang ✓</button>
+
+      <button
+        type="button"
+        class="btn gray"
+        onclick="openCart()">
+
+        ← Kembali
+
+      </button>
+
+      <button
+        type="button"
+        class="btn"
+        onclick="checkout()">
+
+        Kirim Pesanan Sekarang ✓
+
+      </button>
+
     </div>
-  `);
+
+    `
+  );
+
 
   setTimeout(() => {
+
     initCheckoutMap();
-  }, 300);
+
+  },300);
+
 }
+
 
 function initCheckoutMap() {
-  if (checkoutMap) {
+
+  if(checkoutMap) {
+
     checkoutMap.remove();
+
     checkoutMap = null;
+
   }
 
-  const mapContainer = document.getElementById('map');
-  if (!mapContainer) return;
 
-  checkoutMap = L.map('map').setView([selectedLat, selectedLng], 14);
+  const mapContainer =
+  document.getElementById('map');
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-  }).addTo(checkoutMap);
+  if(!mapContainer)
+    return;
 
-  checkoutMarker = L.marker([selectedLat, selectedLng], { draggable: true }).addTo(checkoutMap);
 
-  checkoutMarker.on('dragend', function (e) {
-    let pos = checkoutMarker.getLatLng();
-    selectedLat = pos.lat;
-    selectedLng = pos.lng;
-  });
+  checkoutMap =
+  L.map('map')
+    .setView(
+      [selectedLat,selectedLng],
+      14
+    );
 
-  checkoutMap.on('click', function (e) {
-    selectedLat = e.latlng.lat;
-    selectedLng = e.latlng.lng;
-    checkoutMarker.setLatLng([selectedLat, selectedLng]);
-  });
 
-  /* Fix rendering Leaflet ubin di Modal */
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      maxZoom:19,
+      attribution:'© OpenStreetMap'
+    }
+  ).addTo(checkoutMap);
+
+
+  checkoutMarker =
+  L.marker(
+    [selectedLat,selectedLng],
+    {draggable:true}
+  ).addTo(checkoutMap);
+
+
+  checkoutMarker.on(
+    'dragend',
+    function(e) {
+
+      let pos =
+      checkoutMarker.getLatLng();
+
+      selectedLat =
+      pos.lat;
+
+      selectedLng =
+      pos.lng;
+
+    }
+  );
+
+
+  checkoutMap.on(
+    'click',
+    function(e) {
+
+      selectedLat =
+      e.latlng.lat;
+
+      selectedLng =
+      e.latlng.lng;
+
+      checkoutMarker.setLatLng([
+        selectedLat,
+        selectedLng
+      ]);
+
+    }
+  );
+
+
   setTimeout(() => {
-    if (checkoutMap) checkoutMap.invalidateSize();
-  }, 200);
+
+    if(checkoutMap)
+      checkoutMap.invalidateSize();
+
+  },200);
+
 }
+
 
 function getMyLocationGPS() {
-  if (navigator.geolocation) {
-    toast('Mencari lokasi GPS Anda...', 'info');
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        selectedLat = position.coords.latitude;
-        selectedLng = position.coords.longitude;
-        if (checkoutMap && checkoutMarker) {
-          checkoutMap.setView([selectedLat, selectedLng], 16);
-          checkoutMarker.setLatLng([selectedLat, selectedLng]);
-          checkoutMap.invalidateSize();
-        }
-        toast('Lokasi GPS berhasil ditemukan! ✓', 'success');
-      },
-      (error) => {
-        toast('Gagal mendeteksi GPS. Silakan pilih manual di peta.', 'warning');
-      },
-      { timeout: 10000 }
+
+  if(navigator.geolocation) {
+
+    toast(
+      'Mencari lokasi GPS Anda...',
+      'info'
     );
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      position => {
+
+        selectedLat =
+        position.coords.latitude;
+
+        selectedLng =
+        position.coords.longitude;
+
+
+        if(
+          checkoutMap &&
+          checkoutMarker
+        ) {
+
+          checkoutMap.setView(
+            [selectedLat,selectedLng],
+            16
+          );
+
+          checkoutMarker.setLatLng([
+            selectedLat,
+            selectedLng
+          ]);
+
+          checkoutMap.invalidateSize();
+
+        }
+
+
+        toast(
+          'Lokasi GPS berhasil ditemukan! ✓',
+          'success'
+        );
+
+      },
+
+      error => {
+
+        toast(
+          'Gagal mendeteksi GPS. Silakan pilih manual di peta.',
+          'warning'
+        );
+
+      },
+
+      {
+        timeout:10000
+      }
+
+    );
+
   } else {
-    toast('Browser Anda tidak mendukung Geolocation.', 'error');
+
+    toast(
+      'Browser Anda tidak mendukung Geolocation.',
+      'error'
+    );
+
   }
+
 }
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
 
 async function checkout() {
-  let name = document.getElementById('coName').value.trim();
-  let phone = document.getElementById('coPhone').value.trim();
-  let address = document.getElementById('coAddress').value.trim();
 
-  if (!name || !phone || !address) {
-    return toast('Nama, No. WhatsApp, dan Alamat wajib diisi! ⚠️', 'warning');
+  let name =
+  document
+    .getElementById('coName')
+    .value.trim();
+
+  let phone =
+  document
+    .getElementById('coPhone')
+    .value.trim();
+
+  let address =
+  document
+    .getElementById('coAddress')
+    .value.trim();
+
+
+  if(!name || !phone || !address) {
+
+    return toast(
+      'Nama, No. WhatsApp, dan Alamat wajib diisi! ⚠️',
+      'warning'
+    );
+
   }
 
-  if (!Object.keys(cart).length) return toast('Keranjang masih kosong', 'warning');
 
-  if (_supabase) {
-    let { data: latestProducts, error } = await _supabase.from('products').select('*');
-    if (!error && latestProducts) {
-      for (let [id, qtyNeeded] of Object.entries(cart)) {
-        let liveProduct = latestProducts.find(p => p.id == id);
-        if (!liveProduct || liveProduct.stock < qtyNeeded) {
+  if(!Object.keys(cart).length)
+    return toast(
+      'Keranjang masih kosong',
+      'warning'
+    );
+
+
+  if(_supabase) {
+
+    let {
+      data:latestProducts,
+      error
+    } =
+    await _supabase
+      .from('products')
+      .select('*');
+
+
+    if(!error && latestProducts) {
+
+      for(
+        let [id,qtyNeeded]
+        of Object.entries(cart)
+      ) {
+
+        let liveProduct =
+        latestProducts.find(
+          p => p.id == id
+        );
+
+
+        if(
+          !liveProduct ||
+          liveProduct.stock < qtyNeeded
+        ) {
+
           closeModal();
-          await loadDataFromSupabase();
-          Swal.fire({
-            icon: 'error',
-            title: 'Stok Tidak Cukup!',
-            text: `Maaf, stok untuk kue "${liveProduct ? liveProduct.name : 'produk'}" tersisa ${liveProduct ? liveProduct.stock : 0}. Silakan sesuaikan keranjang Anda.`,
-            confirmButtonColor: '#d31027'
-          });
-          return;
-        }
-      }
-    }
-  }
-  
-  let sub = Object.entries(cart).reduce((s, [id, q]) => {
-    let p = products.find(x => x.id == id);
-    return s + (p ? p.p * q : 0);
-  }, 0);
 
-  let itemsArr = Object.entries(cart).map(([id, q]) => {
-    let p = products.find(x => x.id == id);
-    return p ? { id: p.id, n: p.n, qty: q, p: p.p } : null;
-  }).filter(Boolean);
+          await loadDataFromSupabase();
+
+
+          Swal.fire({
+
+            icon:'error',
+
+            title:'Stok Tidak Cukup!',
+
+            text:
+            `Maaf, stok untuk kue "${liveProduct ? liveProduct.name : 'produk'}" tersisa ${liveProduct ? liveProduct.stock : 0}. Silakan sesuaikan keranjang Anda.`,
+
+            confirmButtonColor:'#d31027'
+
+          });
+
+          return;
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  let sub =
+  Object.entries(cart)
+    .reduce((s,[id,q]) => {
+
+      let p =
+      products.find(x => x.id == id);
+
+      return s +
+        (p ? p.p * q : 0);
+
+    },0);
+
+
+  let itemsArr =
+  Object.entries(cart)
+    .map(([id,q]) => {
+
+      let p =
+      products.find(x => x.id == id);
+
+      return p
+        ? {
+            id:p.id,
+            n:p.n,
+            qty:q,
+            p:p.p
+          }
+        : null;
+
+    })
+    .filter(Boolean);
+
 
   let shipping = 10000;
-  let grandTotal = sub + shipping;
-  let newId = 'HB-' + Math.floor(1000 + Math.random() * 9000);
-  let today = new Date();
-  let dateStr = String(today.getDate()).padStart(2,'0') + '/' + String(today.getMonth()+1).padStart(2,'0') + '/' + today.getFullYear();
+
+  let grandTotal =
+  sub + shipping;
+
+
+  let newId =
+  'HB-' +
+  Math.floor(
+    1000 +
+    Math.random() * 9000
+  );
+
+
+  let today =
+  new Date();
+
+
+  let dateStr =
+  String(today.getDate()).padStart(2,'0') +
+  '/' +
+  String(today.getMonth()+1).padStart(2,'0') +
+  '/' +
+  today.getFullYear();
+
 
   try {
-    if (_supabase) {
-      let existingCust = customers.find(c => c.n.toLowerCase() === name.toLowerCase() && c.t === phone);
-      if (existingCust) {
-        let newSpend = existingCust.v + grandTotal;
-        await _supabase.from('customers').update({ total_spend: newSpend, address: address || existingCust.a }).eq('id', existingCust.id);
-      } else {
-        await _supabase.from('customers').insert([{ name, phone, address, total_spend: grandTotal }]);
+
+    if(_supabase) {
+
+      let existingCust =
+      customers.find(
+        c =>
+          c.n.toLowerCase() ===
+          name.toLowerCase() &&
+          c.t === phone
+      );
+
+
+      if(existingCust) {
+
+        let newSpend =
+        existingCust.v +
+        grandTotal;
+
+
+        await _supabase
+          .from('customers')
+          .update({
+            total_spend:newSpend,
+            address:
+            address ||
+            existingCust.a
+          })
+          .eq(
+            'id',
+            existingCust.id
+          );
+
       }
 
-      await _supabase.from('orders').insert([{
-        id: newId,
-        customer_name: name,
-        phone: phone,
-        address: address,
-        lat: selectedLat,
-        lng: selectedLng,
-        items: itemsArr,
-        subtotal: sub,
-        shipping: shipping,
-        total: grandTotal,
-        status: 'Baru',
-        order_date: dateStr
-      }]);
+      else {
 
-      for (let [id, q] of Object.entries(cart)) {
-        let p = products.find(x => x.id == id);
-        if (p) {
-          let updatedStock = Math.max(0, p.s - q);
-          await _supabase.from('products').update({ stock: updatedStock }).eq('id', p.id);
+        await _supabase
+          .from('customers')
+          .insert([{
+            name,
+            phone,
+            address,
+            total_spend:grandTotal
+          }]);
+
+      }
+
+
+      await _supabase
+        .from('orders')
+        .insert([{
+
+          id:newId,
+
+          customer_name:name,
+
+          phone:phone,
+
+          address:address,
+
+          lat:selectedLat,
+
+          lng:selectedLng,
+
+          items:itemsArr,
+
+          subtotal:sub,
+
+          shipping:shipping,
+
+          total:grandTotal,
+
+          status:'Baru',
+
+          order_date:dateStr
+
+        }]);
+
+
+      for(
+        let [id,q]
+        of Object.entries(cart)
+      ) {
+
+        let p =
+        products.find(x => x.id == id);
+
+
+        if(p) {
+
+          let updatedStock =
+          Math.max(
+            0,
+            p.s - q
+          );
+
+
+          await _supabase
+            .from('products')
+            .update({
+              stock:updatedStock
+            })
+            .eq(
+              'id',
+              p.id
+            );
+
         }
+
       }
+
     }
-  } catch(e) {
-    console.error(e);
+
   }
 
-  let summaryItems = itemsArr.map(i => `${i.n} (${i.qty})`).join(', ');
-  addLog('Order', 'Pembeli', `Pesanan baru <b>#${newId}</b> oleh <b>${name}</b> (${rp(grandTotal)}). Item: ${summaryItems}`);
+  catch(e) {
+
+    console.error(e);
+
+  }
+
+
+  let summaryItems =
+  itemsArr
+    .map(
+      i => `${i.n} (${i.qty})`
+    )
+    .join(', ');
+
+
+  await addLog(
+    'Order',
+    'Pembeli',
+    `Pesanan baru <b>#${newId}</b> oleh <b>${name}</b> (${rp(grandTotal)}). Item: ${summaryItems}`
+  );
+
 
   cart = {};
+
+  updateCart();
+
   closeModal();
+
+
+  /*
+    Karena user pembeli:
+    tetap katalog.
+  */
+
   await loadDataFromSupabase();
-  
+
+
   Swal.fire({
-    title: 'Pesanan Berhasil Dibuat! 🎉',
-    html: `ID Pesanan: <b>#${newId}</b><br>Silakan lakukan transfer BCA ke <b>0661194218</b> a.n. Wulan Noviani sebesar <b>${rp(grandTotal)}</b>.`,
-    icon: 'success',
-    confirmButtonColor: '#d31027'
+
+    title:'Pesanan Berhasil Dibuat! 🎉',
+
+    html:
+    `ID Pesanan: <b>#${newId}</b><br>
+    Silakan lakukan transfer BCA ke
+    <b>0661194218</b>
+    a.n. Wulan Noviani sebesar
+    <b>${rp(grandTotal)}</b>.`,
+
+    icon:'success',
+
+    confirmButtonColor:'#d31027'
+
   });
+
 }
+
+
+/* =========================================================
+   TRACK ORDER
+========================================================= */
 
 function openTrackOrderModal() {
-  modal('🔍 Cek & Batalkan Pesanan', `
-    <form class="form" onsubmit="return false;" autocomplete="off">
-      <label>Masukkan No. WhatsApp yang digunakan saat memesan:
-        <input id="trackPhone" placeholder="Contoh: 08123456789" autocomplete="off">
+
+  modal(
+
+    '🔍 Cek & Batalkan Pesanan',
+
+    `
+
+    <form
+      class="form"
+      onsubmit="return false;"
+      autocomplete="off">
+
+      <label>
+        Masukkan No. WhatsApp yang digunakan saat memesan:
+
+        <input
+          id="trackPhone"
+          placeholder="Contoh: 08123456789"
+          autocomplete="off">
+
       </label>
+
     </form>
+
+
     <div class="formfoot">
-      <button type="button" class="btn" onclick="searchMyOrders()">Cek Pesanan Saya</button>
+
+      <button
+        type="button"
+        class="btn"
+        onclick="searchMyOrders()">
+
+        Cek Pesanan Saya
+
+      </button>
+
     </div>
-    <div id="trackResult" style="margin-top:15px"></div>
-  `);
+
+
+    <div
+      id="trackResult"
+      style="margin-top:15px">
+    </div>
+
+    `
+
+  );
+
 }
+
 
 async function searchMyOrders() {
-  let phoneInput = document.getElementById('trackPhone').value.trim();
-  let resultDiv = document.getElementById('trackResult');
 
-  if (!phoneInput) {
-    resultDiv.innerHTML = '<div class="empty" style="padding:15px">Masukkan nomor WhatsApp terlebih dahulu!</div>';
+  let phoneInput =
+  document
+    .getElementById('trackPhone')
+    .value.trim();
+
+
+  let resultDiv =
+  document
+    .getElementById('trackResult');
+
+
+  if(!phoneInput) {
+
+    resultDiv.innerHTML =
+    '<div class="empty" style="padding:15px">Masukkan nomor WhatsApp terlebih dahulu!</div>';
+
     return;
+
   }
 
-  let myOrders = orders.filter(o => o.phone === phoneInput);
 
-  if (myOrders.length === 0) {
-    resultDiv.innerHTML = '<div class="empty" style="padding:15px">Tidak ditemukan pesanan dengan nomor WhatsApp tersebut.</div>';
+  let myOrders =
+  orders.filter(
+    o => o.phone === phoneInput
+  );
+
+
+  if(myOrders.length === 0) {
+
+    resultDiv.innerHTML =
+    '<div class="empty" style="padding:15px">Tidak ditemukan pesanan dengan nomor WhatsApp tersebut.</div>';
+
     return;
+
   }
 
-  resultDiv.innerHTML = myOrders.map(o => {
-    let itemsArr = o.items;
-    if (typeof itemsArr === 'string') {
-      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+
+  resultDiv.innerHTML =
+  myOrders.map(o => {
+
+    let itemsArr =
+    o.items;
+
+
+    if(typeof itemsArr === 'string') {
+
+      try {
+        itemsArr =
+        JSON.parse(itemsArr);
+      } catch(e){}
+
     }
-    let itemsText = Array.isArray(itemsArr) ? itemsArr.map(i => `${i.n} ×${i.qty}`).join(', ') : itemsArr;
-    let canCancel = (o.status === 'Baru');
+
+
+    let itemsText =
+    Array.isArray(itemsArr)
+      ? itemsArr
+        .map(
+          i => `${i.n} ×${i.qty}`
+        )
+        .join(', ')
+      : itemsArr;
+
+
+    let canCancel =
+    o.status === 'Baru';
+
 
     return `
-      <div class="card" style="padding:14px; margin-bottom:10px;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start">
+
+      <div
+        class="card"
+        style="padding:14px;margin-bottom:10px">
+
+        <div
+          style="display:flex;justify-content:space-between;align-items:flex-start">
+
           <div>
-            <b>#${o.id} · ${o.date}</b>
-            <p style="margin:4px 0; font-size:12px; color:var(--muted)"><b>Item:</b> ${itemsText}</p>
-            <p style="margin:2px 0; font-size:12px; color:var(--muted)"><b>Total:</b> ${rp(o.total)}</p>
+
+            <b>
+              #${o.id} · ${o.date}
+            </b>
+
+            <p
+              style="margin:4px 0;font-size:12px;color:var(--muted)">
+
+              <b>Item:</b>
+              ${itemsText}
+
+            </p>
+
+            <p
+              style="margin:2px 0;font-size:12px;color:var(--muted)">
+
+              <b>Total:</b>
+              ${rp(o.total)}
+
+            </p>
+
           </div>
-          <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
+
+          <span
+            class="status ${
+              o.status === 'Selesai'
+                ? 'selesai'
+                : o.status === 'Diproses'
+                  ? 'proses'
+                  : 'baru'
+            }">
+
+            ${o.status}
+
+          </span>
+
         </div>
-        ${canCancel ? `
-          <button type="button" class="btn danger" style="width:100%; margin-top:10px; padding:8px;" onclick="cancelMyOrder('${o.id}')">Batalkan Pesanan Ini</button>
-        ` : `
-          <div style="font-size:11px; color:var(--muted); margin-top:8px; text-align:center;">Pesanan sudah diproses/selesai dan tidak dapat dibatalkan otomatis.</div>
-        `}
+
+
+        ${
+          canCancel
+
+          ?
+
+          `
+          <button
+            type="button"
+            class="btn danger"
+            style="width:100%;margin-top:10px;padding:8px"
+            onclick="cancelMyOrder('${o.id}')">
+
+            Batalkan Pesanan Ini
+
+          </button>
+          `
+
+          :
+
+          `
+          <div
+            style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">
+
+            Pesanan sudah diproses/selesai dan tidak dapat dibatalkan otomatis.
+
+          </div>
+          `
+
+        }
+
       </div>
+
     `;
+
   }).join('');
+
 }
+
+
+/* =========================================================
+   CANCEL ORDER
+========================================================= */
 
 async function cancelMyOrder(orderId) {
-  let o = orders.find(x => x.id === orderId);
-  if (!o) return;
 
-  const result = await Swal.fire({
-    title: 'Batalkan Pesanan?',
-    text: `Pesanan #${orderId} akan dibatalkan dan stok kue akan dikembalikan.`,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    confirmButtonText: 'Ya, Batalkan!',
-    cancelButtonText: 'Tutup'
+  let o =
+  orders.find(
+    x => x.id === orderId
+  );
+
+  if(!o)
+    return;
+
+
+  const result =
+  await Swal.fire({
+
+    title:'Batalkan Pesanan?',
+
+    text:
+    `Pesanan #${orderId} akan dibatalkan dan stok kue akan dikembalikan.`,
+
+    icon:'warning',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    confirmButtonText:'Ya, Batalkan!',
+
+    cancelButtonText:'Tutup'
+
   });
 
-  if (result.isConfirmed) {
+
+  if(result.isConfirmed) {
+
     try {
-      if (_supabase) {
-        let itemsArr = o.items;
-        if (typeof itemsArr === 'string') {
-          try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+
+      if(_supabase) {
+
+        let itemsArr =
+        o.items;
+
+
+        if(typeof itemsArr === 'string') {
+
+          try {
+            itemsArr =
+            JSON.parse(itemsArr);
+          } catch(e){}
+
         }
-        if (Array.isArray(itemsArr)) {
-          for (let item of itemsArr) {
-            let prod = products.find(p => p.id == item.id);
-            if (prod) {
-              let restoredStock = prod.s + item.qty;
-              await _supabase.from('products').update({ stock: restoredStock }).eq('id', prod.id);
+
+
+        if(Array.isArray(itemsArr)) {
+
+          for(
+            let item
+            of itemsArr
+          ) {
+
+            let prod =
+            products.find(
+              p => p.id == item.id
+            );
+
+
+            if(prod) {
+
+              let restoredStock =
+              prod.s + item.qty;
+
+
+              await _supabase
+                .from('products')
+                .update({
+                  stock:restoredStock
+                })
+                .eq(
+                  'id',
+                  prod.id
+                );
+
             }
+
           }
+
         }
-        await _supabase.from('orders').delete().eq('id', orderId);
+
+
+        await _supabase
+          .from('orders')
+          .delete()
+          .eq(
+            'id',
+            orderId
+          );
+
       }
 
-      addLog('Order', 'Pembeli', `Pesanan <b>#${orderId}</b> dibatalkan oleh pembeli. Stok dipulihkan.`);
+
+      await addLog(
+        'Order',
+        'Pembeli',
+        `Pesanan <b>#${orderId}</b> dibatalkan oleh pembeli. Stok dipulihkan.`
+      );
+
 
       await loadDataFromSupabase();
+
       closeModal();
-      
+
+
       Swal.fire({
-        title: 'Berhasil Dibatalkan',
-        text: 'Pesanan kamu telah dibatalkan.',
-        icon: 'success',
-        timer: 2000,
-        showConfirmButton: false
+
+        title:'Berhasil Dibatalkan',
+
+        text:
+        'Pesanan kamu telah dibatalkan.',
+
+        icon:'success',
+
+        timer:2000,
+
+        showConfirmButton:false
+
       });
-    } catch(err) {
-      console.error(err);
-      Swal.fire('Gagal', 'Terjadi kesalahan saat membatalkan pesanan.', 'error');
+
     }
+
+    catch(err) {
+
+      console.error(err);
+
+      Swal.fire(
+        'Gagal',
+        'Terjadi kesalahan saat membatalkan pesanan.',
+        'error'
+      );
+
+    }
+
   }
+
 }
+
+
+/* =========================================================
+   PRINT RECEIPT
+========================================================= */
 
 function printReceipt(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let o = orders.find(x => x.id === id);
-  if (!o) return;
 
-  addLog('Order', 'Admin', `Mencetak nota struk kasir untuk pesanan <b>#${o.id}</b>`);
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
 
-  let itemsArr = o.items;
-  if (typeof itemsArr === 'string') {
-    try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+
+  let o =
+  orders.find(
+    x => x.id === id
+  );
+
+
+  if(!o)
+    return;
+
+
+  addLog(
+    'Order',
+    'Admin',
+    `Mencetak nota struk kasir untuk pesanan <b>#${o.id}</b>`
+  );
+
+
+  let itemsArr =
+  o.items;
+
+
+  if(typeof itemsArr === 'string') {
+
+    try {
+      itemsArr =
+      JSON.parse(itemsArr);
+    } catch(e){}
+
   }
 
-  let itemRows = Array.isArray(itemsArr) 
-    ? itemsArr.map(i => `<tr><td>${i.n} x${i.qty}</td><td style="text-align:right">${rp(i.p * i.qty)}</td></tr>`).join('')
-    : `<tr><td colspan="2">${o.items}</td></tr>`;
 
-  modal('🧾 Nota Struk Kasir', `
-    <div style="font-family:monospace; font-size:12px;">
-      <h3 style="text-align:center;margin:0;color:var(--p)">HABINARA BAKEHOUSE</h3>
-      <p style="text-align:center;margin:0 0 10px;font-size:10px">Nota Pembayaran Struk Kasir</p>
+  let itemRows =
+  Array.isArray(itemsArr)
+
+  ?
+
+  itemsArr
+    .map(
+      i =>
+      `<tr>
+        <td>${i.n} x${i.qty}</td>
+        <td style="text-align:right">
+          ${rp(i.p * i.qty)}
+        </td>
+      </tr>`
+    )
+    .join('')
+
+  :
+
+  `<tr>
+    <td colspan="2">
+      ${o.items}
+    </td>
+  </tr>`;
+
+
+  modal(
+    '🧾 Nota Struk Kasir',
+
+    `
+
+    <div
+      style="font-family:monospace;font-size:12px">
+
+      <h3
+        style="text-align:center;margin:0;color:var(--p)">
+
+        HABINARA BAKEHOUSE
+
+      </h3>
+
+      <p
+        style="text-align:center;margin:0 0 10px;font-size:10px">
+
+        Nota Pembayaran Struk Kasir
+
+      </p>
+
       <hr style="border:dashed 1px #ccc">
-      <p>ID: #${o.id}<br>Tanggal: ${o.date}<br>Pelanggan: ${o.name}<br>WA: ${o.phone || '-'}<br>Alamat: ${o.address || '-'}</p>
+
+      <p>
+        ID: #${o.id}<br>
+        Tanggal: ${o.date}<br>
+        Pelanggan: ${o.name}<br>
+        WA: ${o.phone || '-'}<br>
+        Alamat: ${o.address || '-'}
+      </p>
+
       <hr style="border:dashed 1px #ccc">
-      <table style="width:100%;font-size:12px">
+
+      <table
+        style="width:100%;font-size:12px">
+
         ${itemRows}
+
       </table>
+
       <hr style="border:dashed 1px #ccc">
-      <div style="display:flex;justify-content:space-between"><span>Subtotal:</span><span>${rp(o.subtotal || o.total)}</span></div>
-      <div style="display:flex;justify-content:space-between"><span>Ongkir:</span><span>${rp(o.shipping || 0)}</span></div>
-      <div style="display:flex;justify-content:space-between;font-weight:bold;margin-top:5px;color:var(--p)"><span>Total:</span><span>${rp(o.total)}</span></div>
+
+      <div
+        style="display:flex;justify-content:space-between">
+
+        <span>Subtotal:</span>
+        <span>${rp(o.subtotal || o.total)}</span>
+
+      </div>
+
+      <div
+        style="display:flex;justify-content:space-between">
+
+        <span>Ongkir:</span>
+        <span>${rp(o.shipping || 0)}</span>
+
+      </div>
+
+      <div
+        style="display:flex;justify-content:space-between;font-weight:bold;margin-top:5px;color:var(--p)">
+
+        <span>Total:</span>
+        <span>${rp(o.total)}</span>
+
+      </div>
+
       <hr style="border:dashed 1px #ccc">
-      <p style="text-align:center">Pembayaran Transfer BCA (0661194218 a.n. Wulan Noviani)</p>
-      <p style="text-align:center">Terima Kasih Sudah Belanja! ✨</p>
-      <button type="button" class="btn" style="width:100%;margin-top:10px" onclick="window.print()">🖨️ Cetak Struk</button>
+
+      <p style="text-align:center">
+        Pembayaran Transfer BCA
+        (0661194218 a.n. Wulan Noviani)
+      </p>
+
+      <p style="text-align:center">
+        Terima Kasih Sudah Belanja! ✨
+      </p>
+
+      <button
+        type="button"
+        class="btn"
+        style="width:100%;margin-top:10px"
+        onclick="window.print()">
+
+        🖨️ Cetak Struk
+
+      </button>
+
     </div>
-  `);
+
+    `
+  );
+
 }
+
+
+/* =========================================================
+   ORDERS
+========================================================= */
 
 function renderOrders() {
-  document.getElementById('orderCount').textContent = orders.length + ' pesanan';
-  document.getElementById('orderList').innerHTML = orders.map(o => {
-    let itemsArr = o.items;
-    if (typeof itemsArr === 'string') {
-      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
-    }
 
-    let itemsText = Array.isArray(itemsArr) 
-      ? itemsArr.map(i => `${i.n} ×${i.qty}`).join(', ')
-      : o.items;
+  document
+    .getElementById('orderCount')
+    .textContent =
+    orders.length +
+    ' pesanan';
 
-    let mapsButton = (o.lat && o.lng) ? `
-      <a href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" class="btn gray">🗺️ Maps</a>
-    ` : '';
 
-    return `
-      <div class="card order">
-        <div class="order-header">
-          <div>
-            <h3>#${o.id} · ${o.name}</h3>
-            <p><b>WA:</b> ${o.phone || '-'}</p>
-            <p><b>Item:</b> ${itemsText}</p>
-            <p><b>Alamat:</b> ${o.address || '-'}</p>
-            <p><b>Tanggal:</b> ${o.date}</p>
-            <b style="color:var(--p);font-size:16px;display:block;margin-top:6px;">${rp(o.total)}</b>
+  document
+    .getElementById('orderList')
+    .innerHTML =
+
+    orders.map(o => {
+
+      let itemsArr =
+      o.items;
+
+
+      if(typeof itemsArr === 'string') {
+
+        try {
+          itemsArr =
+          JSON.parse(itemsArr);
+        } catch(e){}
+
+      }
+
+
+      let itemsText =
+      Array.isArray(itemsArr)
+
+      ?
+
+      itemsArr
+        .map(
+          i =>
+          `${i.n} ×${i.qty}`
+        )
+        .join(', ')
+
+      :
+
+      o.items;
+
+
+      let mapsButton =
+      (o.lat && o.lng)
+
+      ?
+
+      `
+      <a
+        href="https://www.google.com/maps?q=${o.lat},${o.lng}"
+        target="_blank"
+        class="btn gray">
+
+        🗺️ Maps
+
+      </a>
+      `
+
+      :
+
+      '';
+
+
+      return `
+
+        <div class="card order">
+
+          <div class="order-header">
+
+            <div>
+
+              <h3>
+                #${o.id} · ${o.name}
+              </h3>
+
+              <p>
+                <b>WA:</b>
+                ${o.phone || '-'}
+              </p>
+
+              <p>
+                <b>Item:</b>
+                ${itemsText}
+              </p>
+
+              <p>
+                <b>Alamat:</b>
+                ${o.address || '-'}
+              </p>
+
+              <p>
+                <b>Tanggal:</b>
+                ${o.date}
+              </p>
+
+              <b
+                style="color:var(--p);font-size:16px;display:block;margin-top:6px">
+
+                ${rp(o.total)}
+
+              </b>
+
+            </div>
+
+
+            <span
+              class="status ${
+                o.status === 'Selesai'
+                  ? 'selesai'
+                  : o.status === 'Diproses'
+                    ? 'proses'
+                    : 'baru'
+              }">
+
+              ${o.status}
+
+            </span>
+
           </div>
-          <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
+
+
+          <div class="order-actions">
+
+            ${mapsButton}
+
+            <button
+              type="button"
+              class="btn gray"
+              onclick="printReceipt('${o.id}')">
+
+              🧾 Nota
+
+            </button>
+
+            <button
+              type="button"
+              class="btn gray"
+              onclick="nextStatus('${o.id}')">
+
+              Status
+
+            </button>
+
+            <button
+              type="button"
+              class="btn danger"
+              onclick="deleteOrder('${o.id}')">
+
+              🗑️ Hapus
+
+            </button>
+
+          </div>
+
         </div>
 
-        <div class="order-actions">
-          ${mapsButton}
-          <button type="button" class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
-          <button type="button" class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
-          <button type="button" class="btn danger" onclick="deleteOrder('${o.id}')">🗑️ Hapus</button>
-        </div>
-      </div>
-    `;
-  }).join('') || '<div class="empty">Belum ada pesanan masuk.</div>';
+      `;
+
+    }).join('')
+
+    ||
+
+    '<div class="empty">Belum ada pesanan masuk.</div>';
+
 }
+
+
+/* =========================================================
+   NEXT STATUS
+========================================================= */
 
 async function nextStatus(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let o = orders.find(x => x.id === id);
-  if (!o) return;
-  let next = o.status === 'Baru' ? 'Diproses' : o.status === 'Diproses' ? 'Selesai' : 'Baru';
-  
-  if (_supabase) {
-    await _supabase.from('orders').update({ status: next }).eq('id', id);
+
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let o =
+  orders.find(
+    x => x.id === id
+  );
+
+
+  if(!o)
+    return;
+
+
+  let next =
+  o.status === 'Baru'
+    ? 'Diproses'
+    : o.status === 'Diproses'
+      ? 'Selesai'
+      : 'Baru';
+
+
+  if(_supabase) {
+
+    await _supabase
+      .from('orders')
+      .update({
+        status:next
+      })
+      .eq(
+        'id',
+        id
+      );
+
   }
 
-  addLog('Order', 'Admin', `Mengubah status pesanan <b>#${id}</b> dari <i>${o.status}</i> menjadi <b>${next}</b>`);
 
+  await addLog(
+    'Order',
+    'Admin',
+    `Mengubah status pesanan <b>#${id}</b> dari <i>${o.status}</i> menjadi <b>${next}</b>`
+  );
+
+
+  /*
+    loadData sekarang akan
+    mempertahankan halaman orders.
+  */
   await loadDataFromSupabase();
-  toast(`Status pesanan #${id} diubah ke ${next}`, 'success');
+
+
+  toast(
+    `Status pesanan #${id} diubah ke ${next}`,
+    'success'
+  );
+
 }
+
+
+/* =========================================================
+   DELETE ORDER
+========================================================= */
 
 async function deleteOrder(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let o = orders.find(x => x.id === id);
-  if (!o) return;
 
-  const result = await Swal.fire({
-    title: 'Hapus Pesanan ini?',
-    text: `Pesanan #${id} atas nama ${o.name} akan dihapus permanen!`,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    confirmButtonText: 'Ya, Hapus!',
-    cancelButtonText: 'Batal',
-    background: '#fff',
-    color: '#2d1a1a'
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let o =
+  orders.find(
+    x => x.id === id
+  );
+
+
+  if(!o)
+    return;
+
+
+  const result =
+  await Swal.fire({
+
+    title:'Hapus Pesanan ini?',
+
+    text:
+    `Pesanan #${id} atas nama ${o.name} akan dihapus permanen!`,
+
+    icon:'warning',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    confirmButtonText:'Ya, Hapus!',
+
+    cancelButtonText:'Batal',
+
+    background:'#fff',
+
+    color:'#2d1a1a'
+
   });
 
-  if (result.isConfirmed) {
+
+  if(result.isConfirmed) {
+
     try {
-      if (_supabase) {
-        let itemsArr = o.items;
-        if (typeof itemsArr === 'string') {
-          try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+
+      if(_supabase) {
+
+        let itemsArr =
+        o.items;
+
+
+        if(typeof itemsArr === 'string') {
+
+          try {
+            itemsArr =
+            JSON.parse(itemsArr);
+          } catch(e){}
+
         }
-        if (Array.isArray(itemsArr)) {
-          for (let item of itemsArr) {
-            let prod = products.find(p => p.id == item.id);
-            if (prod) {
-              let restoredStock = prod.s + item.qty;
-              await _supabase.from('products').update({ stock: restoredStock }).eq('id', prod.id);
+
+
+        if(Array.isArray(itemsArr)) {
+
+          for(
+            let item
+            of itemsArr
+          ) {
+
+            let prod =
+            products.find(
+              p => p.id == item.id
+            );
+
+
+            if(prod) {
+
+              let restoredStock =
+              prod.s + item.qty;
+
+
+              await _supabase
+                .from('products')
+                .update({
+                  stock:restoredStock
+                })
+                .eq(
+                  'id',
+                  prod.id
+                );
+
             }
+
           }
+
         }
-        await _supabase.from('orders').delete().eq('id', id);
+
+
+        await _supabase
+          .from('orders')
+          .delete()
+          .eq(
+            'id',
+            id
+          );
+
       }
 
-      addLog('Order', 'Admin', `Menghapus pesanan <b>#${id}</b> (Pemesan: ${o.name}). Stok dikembalikan.`);
+
+      await addLog(
+        'Order',
+        'Admin',
+        `Menghapus pesanan <b>#${id}</b> (Pemesan: ${o.name}). Stok dikembalikan.`
+      );
+
 
       await loadDataFromSupabase();
-      
+
+
       Swal.fire({
-        title: 'Terhapus!',
-        text: 'Pesanan berhasil dihapus dan stok dikembalikan.',
-        icon: 'success',
-        timer: 1800,
-        showConfirmButton: false
+
+        title:'Terhapus!',
+
+        text:
+        'Pesanan berhasil dihapus dan stok dikembalikan.',
+
+        icon:'success',
+
+        timer:1800,
+
+        showConfirmButton:false
+
       });
-    } catch(err) {
-      console.error(err);
-      Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus pesanan.', 'error');
+
     }
+
+    catch(err) {
+
+      console.error(err);
+
+      Swal.fire(
+        'Gagal!',
+        'Terjadi kesalahan saat menghapus pesanan.',
+        'error'
+      );
+
+    }
+
   }
+
 }
+
+
+/* =========================================================
+   PRODUCT MODAL
+========================================================= */
 
 function openProduct(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  
-  let p = id ? products.find(x => x.id === id) : null;
-  if (!p) {
-    p = { n: '', c: 'Cake', p: '', s: 10, img: '' };
-  }
-  
-  selectedImageFile = null;
-  tempImgBase64 = p.img || '';
 
-  modal(id ? '✎ Edit Produk' : '＋ Tambah Produk', `
-    <form class="form" onsubmit="return false;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-      <label>Nama Produk
-        <input id="itemTitle" type="text" value="${p.n}" autocomplete="off">
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let p =
+  id
+    ? products.find(x => x.id === id)
+    : null;
+
+
+  if(!p) {
+
+    p = {
+      n:'',
+      c:'Cake',
+      p:'',
+      s:10,
+      img:''
+    };
+
+  }
+
+
+  selectedImageFile = null;
+
+  tempImgBase64 =
+  p.img || '';
+
+
+  modal(
+
+    id
+      ? '✎ Edit Produk'
+      : '＋ Tambah Produk',
+
+    `
+
+    <form
+      class="form"
+      onsubmit="return false;"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false">
+
+      <label>
+        Nama Produk
+
+        <input
+          id="itemTitle"
+          type="text"
+          value="${p.n}"
+          autocomplete="off">
+
       </label>
+
+
       <div class="grid2">
-        <label>Kategori
+
+        <label>
+          Kategori
+
           <select id="prodCategory">
-            ${['Cake','Roti','Kue Basah','Kue Kering'].map(c => `<option ${c === p.c ? 'selected' : ''}>${c}</option>`).join('')}
+
+            ${
+              [
+                'Cake',
+                'Roti',
+                'Kue Basah',
+                'Kue Kering'
+              ]
+              .map(
+                c =>
+                `<option ${
+                  c === p.c
+                    ? 'selected'
+                    : ''
+                }>${c}</option>`
+              )
+              .join('')
+            }
+
           </select>
+
         </label>
-        <label>Harga (Rp)
-          <input id="prodPrice" type="number" value="${p.p}" autocomplete="off">
+
+
+        <label>
+          Harga (Rp)
+
+          <input
+            id="prodPrice"
+            type="number"
+            value="${p.p}"
+            autocomplete="off">
+
         </label>
+
       </div>
-      <label>Stok
-        <input id="prodStock" type="number" value="${p.s}" autocomplete="off">
+
+
+      <label>
+        Stok
+
+        <input
+          id="prodStock"
+          type="number"
+          value="${p.s}"
+          autocomplete="off">
+
       </label>
-      <label>Upload Foto Produk
-        <input type="file" id="prodImage" accept="image/*" onchange="previewImage(event)">
-        <div style="margin-top:8px;">
-          <img id="imgPreview" class="img-preview" src="${tempImgBase64 || defaultPlaceholderImg}" alt="Preview Foto">
+
+
+      <label>
+        Upload Foto Produk
+
+        <input
+          type="file"
+          id="prodImage"
+          accept="image/*"
+          onchange="previewImage(event)">
+
+        <div style="margin-top:8px">
+
+          <img
+            id="imgPreview"
+            class="img-preview"
+            src="${tempImgBase64 || defaultPlaceholderImg}"
+            alt="Preview Foto">
+
         </div>
+
       </label>
+
     </form>
+
+
     <div class="formfoot">
-      ${id ? `<button type="button" class="btn danger" onclick="delProduct(${id})">Hapus</button>` : ''}
-      <button type="button" class="btn" id="saveProdBtn" onclick="saveProduct(${id || 0})">Simpan</button>
+
+      ${
+        id
+        ?
+        `
+        <button
+          type="button"
+          class="btn danger"
+          onclick="delProduct(${id})">
+
+          Hapus
+
+        </button>
+        `
+        :
+        ''
+      }
+
+
+      <button
+        type="button"
+        class="btn"
+        id="saveProdBtn"
+        onclick="saveProduct(${id || 0})">
+
+        Simpan
+
+      </button>
+
     </div>
-  `);
+
+    `
+  );
+
 }
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
 
 function previewImage(event) {
-  let file = event.target.files[0];
-  if (!file) return;
 
-  let reader = new FileReader();
-  reader.onload = function(e) {
-    let img = new Image();
-    img.onload = function() {
-      let canvas = document.createElement('canvas');
-      let ctx = canvas.getContext('2d');
-      
+  let file =
+  event.target.files[0];
+
+
+  if(!file)
+    return;
+
+
+  let reader =
+  new FileReader();
+
+
+  reader.onload =
+  function(e) {
+
+    let img =
+    new Image();
+
+
+    img.onload =
+    function() {
+
+      let canvas =
+      document.createElement(
+        'canvas'
+      );
+
+
+      let ctx =
+      canvas.getContext('2d');
+
+
       let maxWidth = 800;
       let maxHeight = 800;
-      let width = img.width;
-      let height = img.height;
 
-      if (width > height) {
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
+      let width =
+      img.width;
+
+      let height =
+      img.height;
+
+
+      if(width > height) {
+
+        if(width > maxWidth) {
+
+          height =
+          Math.round(
+            height *
+            maxWidth /
+            width
+          );
+
+          width =
+          maxWidth;
+
         }
-      } else {
-        if (height > maxHeight) {
-          width = Math.round((width * maxHeight) / height);
-          height = maxHeight;
-        }
+
       }
 
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
+      else {
 
-      canvas.toBlob(function(blob) {
-        selectedImageFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
-          type: 'image/jpeg',
-          lastModified: Date.now()
-        });
+        if(height > maxHeight) {
 
-        let previewEl = document.getElementById('imgPreview');
-        if (previewEl) {
-          previewEl.src = URL.createObjectURL(selectedImageFile);
+          width =
+          Math.round(
+            width *
+            maxHeight /
+            height
+          );
+
+          height =
+          maxHeight;
+
         }
-      }, 'image/jpeg', 0.7);
+
+      }
+
+
+      canvas.width =
+      width;
+
+      canvas.height =
+      height;
+
+
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      canvas.toBlob(
+
+        function(blob) {
+
+          selectedImageFile =
+          new File(
+            [
+              blob
+            ],
+            file.name
+              .replace(
+                /\.[^/.]+$/,
+                ""
+              ) +
+              ".jpg",
+            {
+              type:'image/jpeg',
+              lastModified:
+              Date.now()
+            }
+          );
+
+
+          let previewEl =
+          document.getElementById(
+            'imgPreview'
+          );
+
+
+          if(previewEl) {
+
+            previewEl.src =
+            URL.createObjectURL(
+              selectedImageFile
+            );
+
+          }
+
+        },
+
+        'image/jpeg',
+
+        .7
+
+      );
+
     };
-    img.src = e.target.result;
+
+
+    img.src =
+    e.target.result;
+
   };
+
+
   reader.readAsDataURL(file);
+
 }
+
+
+/* =========================================================
+   SAVE PRODUCT
+========================================================= */
 
 async function saveProduct(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let name = document.getElementById('itemTitle').value.trim();
-  let price = +document.getElementById('prodPrice').value;
-  let stock = +document.getElementById('prodStock').value;
-  let category = document.getElementById('prodCategory').value;
 
-  if (!name || isNaN(price) || price <= 0) return toast('Nama dan harga valid wajib diisi!', 'warning');
-  if (isNaN(stock) || stock < 0) stock = 0;
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
 
-  let btn = document.getElementById('saveProdBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Menyimpan...'; }
 
-  let imageUrl = tempImgBase64 || defaultPlaceholderImg;
+  let name =
+  document
+    .getElementById('itemTitle')
+    .value.trim();
+
+
+  let price =
+  +document
+    .getElementById('prodPrice')
+    .value;
+
+
+  let stock =
+  +document
+    .getElementById('prodStock')
+    .value;
+
+
+  let category =
+  document
+    .getElementById('prodCategory')
+    .value;
+
+
+  if(
+    !name ||
+    isNaN(price) ||
+    price <= 0
+  ) {
+
+    return toast(
+      'Nama dan harga valid wajib diisi!',
+      'warning'
+    );
+
+  }
+
+
+  if(
+    isNaN(stock) ||
+    stock < 0
+  )
+    stock = 0;
+
+
+  let btn =
+  document.getElementById(
+    'saveProdBtn'
+  );
+
+
+  if(btn) {
+
+    btn.disabled = true;
+
+    btn.textContent =
+    'Menyimpan...';
+
+  }
+
+
+  let imageUrl =
+  tempImgBase64 ||
+  defaultPlaceholderImg;
+
 
   try {
-    if (_supabase) {
-      if (selectedImageFile) {
-        let fileExt = selectedImageFile.name.split('.').pop();
-        let fileName = `product_${Date.now()}.${fileExt}`;
-        let filePath = `products/${fileName}`;
 
-        let { error: uploadErr } = await _supabase.storage
+    if(_supabase) {
+
+      if(selectedImageFile) {
+
+        let fileExt =
+        selectedImageFile.name
+          .split('.')
+          .pop();
+
+
+        let fileName =
+        `product_${Date.now()}.${fileExt}`;
+
+
+        let filePath =
+        `products/${fileName}`;
+
+
+        let {
+          error:uploadErr
+        } =
+        await _supabase.storage
           .from('asset')
-          .upload(filePath, selectedImageFile);
+          .upload(
+            filePath,
+            selectedImageFile
+          );
 
-        if (uploadErr) {
-          throw new Error("Gagal upload gambar ke Storage: " + uploadErr.message);
+
+        if(uploadErr) {
+
+          throw new Error(
+            "Gagal upload gambar ke Storage: " +
+            uploadErr.message
+          );
+
         }
 
-        let { data: urlData } = _supabase.storage
-          .from('asset')
-          .getPublicUrl(filePath);
 
-        imageUrl = urlData.publicUrl;
+        let {
+          data:urlData
+        } =
+        _supabase.storage
+          .from('asset')
+          .getPublicUrl(
+            filePath
+          );
+
+
+        imageUrl =
+        urlData.publicUrl;
+
       }
+
 
       let res;
-      if (id) {
-        res = await _supabase.from('products').update({ name, category, price, stock, image_url: imageUrl }).eq('id', id);
-      } else {
-        res = await _supabase.from('products').insert([{ name, category, price, stock, image_url: imageUrl }]);
+
+
+      if(id) {
+
+        res =
+        await _supabase
+          .from('products')
+          .update({
+
+            name,
+
+            category,
+
+            price,
+
+            stock,
+
+            image_url:imageUrl
+
+          })
+          .eq(
+            'id',
+            id
+          );
+
       }
 
-      if (res.error) {
-        throw new Error(res.error.message);
+      else {
+
+        res =
+        await _supabase
+          .from('products')
+          .insert([{
+
+            name,
+
+            category,
+
+            price,
+
+            stock,
+
+            image_url:imageUrl
+
+          }]);
+
       }
+
+
+      if(res.error)
+        throw new Error(
+          res.error.message
+        );
+
     }
 
-    if (id) {
-      addLog('Product', 'Admin', `Memperbarui data produk <b>${name}</b> (Harga: ${rp(price)}, Stok: ${stock})`);
-    } else {
-      addLog('Product', 'Admin', `Menambahkan produk baru <b>${name}</b> (${category}, ${rp(price)}, Stok: ${stock})`);
+
+    if(id) {
+
+      await addLog(
+        'Product',
+        'Admin',
+        `Memperbarui data produk <b>${name}</b> (Harga: ${rp(price)}, Stok: ${stock})`
+      );
+
     }
-    
-    toast('Produk berhasil tersimpan 🎉', 'success');
+
+    else {
+
+      await addLog(
+        'Product',
+        'Admin',
+        `Menambahkan produk baru <b>${name}</b> (${category}, ${rp(price)}, Stok: ${stock})`
+      );
+
+    }
+
+
+    toast(
+      'Produk berhasil tersimpan 🎉',
+      'success'
+    );
+
+
     selectedImageFile = null;
+
     tempImgBase64 = '';
+
     closeModal();
+
+
+    /*
+      Tetap di halaman Produk.
+    */
+    activePageId = 'prod';
+
+    localStorage.setItem(
+      'habinara_active_page',
+      'prod'
+    );
+
+
     await loadDataFromSupabase();
-  } catch(err) {
-    console.error("Gagal simpan:", err);
-    Swal.fire('Gagal!', err.message || 'Terjadi kesalahan saat menyimpan produk.', 'error');
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Simpan'; }
+
   }
+
+  catch(err) {
+
+    console.error(
+      "Gagal simpan:",
+      err
+    );
+
+
+    Swal.fire(
+      'Gagal!',
+      err.message ||
+      'Terjadi kesalahan saat menyimpan produk.',
+      'error'
+    );
+
+  }
+
+  finally {
+
+    if(btn) {
+
+      btn.disabled = false;
+
+      btn.textContent =
+      'Simpan';
+
+    }
+
+  }
+
 }
+
+
+/* =========================================================
+   DELETE PRODUCT
+========================================================= */
 
 async function delProduct(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let p = products.find(x => x.id === id);
 
-  const result = await Swal.fire({
-    title: 'Hapus Produk?',
-    text: 'Produk yang dihapus tidak dapat dikembalikan!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    confirmButtonText: 'Ya, Hapus',
-    cancelButtonText: 'Batal'
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let p =
+  products.find(
+    x => x.id === id
+  );
+
+
+  const result =
+  await Swal.fire({
+
+    title:'Hapus Produk?',
+
+    text:
+    'Produk yang dihapus tidak dapat dikembalikan!',
+
+    icon:'warning',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    confirmButtonText:'Ya, Hapus',
+
+    cancelButtonText:'Batal'
+
   });
 
-  if (result.isConfirmed) {
-    if (_supabase) {
-      await _supabase.from('products').delete().eq('id', id);
+
+  if(result.isConfirmed) {
+
+    if(_supabase) {
+
+      await _supabase
+        .from('products')
+        .delete()
+        .eq(
+          'id',
+          id
+        );
+
     }
-    
-    addLog('Product', 'Admin', `Menghapus produk <b>${p ? p.n : id}</b> dari katalog`);
+
+
+    await addLog(
+      'Product',
+      'Admin',
+      `Menghapus produk <b>${p ? p.n : id}</b> dari katalog`
+    );
+
 
     closeModal();
+
+
+    /*
+      Tetap halaman Produk.
+    */
+    activePageId = 'prod';
+
+    localStorage.setItem(
+      'habinara_active_page',
+      'prod'
+    );
+
+
     await loadDataFromSupabase();
-    toast('Produk berhasil dihapus', 'success');
+
+
+    toast(
+      'Produk berhasil dihapus',
+      'success'
+    );
+
   }
+
 }
+
+
+/* =========================================================
+   CUSTOMER
+========================================================= */
 
 function renderCustomers() {
-  document.getElementById('customerList').innerHTML = customers.map(c => `
-    <tr>
-      <td><b>${c.n}</b></td>
-      <td>${c.t || '-'}</td>
-      <td>${c.a || '-'}</td>
-      <td>${rp(c.v)}</td>
-      <td>
-        <div style="display:flex;gap:5px;">
-          <button type="button" class="icon dark" onclick="openCustomer(${c.id})" title="Edit">✎</button>
-          <button type="button" class="icon dark" onclick="delCustomer(${c.id})" title="Hapus">🗑</button>
-        </div>
-      </td>
-    </tr>
-  `).join('') || '<tr><td colspan="5" class="empty">Belum ada pelanggan.</td></tr>';
+
+  document
+    .getElementById('customerList')
+    .innerHTML =
+
+    customers.map(c => `
+
+      <tr>
+
+        <td>
+          <b>${c.n}</b>
+        </td>
+
+        <td>
+          ${c.t || '-'}
+        </td>
+
+        <td>
+          ${c.a || '-'}
+        </td>
+
+        <td>
+          ${rp(c.v)}
+        </td>
+
+        <td>
+
+          <div
+            style="display:flex;gap:5px">
+
+            <button
+              type="button"
+              class="icon dark"
+              onclick="openCustomer(${c.id})"
+              title="Edit">
+
+              ✎
+
+            </button>
+
+            <button
+              type="button"
+              class="icon dark"
+              onclick="delCustomer(${c.id})"
+              title="Hapus">
+
+              🗑
+
+            </button>
+
+          </div>
+
+        </td>
+
+      </tr>
+
+    `).join('')
+
+    ||
+
+    '<tr><td colspan="5" class="empty">Belum ada pelanggan.</td></tr>';
+
 }
+
 
 function openCustomer(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let c = id ? customers.find(x => x.id === id) : {n:'', t:'', a:''};
-  if (!c) return;
 
-  modal(id ? '✎ Edit Pelanggan' : '＋ Tambah Pelanggan', `
-    <form class="form" onsubmit="return false;" autocomplete="off">
-      <label>Nama<input id="cn" value="${c.n}" autocomplete="off"></label>
-      <label>No. WhatsApp / Telepon<input id="ct" value="${c.t || ''}" autocomplete="off"></label>
-      <label>Alamat<textarea id="ca" rows="2" autocomplete="off">${c.a || ''}</textarea></label>
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let c =
+  id
+    ? customers.find(
+        x => x.id === id
+      )
+    : {
+        n:'',
+        t:'',
+        a:''
+      };
+
+
+  if(!c)
+    return;
+
+
+  modal(
+
+    id
+      ? '✎ Edit Pelanggan'
+      : '＋ Tambah Pelanggan',
+
+    `
+
+    <form
+      class="form"
+      onsubmit="return false;"
+      autocomplete="off">
+
+      <label>
+
+        Nama
+
+        <input
+          id="cn"
+          value="${c.n}"
+          autocomplete="off">
+
+      </label>
+
+
+      <label>
+
+        No. WhatsApp / Telepon
+
+        <input
+          id="ct"
+          value="${c.t || ''}"
+          autocomplete="off">
+
+      </label>
+
+
+      <label>
+
+        Alamat
+
+        <textarea
+          id="ca"
+          rows="2"
+          autocomplete="off">${c.a || ''}</textarea>
+
+      </label>
+
     </form>
+
+
     <div class="formfoot">
-      <button type="button" class="btn" onclick="saveCustomer(${id || 0})">Simpan</button>
+
+      <button
+        type="button"
+        class="btn"
+        onclick="saveCustomer(${id || 0})">
+
+        Simpan
+
+      </button>
+
     </div>
-  `);
+
+    `
+
+  );
+
 }
+
 
 async function saveCustomer(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let name = document.getElementById('cn').value.trim();
-  let phone = document.getElementById('ct').value.trim();
-  let address = document.getElementById('ca').value.trim();
-  if (!name) return toast('Nama wajib diisi', 'warning');
-  
-  if (_supabase) {
-    if (id) {
-      await _supabase.from('customers').update({ name, phone: phone || '-', address: address || '-' }).eq('id', id);
-    } else {
-      await _supabase.from('customers').insert([{ name, phone: phone || '-', address: address || '-', total_spend: 0 }]);
+
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let name =
+  document
+    .getElementById('cn')
+    .value.trim();
+
+
+  let phone =
+  document
+    .getElementById('ct')
+    .value.trim();
+
+
+  let address =
+  document
+    .getElementById('ca')
+    .value.trim();
+
+
+  if(!name)
+    return toast(
+      'Nama wajib diisi',
+      'warning'
+    );
+
+
+  if(_supabase) {
+
+    if(id) {
+
+      await _supabase
+        .from('customers')
+        .update({
+
+          name,
+
+          phone:
+          phone || '-',
+
+          address:
+          address || '-'
+
+        })
+        .eq(
+          'id',
+          id
+        );
+
     }
+
+    else {
+
+      await _supabase
+        .from('customers')
+        .insert([{
+
+          name,
+
+          phone:
+          phone || '-',
+
+          address:
+          address || '-',
+
+          total_spend:0
+
+        }]);
+
+    }
+
   }
 
-  if (id) {
-    addLog('Customer', 'Admin', `Memperbarui data pelanggan <b>${name}</b>`);
-  } else {
-    addLog('Customer', 'Admin', `Menambahkan pelanggan baru <b>${name}</b> (${phone || '-'})`);
+
+  if(id) {
+
+    await addLog(
+      'Customer',
+      'Admin',
+      `Memperbarui data pelanggan <b>${name}</b>`
+    );
+
   }
+
+  else {
+
+    await addLog(
+      'Customer',
+      'Admin',
+      `Menambahkan pelanggan baru <b>${name}</b> (${phone || '-'})`
+    );
+
+  }
+
 
   closeModal();
+
+
+  /*
+    Tetap di Data Pelanggan.
+  */
+  activePageId = 'customers';
+
+  localStorage.setItem(
+    'habinara_active_page',
+    'customers'
+  );
+
+
   await loadDataFromSupabase();
-  toast('Pelanggan tersimpan ✓', 'success');
+
+
+  toast(
+    'Pelanggan tersimpan ✓',
+    'success'
+  );
+
 }
+
 
 async function delCustomer(id) {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
-  let c = customers.find(x => x.id === id);
 
-  const result = await Swal.fire({
-    title: 'Hapus Pelanggan?',
-    text: 'Data pelanggan ini akan dihapus permanen!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b',
-    confirmButtonText: 'Ya, Hapus',
-    cancelButtonText: 'Batal'
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
+  let c =
+  customers.find(
+    x => x.id === id
+  );
+
+
+  const result =
+  await Swal.fire({
+
+    title:'Hapus Pelanggan?',
+
+    text:
+    'Data pelanggan ini akan dihapus permanen!',
+
+    icon:'warning',
+
+    showCancelButton:true,
+
+    confirmButtonColor:'#d31027',
+
+    cancelButtonColor:'#8c6b6b',
+
+    confirmButtonText:'Ya, Hapus',
+
+    cancelButtonText:'Batal'
+
   });
 
-  if (result.isConfirmed) {
-    if (_supabase) {
-      await _supabase.from('customers').delete().eq('id', id);
+
+  if(result.isConfirmed) {
+
+    if(_supabase) {
+
+      await _supabase
+        .from('customers')
+        .delete()
+        .eq(
+          'id',
+          id
+        );
+
     }
 
-    addLog('Customer', 'Admin', `Menghapus data pelanggan <b>${c ? c.n : id}</b>`);
+
+    await addLog(
+      'Customer',
+      'Admin',
+      `Menghapus data pelanggan <b>${c ? c.n : id}</b>`
+    );
+
+
+    /*
+      Tetap halaman pelanggan.
+    */
+    activePageId =
+    'customers';
+
+    localStorage.setItem(
+      'habinara_active_page',
+      'customers'
+    );
+
 
     await loadDataFromSupabase();
-    toast('Data pelanggan dihapus', 'success');
+
+
+    toast(
+      'Data pelanggan dihapus',
+      'success'
+    );
+
   }
+
 }
+
+
+/* =========================================================
+   REPORT
+========================================================= */
 
 function renderReport() {
-  let pureRevenue = orders.reduce((s, x) => s + (x.subtotal || x.total), 0);
-  let done = orders.filter(x => x.status === 'Selesai').length;
-  
-  document.getElementById('totalRevenue').textContent = rp(pureRevenue);
-  document.getElementById('totalTxn').textContent = orders.length;
-  document.getElementById('avgTxn').textContent = rp(orders.length ? Math.round(pureRevenue / orders.length) : 0);
-  document.getElementById('doneTxn').textContent = done;
-  
-  document.getElementById('reportList').innerHTML = orders.map(o => `
-    <tr>
-      <td>#${o.id}</td>
-      <td>${o.name}</td>
-      <td>${rp(o.subtotal || o.total)}</td>
-      <td>${rp(o.shipping || 0)}</td>
-      <td><b>${rp(o.total)}</b></td>
-      <td><span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span></td>
-    </tr>
-  `).join('') || '<tr><td colspan="6" class="empty">Tidak ada data transaksi.</td></tr>';
+
+  let pureRevenue =
+  orders.reduce(
+    (s,x) =>
+      s +
+      (x.subtotal || x.total),
+    0
+  );
+
+
+  let done =
+  orders.filter(
+    x => x.status === 'Selesai'
+  ).length;
+
+
+  document
+    .getElementById('totalRevenue')
+    .textContent =
+    rp(pureRevenue);
+
+
+  document
+    .getElementById('totalTxn')
+    .textContent =
+    orders.length;
+
+
+  document
+    .getElementById('avgTxn')
+    .textContent =
+    rp(
+      orders.length
+        ? Math.round(
+            pureRevenue /
+            orders.length
+          )
+        : 0
+    );
+
+
+  document
+    .getElementById('doneTxn')
+    .textContent =
+    done;
+
+
+  document
+    .getElementById('reportList')
+    .innerHTML =
+
+    orders.map(o => `
+
+      <tr>
+
+        <td>
+          #${o.id}
+        </td>
+
+        <td>
+          ${o.name}
+        </td>
+
+        <td>
+          ${rp(
+            o.subtotal ||
+            o.total
+          )}
+        </td>
+
+        <td>
+          ${rp(
+            o.shipping || 0
+          )}
+        </td>
+
+        <td>
+          <b>${rp(o.total)}</b>
+        </td>
+
+        <td>
+
+          <span
+            class="status ${
+              o.status === 'Selesai'
+                ? 'selesai'
+                : o.status === 'Diproses'
+                  ? 'proses'
+                  : 'baru'
+            }">
+
+            ${o.status}
+
+          </span>
+
+        </td>
+
+      </tr>
+
+    `).join('')
+
+    ||
+
+    '<tr><td colspan="6" class="empty">Tidak ada data transaksi.</td></tr>';
+
 }
+
+
+/* =========================================================
+   EXPORT CSV
+========================================================= */
 
 function exportCSV() {
-  if (!isAdminLoggedIn) return promptLoginAdmin();
+
+  if(!isAdminLoggedIn)
+    return promptLoginAdmin();
+
+
   let rows = [
-    ['ID', 'Pelanggan', 'WhatsApp', 'Alamat', 'Latitude', 'Longitude', 'Subtotal Produk', 'Ongkir', 'Total Akhir', 'Status', 'Tanggal'],
+
+    [
+      'ID',
+      'Pelanggan',
+      'WhatsApp',
+      'Alamat',
+      'Latitude',
+      'Longitude',
+      'Subtotal Produk',
+      'Ongkir',
+      'Total Akhir',
+      'Status',
+      'Tanggal'
+    ],
+
     ...orders.map(o => [
-      o.id, 
-      o.name, 
+
+      o.id,
+
+      o.name,
+
       o.phone || '-',
+
       o.address || '-',
+
       o.lat || '',
+
       o.lng || '',
-      o.subtotal || o.total, 
-      o.shipping || 0, 
-      o.total, 
-      o.status, 
+
+      o.subtotal || o.total,
+
+      o.shipping || 0,
+
+      o.total,
+
+      o.status,
+
       o.date
+
     ])
+
   ];
-  
-  let csv = rows.map(r => r.map(x => `"${String(x).replaceAll('"', '""')}"`).join(',')).join('\n');
-  let a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'laporan-habinara-bakehouse.csv';
+
+
+  let csv =
+  rows
+    .map(
+      r =>
+      r.map(
+        x =>
+        `"${String(x)
+          .replaceAll('"','""')}"`
+      ).join(',')
+    )
+    .join('\n');
+
+
+  let a =
+  document.createElement('a');
+
+
+  a.href =
+  'data:text/csv;charset=utf-8,' +
+  encodeURIComponent(csv);
+
+
+  a.download =
+  'laporan-habinara-bakehouse.csv';
+
+
   a.click();
 
-  addLog('System', 'Admin', 'Mengekspor laporan transaksi ke berkas CSV');
 
-  toast('Laporan CSV berhasil diunduh 📊', 'success');
+  addLog(
+    'System',
+    'Admin',
+    'Mengekspor laporan transaksi ke berkas CSV'
+  );
+
+
+  toast(
+    'Laporan CSV berhasil diunduh 📊',
+    'success'
+  );
+
 }
 
-function modal(title, body) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalBody').innerHTML = body;
-  document.getElementById('modal').classList.add('show');
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function modal(title,body) {
+
+  document
+    .getElementById('modalTitle')
+    .textContent =
+    title;
+
+
+  document
+    .getElementById('modalBody')
+    .innerHTML =
+    body;
+
+
+  document
+    .getElementById('modal')
+    .classList.add('show');
+
 }
+
 
 function closeModal() {
-  document.getElementById('modal').classList.remove('show');
+
+  document
+    .getElementById('modal')
+    .classList.remove('show');
+
 }
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
 function renderDashboardStats() {
-  let pureRevenue = orders.reduce((s, x) => s + (x.subtotal || x.total), 0);
-  document.getElementById('rev').textContent = rp(pureRevenue);
-  document.getElementById('ord').textContent = orders.length;
-  document.getElementById('custStat').textContent = customers.length;
 
-  let sold = orders.reduce((acc, o) => {
-    let itemsArr = o.items;
-    if (typeof itemsArr === 'string') {
-      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
-    }
-    if (Array.isArray(itemsArr)) {
-      return acc + itemsArr.reduce((sum, item) => sum + (item.qty || 0), 0);
-    }
-    return acc;
-  }, 0);
-  document.getElementById('itemsSold').textContent = sold;
+  let pureRevenue =
+  orders.reduce(
+    (s,x) =>
+      s +
+      (x.subtotal || x.total),
+    0
+  );
+
+
+  document
+    .getElementById('rev')
+    .textContent =
+    rp(pureRevenue);
+
+
+  document
+    .getElementById('ord')
+    .textContent =
+    orders.length;
+
+
+  document
+    .getElementById('custStat')
+    .textContent =
+    customers.length;
+
+
+  let sold =
+  orders.reduce(
+    (acc,o) => {
+
+      let itemsArr =
+      o.items;
+
+
+      if(typeof itemsArr === 'string') {
+
+        try {
+          itemsArr =
+          JSON.parse(itemsArr);
+        } catch(e){}
+
+      }
+
+
+      if(Array.isArray(itemsArr)) {
+
+        return acc +
+        itemsArr.reduce(
+          (sum,item) =>
+          sum +
+          (item.qty || 0),
+          0
+        );
+
+      }
+
+
+      return acc;
+
+    },
+    0
+  );
+
+
+  document
+    .getElementById('itemsSold')
+    .textContent =
+    sold;
+
 
   renderWeeklyChart();
+
   renderBestSellers();
+
 }
+
+
+/* =========================================================
+   WEEKLY
+========================================================= */
 
 function renderWeeklyChart() {
-  let dayRevenue = [0, 0, 0, 0, 0, 0, 0];
+
+  let dayRevenue =
+  [0,0,0,0,0,0,0];
+
 
   orders.forEach(o => {
-    let d = o.createdAt ? new Date(o.createdAt) : new Date();
-    let dayIndex = d.getDay(); 
-    let mappedIdx = dayIndex === 0 ? 6 : dayIndex - 1; 
-    dayRevenue[mappedIdx] += (o.subtotal || o.total || 0);
+
+    let d =
+    o.createdAt
+      ? new Date(o.createdAt)
+      : new Date();
+
+
+    let dayIndex =
+    d.getDay();
+
+
+    let mappedIdx =
+    dayIndex === 0
+      ? 6
+      : dayIndex - 1;
+
+
+    dayRevenue[mappedIdx] +=
+    (
+      o.subtotal ||
+      o.total ||
+      0
+    );
+
   });
 
-  let maxRev = Math.max(...dayRevenue, 1); 
 
-  let days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
-  document.getElementById('bars').innerHTML = days.map((day, i) => {
-    let rev = dayRevenue[i];
-    let heightPercent = rev > 0 ? Math.max(10, Math.round((rev / maxRev) * 100)) : 0;
-    return `
-      <div class="bw">
-        <div class="bar" style="height:${heightPercent}%" title="${rp(rev)}"></div>
-        <span>${day}</span>
-      </div>
-    `;
-  }).join('');
+  let maxRev =
+  Math.max(
+    ...dayRevenue,
+    1
+  );
+
+
+  let days =
+  [
+    'Sen',
+    'Sel',
+    'Rab',
+    'Kam',
+    'Jum',
+    'Sab',
+    'Min'
+  ];
+
+
+  document
+    .getElementById('bars')
+    .innerHTML =
+
+    days.map(
+      (day,i) => {
+
+        let rev =
+        dayRevenue[i];
+
+
+        let heightPercent =
+        rev > 0
+          ? Math.max(
+              10,
+              Math.round(
+                rev /
+                maxRev *
+                100
+              )
+            )
+          : 0;
+
+
+        return `
+
+          <div class="bw">
+
+            <div
+              class="bar"
+              style="height:${heightPercent}%"
+              title="${rp(rev)}">
+            </div>
+
+            <span>
+              ${day}
+            </span>
+
+          </div>
+
+        `;
+
+      }
+    ).join('');
+
 }
+
+
+/* =========================================================
+   BEST SELLER
+========================================================= */
 
 function renderBestSellers() {
+
   let productSales = {};
 
+
   orders.forEach(o => {
-    let itemsArr = o.items;
-    if (typeof itemsArr === 'string') {
-      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+
+    let itemsArr =
+    o.items;
+
+
+    if(typeof itemsArr === 'string') {
+
+      try {
+        itemsArr =
+        JSON.parse(itemsArr);
+      } catch(e){}
+
     }
-    if (Array.isArray(itemsArr)) {
+
+
+    if(Array.isArray(itemsArr)) {
+
       itemsArr.forEach(i => {
-        productSales[i.id] = (productSales[i.id] || 0) + (i.qty || 0);
+
+        productSales[i.id] =
+        (
+          productSales[i.id] ||
+          0
+        ) +
+        (
+          i.qty || 0
+        );
+
       });
+
     }
+
   });
 
-  let sortedProducts = [...products].map(p => ({
-    ...p,
-    sold: productSales[p.id] || 0
-  })).sort((a, b) => b.sold - a.sold);
 
-  let topProducts = sortedProducts.slice(0, 4);
+  let sortedProducts =
+  [...products]
+    .map(p => ({
 
-  if (topProducts.length === 0 || sortedProducts.every(p => p.sold === 0)) {
-    document.getElementById('best').innerHTML = '<div class="empty" style="padding:20px 0">Belum ada data penjualan produk.</div>';
+      ...p,
+
+      sold:
+      productSales[p.id] ||
+      0
+
+    }))
+    .sort(
+      (a,b) =>
+      b.sold -
+      a.sold
+    );
+
+
+  let topProducts =
+  sortedProducts.slice(0,4);
+
+
+  if(
+    topProducts.length === 0 ||
+    sortedProducts.every(
+      p => p.sold === 0
+    )
+  ) {
+
+    document
+      .getElementById('best')
+      .innerHTML =
+      '<div class="empty" style="padding:20px 0">Belum ada data penjualan produk.</div>';
+
     return;
+
   }
 
-  document.getElementById('best').innerHTML = topProducts.map((p, i) => `
-    <div style="display:flex;gap:10px;align-items:center;padding:8px 0">
-      <img src="${p.img || defaultPlaceholderImg}" alt="${p.n}" style="width:47px;height:47px;object-fit:cover;border-radius:12px">
-      <div style="flex:1">
-        <b style="font-size:13px">${p.n}</b>
-        <div class="muted">${p.sold} terjual</div>
-      </div>
-      <b style="color:var(--p)">#${i+1}</b>
-    </div>
-  `).join('');
+
+  document
+    .getElementById('best')
+    .innerHTML =
+
+    topProducts.map(
+      (p,i) => `
+
+        <div
+          style="display:flex;gap:10px;align-items:center;padding:8px 0">
+
+          <img
+            src="${p.img || defaultPlaceholderImg}"
+            alt="${p.n}"
+            style="width:47px;height:47px;object-fit:cover;border-radius:12px">
+
+          <div style="flex:1">
+
+            <b style="font-size:13px">
+              ${p.n}
+            </b>
+
+            <div class="muted">
+              ${p.sold} terjual
+            </div>
+
+          </div>
+
+          <b style="color:var(--p)">
+            #${i+1}
+          </b>
+
+        </div>
+
+      `
+    ).join('');
+
 }
+
+
+/* =========================================================
+   RENDER ALL
+========================================================= */
 
 function renderAll() {
+
   renderNavigation();
+
   renderCatalogProducts();
+
   renderProducts();
+
   renderOrders();
+
   renderCustomers();
+
   renderReport();
+
   renderDashboardStats();
+
   renderLogs();
+
 }
 
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+
+/* =========================================================
+   CLOSE MODAL CLICK OUTSIDE
+========================================================= */
+
+document
+  .getElementById('modal')
+  .addEventListener(
+    'click',
+    function(e) {
+
+      if(e.target === this)
+        closeModal();
+
+    }
+  );
+
+
+/* =========================================================
+   START APP
+========================================================= */
 
 renderNavigation();
+
+/*
+  Kalau sebelumnya Admin sedang di:
+  Produk / Pesanan / Pelanggan / Laporan / Log,
+  refresh akan kembali ke sana.
+*/
+page(activePageId);
+
 loadDataFromSupabase();
+
 </script>
+
 </body>
 </html>
