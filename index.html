@@ -125,7 +125,6 @@ button{cursor:pointer}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .formfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
 
-/* Styling Peta di Modal Checkout */
 #map {
   width: 100%;
   height: 220px;
@@ -135,7 +134,6 @@ button{cursor:pointer}
   z-index: 99;
 }
 
-/* Kotak Rekening Pembayaran */
 .bank-box {
   background: var(--p-light);
   border: 1px dashed var(--p);
@@ -151,7 +149,6 @@ button{cursor:pointer}
   margin-top: 2px;
 }
 
-/* Tombol Keranjang Posisi Aman */
 .cart{position:fixed;right:20px;bottom:82px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
 .cart small{background:white;color:var(--p);border-radius:12px;padding:2px 6px}
 
@@ -199,7 +196,6 @@ button{cursor:pointer}
   .prod .body{padding:10px}
   .tools{flex-direction:column}
   
-  /* Navbar Bawah HP Katalog Publik */
   .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:65px;background:#fff;border-top:1px solid var(--line);z-index:16;justify-content:space-around;padding:4px}
   .mobile button{text-align:center;font-size:10px;padding:4px;display:flex;flex-direction:column;align-items:center;flex:1}
   .mobile span{font-size:18px}
@@ -223,9 +219,7 @@ button{cursor:pointer}
       </div>
       Habinara
     </div>
-    <div class="nav" id="sidebarNav">
-      <!-- Menu akan dirender dinamis -->
-    </div>
+    <div class="nav" id="sidebarNav"></div>
   </div>
   <div class="sidebar-footer">
     Licensed by<br><b>Restu Putra Perdana</b>
@@ -235,7 +229,7 @@ button{cursor:pointer}
 <main class="main">
   <header class="top">
     <div class="top-left">
-      <button class="burger-btn" onclick="toggleSidebar()">☰</button>
+      <button type="button" class="burger-btn" onclick="toggleSidebar()">☰</button>
       <div class="logo">
         <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
       </div>
@@ -245,17 +239,17 @@ button{cursor:pointer}
       </div>
     </div>
     <div class="admin-area" id="adminArea">
-      <button class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>
+      <button type="button" class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>
     </div>
   </header>
 
-  <!-- HALAMAN 1: KATALOG PRODUK (DEFAULT PEMBELI) -->
+  <!-- HALAMAN 1: KATALOG PRODUK -->
   <section id="catalog" class="page active">
     <div class="section">
       <h2>🍰 Katalog Kue Pilihan</h2>
     </div>
     <div class="tools">
-      <input id="q" class="input" placeholder="Cari kue kesukaanmu..." oninput="renderCatalogProducts()">
+      <input id="q" class="input" placeholder="Cari kue kesukaanmu..." autocomplete="off" oninput="renderCatalogProducts()">
       <select id="cat" class="input" onchange="renderCatalogProducts()">
         <option value="">Semua kategori</option>
         <option>Cake</option>
@@ -283,7 +277,7 @@ button{cursor:pointer}
 
   <!-- HALAMAN 3: KELOLA PRODUK (ADMIN) -->
   <section id="prod" class="page">
-    <div class="section"><h2>🍰 Kelola Produk Kue</h2><button class="btn" onclick="openProduct()">＋ Produk</button></div>
+    <div class="section"><h2>🍰 Kelola Produk Kue</h2><button type="button" class="btn" onclick="openProduct()">＋ Produk</button></div>
     <div class="products" id="products"></div>
   </section>
 
@@ -295,7 +289,7 @@ button{cursor:pointer}
 
   <!-- HALAMAN 5: PELANGGAN (ADMIN) -->
   <section id="customers" class="page">
-    <div class="section"><h2>👥 Data Pelanggan</h2><button class="btn" onclick="openCustomer()">＋ Pelanggan</button></div>
+    <div class="section"><h2>👥 Data Pelanggan</h2><button type="button" class="btn" onclick="openCustomer()">＋ Pelanggan</button></div>
     <div class="tablewrap">
       <table class="table">
         <thead>
@@ -308,7 +302,7 @@ button{cursor:pointer}
 
   <!-- HALAMAN 6: LAPORAN (ADMIN) -->
   <section id="report" class="page">
-    <div class="section"><h2>📊 Laporan Penjualan</h2><button class="btn" onclick="exportCSV()">⬇ Export CSV</button></div>
+    <div class="section"><h2>📊 Laporan Penjualan</h2><button type="button" class="btn" onclick="exportCSV()">⬇ Export CSV</button></div>
     <div class="stats">
       <div class="card stat"><small>Total Omzet</small><b id="totalRevenue">Rp 0</b></div>
       <div class="card stat"><small>Total Transaksi</small><b id="totalTxn">0</b></div>
@@ -327,19 +321,14 @@ button{cursor:pointer}
   </section>
 </main>
 
-<button class="cart" onclick="openCart()">🛒 Keranjang <small id="cartCount">0</small></button>
+<button type="button" class="cart" onclick="openCart()">🛒 Keranjang <small id="cartCount">0</small></button>
 
 <!-- Navbar Bawah HP Pembeli Publik -->
-<nav class="mobile" id="mobileNav">
-  <button class="active" onclick="page('catalog')"><span>🍰</span>Katalog</button>
-  <button onclick="openCart()"><span>🛒</span>Keranjang</button>
-  <button onclick="openTrackOrderModal()"><span>🔍</span>Cek Pesanan</button>
-  <button onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
-</nav>
+<nav class="mobile" id="mobileNav"></nav>
 
 <div class="modalbg" id="modal">
   <div class="modal">
-    <div class="mh"><h2 id="modalTitle"></h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="mh"><h2 id="modalTitle"></h2><button type="button" class="close" onclick="closeModal()">✕</button></div>
     <div id="modalBody"></div>
   </div>
 </div>
@@ -362,17 +351,38 @@ let products = [];
 let orders = [];
 let customers = [];
 let cart = {};
-let selectedImageFile = null; // Menyimpan objek file asli (sudah dikompres) untuk upload ke Storage
+let selectedImageFile = null; 
 let tempImgBase64 = '';
 let isAdminLoggedIn = false;
+let activePageId = 'catalog';
 
-// Variabel untuk menyimpan titik koordinat pilihan pemesan
 let selectedLat = -6.200000; 
 let selectedLng = 106.816666;
 let checkoutMap = null;
 let checkoutMarker = null;
 
 const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+
+// --- SWEETALERT2 TOAST REPLACEMENT ---
+const SwalToast = Swal.mixin({
+  toast: true,
+  position: 'bottom',
+  showConfirmButton: false,
+  timer: 2500,
+  timerProgressBar: true,
+  background: '#2d1a1a',
+  color: '#ffffff',
+  customClass: {
+    popup: 'swal2-toast-custom'
+  }
+});
+
+function toast(msg, icon = 'info') {
+  SwalToast.fire({
+    icon: icon,
+    title: msg
+  });
+}
 
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
@@ -388,54 +398,76 @@ function renderNavigation() {
 
   if (!isAdminLoggedIn) {
     navEl.innerHTML = `
-      <button class="active" onclick="page('catalog'); toggleSidebar()">🍰 &nbsp; Katalog Kue</button>
-      <button onclick="openCart(); toggleSidebar()">🛒 &nbsp; Keranjang Belanja</button>
-      <button onclick="openTrackOrderModal(); toggleSidebar()">🔍 &nbsp; Cek & Batalkan Pesanan</button>
-      <button onclick="promptLoginAdmin(); toggleSidebar()">🔐 &nbsp; Login Admin</button>
+      <button type="button" onclick="page('catalog'); toggleSidebar()">🍰 &nbsp; Katalog Kue</button>
+      <button type="button" onclick="openCart(); toggleSidebar()">🛒 &nbsp; Keranjang Belanja</button>
+      <button type="button" onclick="openTrackOrderModal(); toggleSidebar()">🔍 &nbsp; Cek & Batalkan Pesanan</button>
+      <button type="button" onclick="promptLoginAdmin(); toggleSidebar()">🔐 &nbsp; Login Admin</button>
     `;
-    adminArea.innerHTML = `<button class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>`;
+    adminArea.innerHTML = `<button type="button" class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>`;
     mobileNav.innerHTML = `
-      <button class="active" onclick="page('catalog')"><span>🍰</span>Katalog</button>
-      <button onclick="openCart()"><span>🛒</span>Keranjang</button>
-      <button onclick="openTrackOrderModal()"><span>🔍</span>Cek Pesanan</button>
-      <button onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
+      <button type="button" onclick="page('catalog')"><span>🍰</span>Katalog</button>
+      <button type="button" onclick="openCart()"><span>🛒</span>Keranjang</button>
+      <button type="button" onclick="openTrackOrderModal()"><span>🔍</span>Cek Pesanan</button>
+      <button type="button" onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
     `;
   } else {
     navEl.innerHTML = `
-      <button class="active" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
-      <button onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Kelola Produk</button>
-      <button onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Kelola Pesanan</button>
-      <button onclick="page('customers'); toggleSidebar()">👥 &nbsp; Data Pelanggan</button>
-      <button onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan Omzet</button>
-      <button onclick="logoutAdmin(); toggleSidebar()" style="color:var(--p);margin-top:15px">🚪 &nbsp; Keluar Admin</button>
+      <button type="button" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
+      <button type="button" onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Kelola Produk</button>
+      <button type="button" onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Kelola Pesanan</button>
+      <button type="button" onclick="page('customers'); toggleSidebar()">👥 &nbsp; Data Pelanggan</button>
+      <button type="button" onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan Omzet</button>
+      <button type="button" onclick="logoutAdmin(); toggleSidebar()" style="color:var(--p);margin-top:15px">🚪 &nbsp; Keluar Admin</button>
     `;
     adminArea.innerHTML = `
       <span class="pill">ADMIN ACTIVE</span>
-      <button class="btn gray" style="padding:6px 10px;font-size:11px;" onclick="logoutAdmin()">Logout</button>
+      <button type="button" class="btn gray" style="padding:6px 10px;font-size:11px;" onclick="logoutAdmin()">Logout</button>
     `;
     mobileNav.innerHTML = `
-      <button class="active" onclick="page('dash')"><span>🏠</span>Dash</button>
-      <button onclick="page('prod')"><span>🍰</span>Produk</button>
-      <button onclick="page('orders')"><span>🛍️</span>Pesanan</button>
-      <button onclick="page('report')"><span>📊</span>Laporan</button>
+      <button type="button" onclick="page('dash')"><span>🏠</span>Dash</button>
+      <button type="button" onclick="page('prod')"><span>🍰</span>Produk</button>
+      <button type="button" onclick="page('orders')"><span>🛍️</span>Pesanan</button>
+      <button type="button" onclick="page('report')"><span>📊</span>Laporan</button>
     `;
   }
+  updateActiveNav(activePageId);
+}
+
+function updateActiveNav(pageId) {
+  activePageId = pageId;
+  
+  // Highlight active Sidebar Nav
+  const sidebarButtons = document.querySelectorAll('#sidebarNav button');
+  sidebarButtons.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${pageId}'`)) {
+      btn.classList.add('active');
+    }
+  });
+
+  // Highlight active Mobile Nav
+  const mobileButtons = document.querySelectorAll('#mobileNav button');
+  mobileButtons.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${pageId}'`)) {
+      btn.classList.add('active');
+    }
+  });
 }
 
 async function promptLoginAdmin() {
   const { value: password } = await Swal.fire({
     title: 'Login Admin Habinara',
-    input: 'password',
-    inputPlaceholder: 'Masukkan Password Admin',
-    inputAttributes: {
-      autocapitalize: 'off',
-      autocorrect: 'off'
-    },
+    html: `<input type="text" style="-webkit-text-security: disc;" id="swal-admin-pass" class="swal2-input" placeholder="Masukkan Kode Kunci Admin" autocomplete="off" autocorrect="off" spellcheck="false">`,
+    focusConfirm: false,
     showCancelButton: true,
     confirmButtonText: 'Masuk',
     cancelButtonText: 'Batal',
     confirmButtonColor: '#d31027',
-    cancelButtonColor: '#8c6b6b'
+    cancelButtonColor: '#8c6b6b',
+    preConfirm: () => {
+      return document.getElementById('swal-admin-pass').value;
+    }
   });
 
   if (password === 'habinara2026') {
@@ -450,19 +482,37 @@ async function promptLoginAdmin() {
       showConfirmButton: false
     });
   } else if (password !== undefined) {
-    Swal.fire('Gagal!', 'Password admin salah!', 'error');
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal Login!',
+      text: 'Kode kunci admin yang dimasukkan salah.',
+      confirmButtonColor: '#d31027'
+    });
   }
 }
 
-function logoutAdmin() {
-  isAdminLoggedIn = false;
-  renderNavigation();
-  page('catalog');
-  toast('Berhasil keluar dari mode admin');
+async function logoutAdmin() {
+  const result = await Swal.fire({
+    title: 'Keluar Admin?',
+    text: 'Anda akan keluar dari sesi admin dan kembali ke tampilan pembeli.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b',
+    confirmButtonText: 'Ya, Keluar',
+    cancelButtonText: 'Batal'
+  });
+
+  if (result.isConfirmed) {
+    isAdminLoggedIn = false;
+    renderNavigation();
+    page('catalog');
+    toast('Berhasil keluar dari mode admin', 'success');
+  }
 }
 
 async function loadDataFromSupabase() {
-  let t = toast('Memuat data toko...');
+  toast('Memuat data toko...', 'info');
   
   try {
     if (_supabase) {
@@ -515,7 +565,6 @@ async function loadDataFromSupabase() {
   } catch(err) {
     console.warn("Gagal load Supabase:", err);
   } finally {
-    if(t) t.remove();
     renderAll();
   }
 }
@@ -540,9 +589,12 @@ function page(id) {
   };
   document.getElementById('title').textContent = titles[id] || 'Habinara Bakehouse';
   
+  updateActiveNav(id);
+
   if (id === 'report') renderReport();
   if (id === 'dash') renderDashboardStats();
   if (id === 'catalog') renderCatalogProducts();
+  if (id === 'prod') renderProducts();
   window.scrollTo(0, 0);
 }
 
@@ -561,7 +613,7 @@ function renderCatalogProducts() {
         <h3>${x.n}</h3>
         <div class="price">
           <b>${rp(x.p)}</b>
-          <button class="btn" onclick="add(${x.id})" ${x.s <= 0 ? 'disabled' : ''}>${x.s <= 0 ? 'Habis' : '+ Beli'}</button>
+          <button type="button" class="btn" onclick="add(${x.id})" ${x.s <= 0 ? 'disabled' : ''}>${x.s <= 0 ? 'Habis' : '+ Beli'}</button>
         </div>
       </div>
     </article>
@@ -569,13 +621,7 @@ function renderCatalogProducts() {
 }
 
 function renderProducts() {
-  const qEl = document.getElementById('q');
-  const catEl = document.getElementById('cat');
-  let q = qEl ? qEl.value.toLowerCase().trim() : '';
-  let c = catEl ? catEl.value : '';
-  
-  let a = products.filter(x => x.n.toLowerCase().includes(q) && (!c || x.c === c));
-  document.getElementById('products').innerHTML = a.map(x => `
+  document.getElementById('products').innerHTML = products.map(x => `
     <article class="card prod">
       <img src="${x.img || defaultPlaceholderImg}" alt="${x.n}">
       <div class="body">
@@ -584,7 +630,7 @@ function renderProducts() {
         <div class="price">
           <b>${rp(x.p)}</b>
           <div class="actions">
-            <button class="icon dark" onclick="openProduct(${x.id})" title="Edit">✎</button>
+            <button type="button" class="icon dark" onclick="openProduct(${x.id})" title="Edit">✎</button>
           </div>
         </div>
       </div>
@@ -598,12 +644,12 @@ function add(id) {
   let currentQty = cart[id] || 0;
   
   if (p.s <= currentQty) {
-    return toast('Stok kue tidak mencukupi 😅');
+    return toast('Stok kue tidak mencukupi 😅', 'warning');
   }
   
   cart[id] = currentQty + 1;
   updateCart();
-  toast('Kue dimasukkan keranjang 🍰');
+  toast('Kue dimasukkan keranjang 🍰', 'success');
 }
 
 function updateCart() {
@@ -632,9 +678,9 @@ function cartHTML() {
           <div class="muted">${rp(p.p)}</div>
         </div>
         <div class="qty">
-          <button onclick="chg(${p.id}, -1)">−</button>
+          <button type="button" onclick="chg(${p.id}, -1)">−</button>
           <b>${q}</b>
-          <button onclick="chg(${p.id}, 1)">＋</button>
+          <button type="button" onclick="chg(${p.id}, 1)">＋</button>
         </div>
       </div>
     `;
@@ -649,7 +695,7 @@ function cartHTML() {
       <div><span>Ongkir</span><b>${rp(shipping)}</b></div>
       <div class="grand"><span>Total Pembayaran</span><b>${rp(grandTotal)}</b></div>
     </div>
-    <button class="btn" style="width:100%;margin-top:15px" onclick="openCheckoutModal()" ${!a.length ? 'disabled' : ''}>✓ Lanjut ke Checkout Pesanan</button>
+    <button type="button" class="btn" style="width:100%;margin-top:15px" onclick="openCheckoutModal()" ${!a.length ? 'disabled' : ''}>✓ Lanjut ke Checkout Pesanan</button>
   `;
 }
 
@@ -659,7 +705,7 @@ function chg(id, d) {
   let newQty = currentQty + d;
 
   if (d > 0 && p && newQty > p.s) {
-    return toast('Stok maksimal tercapai 😅');
+    return toast('Stok maksimal tercapai 😅', 'warning');
   }
 
   if (newQty <= 0) {
@@ -680,15 +726,15 @@ function openCheckoutModal() {
   let grandTotal = sub + (Object.keys(cart).length ? 10000 : 0);
 
   modal('📋 Data Pemesan & Pembayaran', `
-    <div class="form">
+    <form class="form" onsubmit="return false;" autocomplete="off">
       <label>Nama Lengkap *
-        <input id="coName" placeholder="Contoh: Siti Aminah">
+        <input id="coName" placeholder="Contoh: Siti Aminah" autocomplete="off">
       </label>
       <label>No. WhatsApp / Telepon *
-        <input id="coPhone" placeholder="Contoh: 08123456789">
+        <input id="coPhone" placeholder="Contoh: 08123456789" autocomplete="off">
       </label>
       <label>Alamat Lengkap & Patokan *
-        <textarea id="coAddress" rows="2" placeholder="Jl. Mawar No. 12, samping masjid..."></textarea>
+        <textarea id="coAddress" rows="2" placeholder="Jl. Mawar No. 12, samping masjid..." autocomplete="off"></textarea>
       </label>
 
       <div class="bank-box">
@@ -704,10 +750,10 @@ function openCheckoutModal() {
       </label>
       <div id="map"></div>
       <div style="font-size:10px; color:var(--muted); text-align:center; margin-top:2px;">Geser peta atau klik pada lokasi tujuan pengiriman kue Anda.</div>
-    </div>
+    </form>
     <div class="formfoot">
-      <button class="btn gray" onclick="openCart()">← Kembali</button>
-      <button class="btn" onclick="checkout()">Kirim Pesanan Sekarang ✓</button>
+      <button type="button" class="btn gray" onclick="openCart()">← Kembali</button>
+      <button type="button" class="btn" onclick="checkout()">Kirim Pesanan Sekarang ✓</button>
     </div>
   `);
 
@@ -746,7 +792,7 @@ function initCheckoutMap() {
 
 function getMyLocationGPS() {
   if (navigator.geolocation) {
-    toast('Mencari lokasi GPS Anda...');
+    toast('Mencari lokasi GPS Anda...', 'info');
     navigator.geolocation.getCurrentPosition(
       (position) => {
         selectedLat = position.coords.latitude;
@@ -755,15 +801,15 @@ function getMyLocationGPS() {
           checkoutMap.setView([selectedLat, selectedLng], 16);
           checkoutMarker.setLatLng([selectedLat, selectedLng]);
         }
-        toast('Lokasi GPS berhasil ditemukan! ✓');
+        toast('Lokasi GPS berhasil ditemukan! ✓', 'success');
       },
       (error) => {
-        toast('Gagal mendeteksi GPS. Silakan pilih manual di peta.');
+        toast('Gagal mendeteksi GPS. Silakan pilih manual di peta.', 'warning');
       },
       { timeout: 10000 }
     );
   } else {
-    toast('Browser Anda tidak mendukung Geolocation.');
+    toast('Browser Anda tidak mendukung Geolocation.', 'error');
   }
 }
 
@@ -773,10 +819,10 @@ async function checkout() {
   let address = document.getElementById('coAddress').value.trim();
 
   if (!name || !phone || !address) {
-    return toast('Nama, No. WhatsApp, dan Alamat wajib diisi! ⚠️');
+    return toast('Nama, No. WhatsApp, dan Alamat wajib diisi! ⚠️', 'warning');
   }
 
-  if (!Object.keys(cart).length) return toast('Keranjang masih kosong');
+  if (!Object.keys(cart).length) return toast('Keranjang masih kosong', 'warning');
 
   if (_supabase) {
     let { data: latestProducts, error } = await _supabase.from('products').select('*');
@@ -789,7 +835,8 @@ async function checkout() {
           Swal.fire({
             icon: 'error',
             title: 'Stok Tidak Cukup!',
-            text: `Maaf, stok untuk kue "${liveProduct ? liveProduct.name : 'produk'}" tersisa ${liveProduct ? liveProduct.stock : 0}. Silakan sesuaikan keranjang Anda.`
+            text: `Maaf, stok untuk kue "${liveProduct ? liveProduct.name : 'produk'}" tersisa ${liveProduct ? liveProduct.stock : 0}. Silakan sesuaikan keranjang Anda.`,
+            confirmButtonColor: '#d31027'
           });
           return;
         }
@@ -864,13 +911,13 @@ async function checkout() {
 
 function openTrackOrderModal() {
   modal('🔍 Cek & Batalkan Pesanan', `
-    <div class="form">
+    <form class="form" onsubmit="return false;" autocomplete="off">
       <label>Masukkan No. WhatsApp yang digunakan saat memesan:
-        <input id="trackPhone" placeholder="Contoh: 08123456789">
+        <input id="trackPhone" placeholder="Contoh: 08123456789" autocomplete="off">
       </label>
-    </div>
+    </form>
     <div class="formfoot">
-      <button class="btn" onclick="searchMyOrders()">Cek Pesanan Saya</button>
+      <button type="button" class="btn" onclick="searchMyOrders()">Cek Pesanan Saya</button>
     </div>
     <div id="trackResult" style="margin-top:15px"></div>
   `);
@@ -907,7 +954,7 @@ async function searchMyOrders() {
           <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
         </div>
         ${canCancel ? `
-          <button class="btn danger" style="width:100%; margin-top:10px; padding:8px;" onclick="cancelMyOrder('${o.id}')">Batalkan Pesanan Ini</button>
+          <button type="button" class="btn danger" style="width:100%; margin-top:10px; padding:8px;" onclick="cancelMyOrder('${o.id}')">Batalkan Pesanan Ini</button>
         ` : `
           <div style="font-size:11px; color:var(--muted); margin-top:8px; text-align:center;">Pesanan sudah diproses/selesai dan tidak dapat dibatalkan otomatis.</div>
         `}
@@ -989,7 +1036,7 @@ function printReceipt(id) {
       <hr style="border:dashed 1px #ccc">
       <p style="text-align:center">Pembayaran Transfer BCA (0661194218 a.n. Wulan Noviani)</p>
       <p style="text-align:center">Terima Kasih Sudah Belanja! ✨</p>
-      <button class="btn" style="width:100%;margin-top:10px" onclick="window.print()">🖨️ Cetak Struk</button>
+      <button type="button" class="btn" style="width:100%;margin-top:10px" onclick="window.print()">🖨️ Cetak Struk</button>
     </div>
   `);
 }
@@ -1018,9 +1065,9 @@ function renderOrders() {
           <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
           <div style="margin-top:8px; display:flex; gap:5px; justify-content:flex-end; flex-wrap:wrap;">
             ${mapsButton}
-            <button class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
-            <button class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
-            <button class="btn danger" onclick="deleteOrder('${o.id}')" title="Hapus Pesanan">🗑️ Hapus</button>
+            <button type="button" class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
+            <button type="button" class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
+            <button type="button" class="btn danger" onclick="deleteOrder('${o.id}')" title="Hapus Pesanan">🗑️ Hapus</button>
           </div>
         </div>
       </div>
@@ -1038,6 +1085,7 @@ async function nextStatus(id) {
     await _supabase.from('orders').update({ status: next }).eq('id', id);
   }
   await loadDataFromSupabase();
+  toast(`Status pesanan #${id} diubah ke ${next}`, 'success');
 }
 
 async function deleteOrder(id) {
@@ -1092,38 +1140,43 @@ async function deleteOrder(id) {
 function openProduct(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
   let p = id ? products.find(x => x.id === id) : {n:'', c:'Cake', p:'', s:10, img:''};
-  if (!p) return;
+  if (!p) p = {n:'', c:'Cake', p:'', s:10, img:''};
   
   selectedImageFile = null;
   tempImgBase64 = p.img || '';
 
   modal(id ? '✎ Edit Produk' : '＋ Tambah Produk', `
-    <div class="form">
-      <label>Nama Produk<input id="fn" value="${p.n}"></label>
+    <form class="form" onsubmit="return false;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <label>Nama Produk
+        <input id="itemTitle" type="text" value="${p.n}" autocomplete="chrome-off">
+      </label>
       <div class="grid2">
         <label>Kategori
-          <select id="fc">
+          <select id="prodCategory">
             ${['Cake','Roti','Kue Basah','Kue Kering'].map(c => `<option ${c === p.c ? 'selected' : ''}>${c}</option>`).join('')}
           </select>
         </label>
-        <label>Harga (Rp)<input id="fp" type="number" value="${p.p}"></label>
+        <label>Harga (Rp)
+          <input id="prodPrice" type="number" value="${p.p}" autocomplete="off">
+        </label>
       </div>
-      <label>Stok<input id="fs" type="number" value="${p.s}"></label>
+      <label>Stok
+        <input id="prodStock" type="number" value="${p.s}" autocomplete="off">
+      </label>
       <label>Upload Foto Produk
-        <input type="file" id="ff" accept="image/*" onchange="previewImage(event)">
+        <input type="file" id="prodImage" accept="image/*" onchange="previewImage(event)">
         <div style="margin-top:8px;">
           <img id="imgPreview" class="img-preview" src="${tempImgBase64 || defaultPlaceholderImg}" alt="Preview Foto">
         </div>
       </label>
-    </div>
+    </form>
     <div class="formfoot">
-      ${id ? `<button class="btn danger" onclick="delProduct(${id})">Hapus</button>` : ''}
-      <button class="btn" id="saveProdBtn" onclick="saveProduct(${id || 0})">Simpan</button>
+      ${id ? `<button type="button" class="btn danger" onclick="delProduct(${id})">Hapus</button>` : ''}
+      <button type="button" class="btn" id="saveProdBtn" onclick="saveProduct(${id || 0})">Simpan</button>
     </div>
   `);
 }
 
-// Fungsi Preview & Kompresi Otomatis via Canvas
 function previewImage(event) {
   let file = event.target.files[0];
   if (!file) return;
@@ -1175,12 +1228,12 @@ function previewImage(event) {
 
 async function saveProduct(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
-  let name = document.getElementById('fn').value.trim();
-  let price = +document.getElementById('fp').value;
-  let stock = +document.getElementById('fs').value;
-  let category = document.getElementById('fc').value;
+  let name = document.getElementById('itemTitle').value.trim();
+  let price = +document.getElementById('prodPrice').value;
+  let stock = +document.getElementById('prodStock').value;
+  let category = document.getElementById('prodCategory').value;
 
-  if (!name || isNaN(price) || price <= 0) return toast('Nama dan harga valid wajib diisi!');
+  if (!name || isNaN(price) || price <= 0) return toast('Nama dan harga valid wajib diisi!', 'warning');
   if (isNaN(stock) || stock < 0) stock = 0;
 
   let btn = document.getElementById('saveProdBtn');
@@ -1222,7 +1275,7 @@ async function saveProduct(id) {
       }
     }
     
-    toast('Produk berhasil tersimpan 🎉');
+    toast('Produk berhasil tersimpan 🎉', 'success');
     selectedImageFile = null;
     tempImgBase64 = '';
     closeModal();
@@ -1237,13 +1290,25 @@ async function saveProduct(id) {
 
 async function delProduct(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
-  if (confirm('Hapus produk ini?')) {
+  
+  const result = await Swal.fire({
+    title: 'Hapus Produk?',
+    text: 'Produk yang dihapus tidak dapat dikembalikan!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b',
+    confirmButtonText: 'Ya, Hapus',
+    cancelButtonText: 'Batal'
+  });
+
+  if (result.isConfirmed) {
     if (_supabase) {
       await _supabase.from('products').delete().eq('id', id);
     }
     closeModal();
     await loadDataFromSupabase();
-    toast('Produk dihapus');
+    toast('Produk berhasil dihapus', 'success');
   }
 }
 
@@ -1256,8 +1321,8 @@ function renderCustomers() {
       <td>${rp(c.v)}</td>
       <td>
         <div style="display:flex;gap:5px;">
-          <button class="icon dark" onclick="openCustomer(${c.id})" title="Edit">✎</button>
-          <button class="icon dark" onclick="delCustomer(${c.id})" title="Hapus">🗑</button>
+          <button type="button" class="icon dark" onclick="openCustomer(${c.id})" title="Edit">✎</button>
+          <button type="button" class="icon dark" onclick="delCustomer(${c.id})" title="Hapus">🗑</button>
         </div>
       </td>
     </tr>
@@ -1270,13 +1335,13 @@ function openCustomer(id) {
   if (!c) return;
 
   modal(id ? '✎ Edit Pelanggan' : '＋ Tambah Pelanggan', `
-    <div class="form">
-      <label>Nama<input id="cn" value="${c.n}"></label>
-      <label>No. WhatsApp / Telepon<input id="ct" value="${c.t || ''}"></label>
-      <label>Alamat<textarea id="ca" rows="2">${c.a || ''}</textarea></label>
-    </div>
+    <form class="form" onsubmit="return false;" autocomplete="off">
+      <label>Nama<input id="cn" value="${c.n}" autocomplete="off"></label>
+      <label>No. WhatsApp / Telepon<input id="ct" value="${c.t || ''}" autocomplete="off"></label>
+      <label>Alamat<textarea id="ca" rows="2" autocomplete="off">${c.a || ''}</textarea></label>
+    </form>
     <div class="formfoot">
-      <button class="btn" onclick="saveCustomer(${id || 0})">Simpan</button>
+      <button type="button" class="btn" onclick="saveCustomer(${id || 0})">Simpan</button>
     </div>
   `);
 }
@@ -1286,7 +1351,7 @@ async function saveCustomer(id) {
   let name = document.getElementById('cn').value.trim();
   let phone = document.getElementById('ct').value.trim();
   let address = document.getElementById('ca').value.trim();
-  if (!name) return toast('Nama wajib diisi');
+  if (!name) return toast('Nama wajib diisi', 'warning');
   
   if (_supabase) {
     if (id) {
@@ -1297,17 +1362,29 @@ async function saveCustomer(id) {
   }
   closeModal();
   await loadDataFromSupabase();
-  toast('Pelanggan tersimpan ✓');
+  toast('Pelanggan tersimpan ✓', 'success');
 }
 
 async function delCustomer(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
-  if (confirm('Hapus pelanggan ini?')) {
+  
+  const result = await Swal.fire({
+    title: 'Hapus Pelanggan?',
+    text: 'Data pelanggan ini akan dihapus permanen!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b',
+    confirmButtonText: 'Ya, Hapus',
+    cancelButtonText: 'Batal'
+  });
+
+  if (result.isConfirmed) {
     if (_supabase) {
       await _supabase.from('customers').delete().eq('id', id);
     }
     await loadDataFromSupabase();
-    toast('Pelanggan dihapus');
+    toast('Data pelanggan dihapus', 'success');
   }
 }
 
@@ -1356,6 +1433,7 @@ function exportCSV() {
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = 'laporan-habinara-bakehouse.csv';
   a.click();
+  toast('Laporan CSV berhasil diunduh 📊', 'success');
 }
 
 function modal(title, body) {
@@ -1366,15 +1444,6 @@ function modal(title, body) {
 
 function closeModal() {
   document.getElementById('modal').classList.remove('show');
-}
-
-function toast(t) {
-  let e = document.createElement('div');
-  e.textContent = t;
-  e.style = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#2d1a1a;color:#fff;padding:12px 17px;border-radius:12px;z-index:50;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.15)';
-  document.body.appendChild(e);
-  setTimeout(() => e.remove(), 2500);
-  return e;
 }
 
 function renderDashboardStats() {
