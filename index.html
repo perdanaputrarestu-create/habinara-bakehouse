@@ -8,6 +8,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- SweetAlert2 untuk Pop-up Keren -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Leaflet CSS & JS untuk Peta Interaktif Gratis -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
 :root{
   --bg:#fdf8f8;
@@ -120,6 +124,32 @@ button{cursor:pointer}
 .form input,.form select,.form textarea{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;background:white}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .formfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
+
+/* Styling Peta di Modal Checkout */
+#map {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  z-index: 99;
+}
+
+/* Kotak Rekening Pembayaran */
+.bank-box {
+  background: var(--p-light);
+  border: 1px dashed var(--p);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 13px;
+}
+.bank-box b {
+  color: var(--p);
+  font-size: 15px;
+  display: block;
+  margin-top: 2px;
+}
 
 /* Tombol Keranjang Posisi Aman */
 .cart{position:fixed;right:20px;bottom:82px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
@@ -335,6 +365,12 @@ let cart = {};
 let tempImgBase64 = '';
 let isAdminLoggedIn = false;
 
+// Variabel untuk menyimpan titik koordinat pilihan pemesan
+let selectedLat = -6.200000; 
+let selectedLng = 106.816666;
+let checkoutMap = null;
+let checkoutMarker = null;
+
 const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 
 function toggleSidebar() {
@@ -463,6 +499,8 @@ async function loadDataFromSupabase() {
           name: x.customer_name,
           phone: x.phone,
           address: x.address,
+          lat: x.lat || null,
+          lng: x.lng || null,
           items: x.items,
           subtotal: Number(x.subtotal),
           shipping: Number(x.shipping),
@@ -634,7 +672,14 @@ function chg(id, d) {
 }
 
 function openCheckoutModal() {
-  modal('📋 Data Pemesan & Pengiriman', `
+  // Hitung total bayar untuk ditampilkan di info transfer
+  let sub = Object.entries(cart).reduce((s, [id, q]) => {
+    let p = products.find(x => x.id == id);
+    return s + (p ? p.p * q : 0);
+  }, 0);
+  let grandTotal = sub + (Object.keys(cart).length ? 10000 : 0);
+
+  modal('📋 Data Pemesan & Pembayaran', `
     <div class="form">
       <label>Nama Lengkap *
         <input id="coName" placeholder="Contoh: Siti Aminah">
@@ -642,15 +687,86 @@ function openCheckoutModal() {
       <label>No. WhatsApp / Telepon *
         <input id="coPhone" placeholder="Contoh: 08123456789">
       </label>
-      <label>Alamat Lengkap Pengiriman *
-        <textarea id="coAddress" rows="3" placeholder="Jl. Mawar No. 12, Bekasi..."></textarea>
+      <label>Alamat Lengkap & Patokan *
+        <textarea id="coAddress" rows="2" placeholder="Jl. Mawar No. 12, samping masjid..."></textarea>
       </label>
+
+      <div class="bank-box">
+        <span><b>💳 Instruksi Pembayaran Transfer Bank:</b></span>
+        <p style="margin:5px 0 0; color:var(--ink);">Silakan transfer sebesar <b>${rp(grandTotal)}</b> ke rekening berikut:</p>
+        <b>BCA: 0661194218 a.n. Wulan Noviani</b>
+        <p style="margin:5px 0 0; font-size:11px; color:var(--muted);">Pesanan akan segera diproses setelah pembayaran dikonfirmasi.</p>
+      </div>
+      
+      <label style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+        <span>Tandai Titik Lokasi (Tikor) di Peta:</span>
+        <button type="button" class="btn gray" style="padding:4px 8px; font-size:10px;" onclick="getMyLocationGPS()">📍 Gunakan Lokasi Saat Ini</button>
+      </label>
+      <div id="map"></div>
+      <div style="font-size:10px; color:var(--muted); text-align:center; margin-top:2px;">Geser peta atau klik pada lokasi tujuan pengiriman kue Anda.</div>
     </div>
     <div class="formfoot">
       <button class="btn gray" onclick="openCart()">← Kembali</button>
       <button class="btn" onclick="checkout()">Kirim Pesanan Sekarang ✓</button>
     </div>
   `);
+
+  // Inisialisasi Peta setelah modal muncul
+  setTimeout(() => {
+    initCheckoutMap();
+  }, 300);
+}
+
+function initCheckoutMap() {
+  if (checkoutMap) {
+    checkoutMap.remove();
+    checkoutMap = null;
+  }
+
+  // Koordinat default awal (area Bekasi/Jabodetabek)
+  checkoutMap = L.map('map').setView([selectedLat, selectedLng], 14);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  }).addTo(checkoutMap);
+
+  checkoutMarker = L.marker([selectedLat, selectedLng], { draggable: true }).addTo(checkoutMap);
+
+  checkoutMarker.on('dragend', function (e) {
+    let pos = checkoutMarker.getLatLng();
+    selectedLat = pos.lat;
+    selectedLng = pos.lng;
+  });
+
+  checkoutMap.on('click', function (e) {
+    selectedLat = e.latlng.lat;
+    selectedLng = e.latlng.lng;
+    checkoutMarker.setLatLng([selectedLat, selectedLng]);
+  });
+}
+
+function getMyLocationGPS() {
+  if (navigator.geolocation) {
+    toast('Mencari lokasi GPS Anda...');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        selectedLat = position.coords.latitude;
+        selectedLng = position.coords.longitude;
+        if (checkoutMap && checkoutMarker) {
+          checkoutMap.setView([selectedLat, selectedLng], 16);
+          checkoutMarker.setLatLng([selectedLat, selectedLng]);
+        }
+        toast('Lokasi GPS berhasil ditemukan! ✓');
+      },
+      (error) => {
+        toast('Gagal mendeteksi GPS. Silakan pilih manual di peta.');
+      },
+      { timeout: 10000 }
+    );
+  } else {
+    toast('Browser Anda tidak mendukung Geolocation.');
+  }
 }
 
 async function checkout() {
@@ -663,6 +779,26 @@ async function checkout() {
   }
 
   if (!Object.keys(cart).length) return toast('Keranjang masih kosong');
+
+  // VALIDASI STOK OTOMATIS SEBELUM FINAL CHECKOUT
+  if (_supabase) {
+    let { data: latestProducts, error } = await _supabase.from('products').select('*');
+    if (!error && latestProducts) {
+      for (let [id, qtyNeeded] of Object.entries(cart)) {
+        let liveProduct = latestProducts.find(p => p.id == id);
+        if (!liveProduct || liveProduct.stock < qtyNeeded) {
+          closeModal();
+          await loadDataFromSupabase();
+          Swal.fire({
+            icon: 'error',
+            title: 'Stok Tidak Cukup!',
+            text: `Maaf, stok untuk kue "${liveProduct ? liveProduct.name : 'produk'}" tersisa ${liveProduct ? liveProduct.stock : 0}. Silakan sesuaikan keranjang Anda.`
+          });
+          return;
+        }
+      }
+    }
+  }
   
   let sub = Object.entries(cart).reduce((s, [id, q]) => {
     let p = products.find(x => x.id == id);
@@ -695,6 +831,8 @@ async function checkout() {
         customer_name: name,
         phone: phone,
         address: address,
+        lat: selectedLat,
+        lng: selectedLng,
         items: itemsArr,
         subtotal: sub,
         shipping: shipping,
@@ -721,7 +859,7 @@ async function checkout() {
   
   Swal.fire({
     title: 'Pesanan Berhasil Dibuat! 🎉',
-    html: `ID Pesanan kamu: <b>#${newId}</b><br>Silakan tunggu konfirmasi selanjutnya dari admin ya.`,
+    html: `ID Pesanan: <b>#${newId}</b><br>Silakan lakukan transfer BCA ke <b>0661194218</b> a.n. Wulan Noviani sebesar <b>${rp(grandTotal)}</b>.`,
     icon: 'success',
     confirmButtonColor: '#d31027'
   });
@@ -800,7 +938,6 @@ async function cancelMyOrder(orderId) {
   if (result.isConfirmed) {
     try {
       if (_supabase) {
-        // Kembalikan stok produk
         if (Array.isArray(o.items)) {
           for (let item of o.items) {
             let prod = products.find(p => p.id == item.id);
@@ -810,7 +947,6 @@ async function cancelMyOrder(orderId) {
             }
           }
         }
-        // Hapus pesanan dari database
         await _supabase.from('orders').delete().eq('id', orderId);
       }
 
@@ -855,6 +991,7 @@ function printReceipt(id) {
       <div style="display:flex;justify-content:space-between"><span>Ongkir:</span><span>${rp(o.shipping || 0)}</span></div>
       <div style="display:flex;justify-content:space-between;font-weight:bold;margin-top:5px;color:var(--p)"><span>Total:</span><span>${rp(o.total)}</span></div>
       <hr style="border:dashed 1px #ccc">
+      <p style="text-align:center">Pembayaran Transfer BCA (0661194218 a.n. Wulan Noviani)</p>
       <p style="text-align:center">Terima Kasih Sudah Belanja! ✨</p>
       <button class="btn" style="width:100%;margin-top:10px" onclick="window.print()">🖨️ Cetak Struk</button>
     </div>
@@ -868,6 +1005,10 @@ function renderOrders() {
       ? o.items.map(i => `${i.n} ×${i.qty}`).join(', ')
       : o.items;
 
+    let mapsButton = (o.lat && o.lng) ? `
+      <a href="https://www.google.com/maps?q=${o.lat},${o.lng}" target="_blank" class="btn gray" style="padding:6px 10px; font-size:11px; text-decoration:none; display:inline-block;">🗺️ Buka Maps</a>
+    ` : '';
+
     return `
       <div class="card order">
         <div>
@@ -879,7 +1020,8 @@ function renderOrders() {
         <div class="right">
           <b style="color:var(--p)">${rp(o.total)}</b><br>
           <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
-          <div style="margin-top:8px; display:flex; gap:5px; justify-content:flex-end">
+          <div style="margin-top:8px; display:flex; gap:5px; justify-content:flex-end; flex-wrap:wrap;">
+            ${mapsButton}
             <button class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
             <button class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
             <button class="btn danger" onclick="deleteOrder('${o.id}')" title="Hapus Pesanan">🗑️ Hapus</button>
@@ -1150,12 +1292,14 @@ function renderReport() {
 function exportCSV() {
   if (!isAdminLoggedIn) return promptLoginAdmin();
   let rows = [
-    ['ID', 'Pelanggan', 'WhatsApp', 'Alamat', 'Subtotal Produk', 'Ongkir', 'Total Akhir', 'Status', 'Tanggal'],
+    ['ID', 'Pelanggan', 'WhatsApp', 'Alamat', 'Latitude', 'Longitude', 'Subtotal Produk', 'Ongkir', 'Total Akhir', 'Status', 'Tanggal'],
     ...orders.map(o => [
       o.id, 
       o.name, 
       o.phone || '-',
       o.address || '-',
+      o.lat || '',
+      o.lng || '',
       o.subtotal || o.total, 
       o.shipping || 0, 
       o.total, 
