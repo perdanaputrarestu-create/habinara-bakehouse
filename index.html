@@ -572,7 +572,8 @@ async function checkout() {
 
   try {
     if (_supabase) {
-      let existingCust = customers.find(c => c.t === phone || c.n.toLowerCase() === name.toLowerCase());
+      // Cek berdasarkan Nama DAN No WhatsApp agar tidak saling menimpa jika nomor sama tapi nama beda
+      let existingCust = customers.find(c => c.n.toLowerCase() === name.toLowerCase() && c.t === phone);
       if (existingCust) {
         let newSpend = existingCust.v + grandTotal;
         await _supabase.from('customers').update({ total_spend: newSpend, address: address || existingCust.a }).eq('id', existingCust.id);
