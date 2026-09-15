@@ -6,9 +6,9 @@
 <title>Habinara Bakehouse — Katalog & Toko Kue Online</title>
 <!-- Supabase JS Client SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- SweetAlert2 untuk Pop-up Keren -->
+<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Leaflet CSS & JS untuk Peta Interaktif Gratis -->
+<!-- Leaflet CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -41,24 +41,20 @@ button{cursor:pointer}
 .nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:11px 13px;border-radius:13px;text-align:left}
 .nav button.active,.nav button:hover,.mobile button.active{background:var(--p-light);color:var(--p)}
 
-/* Lisensi di Footer Sidebar */
 .sidebar-footer {font-size:10px;color:var(--muted);text-align:center;padding:15px 5px 5px;border-top:1px solid var(--line);line-height:1.4;}
 .sidebar-footer b {color:var(--ink);display:block;margin-top:2px;font-size:11px;}
 
-/* Burger Menu Overlay untuk HP */
 .overlay {position:fixed;inset:0;background:rgba(45,26,26,0.5);display:none;z-index:18;opacity:0;transition:opacity 0.3s ease;}
 .overlay.show {display:block;opacity:1;}
 
 .main{margin-left:250px;padding:25px 32px 110px}
 
-/* Header Rapi & Responsive Fix */
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:10px;flex-wrap:wrap;}
 .top-left {display:flex;align-items:center;gap:10px;flex:1;min-width:180px;}
 .top-text {display:flex;flex-direction:column;min-width:0;}
 .top h1{margin:0;font-size:22px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* Styling Banner Penyambut Eye-Catching */
 .welcome-banner {
   background: linear-gradient(135deg, #fff5f6 0%, #ffffff 50%, #fceef0 100%);
   border: 1px solid var(--line);
@@ -117,15 +113,10 @@ button{cursor:pointer}
 }
 
 @keyframes pulse-glow {
-  0% {
-    box-shadow: 0 4px 12px rgba(211, 16, 39, 0.25);
-  }
-  100% {
-    box-shadow: 0 6px 18px rgba(211, 16, 39, 0.45);
-  }
+  0% { box-shadow: 0 4px 12px rgba(211, 16, 39, 0.25); }
+  100% { box-shadow: 0 6px 18px rgba(211, 16, 39, 0.45); }
 }
 
-/* Tombol Burger */
 .burger-btn {background:var(--p-light);border:0;width:38px;height:38px;border-radius:10px;display:none;place-items:center;color:var(--p);font-size:18px;cursor:pointer;flex-shrink:0;}
 
 .admin-area{display:flex;align-items:center;gap:8px;flex-shrink:0;}
@@ -167,7 +158,6 @@ button{cursor:pointer}
 .icon.dark{background:#f2e6e6;color:#654d4d}
 .icon:disabled{opacity:0.4;cursor:not-allowed}
 
-/* Layout Pesanan Masuk */
 .orders{display:grid;gap:11px}
 .order{padding:16px;display:flex;flex-direction:column;gap:12px}
 .order-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
@@ -224,7 +214,6 @@ button{cursor:pointer}
 .cart{position:fixed;right:20px;bottom:82px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
 .cart small{background:white;color:var(--p);border-radius:12px;padding:2px 6px}
 
-/* FLOATING BUTTON WHATSAPP */
 .wa-float {
   position: fixed;
   left: 20px;
@@ -275,7 +264,6 @@ button{cursor:pointer}
   display: block;
 }
 
-/* Badge Aktivitas Log */
 .log-badge {
   padding: 3px 8px;
   border-radius: 6px;
@@ -364,7 +352,6 @@ button{cursor:pointer}
 
   <!-- HALAMAN 1: KATALOG PRODUK -->
   <section id="catalog" class="page active">
-    <!-- BANNER KATA PENYAMBUT HABINARA -->
     <div class="welcome-banner">
       <h2 class="welcome-title">Selamat Datang di Habinara Bakehouse</h2>
       <span class="welcome-tag">✨ PREMIUM INGREDIENTS & FRESHLY BAKED</span>
@@ -401,19 +388,19 @@ button{cursor:pointer}
     </div>
   </section>
 
-  <!-- HALAMAN 3: KELOLA PRODUK (ADMIN) -->
+  <!-- HALAMAN 3: KELOLA PRODUK -->
   <section id="prod" class="page">
     <div class="section"><h2>🍰 Kelola Produk Kue</h2><button type="button" class="btn" onclick="openProduct()">＋ Produk</button></div>
     <div class="products" id="products"></div>
   </section>
 
-  <!-- HALAMAN 4: PESANAN (ADMIN) -->
+  <!-- HALAMAN 4: PESANAN -->
   <section id="orders" class="page">
     <div class="section"><h2>🛍️ Kelola Pesanan Masuk</h2><span class="pill" id="orderCount">0 pesanan</span></div>
     <div class="orders" id="orderList"></div>
   </section>
 
-  <!-- HALAMAN 5: PELANGGAN (ADMIN) -->
+  <!-- HALAMAN 5: PELANGGAN -->
   <section id="customers" class="page">
     <div class="section"><h2>👥 Data Pelanggan</h2><button type="button" class="btn" onclick="openCustomer()">＋ Pelanggan</button></div>
     <div class="tablewrap">
@@ -426,7 +413,7 @@ button{cursor:pointer}
     </div>
   </section>
 
-  <!-- HALAMAN 6: LAPORAN (ADMIN) -->
+  <!-- HALAMAN 6: LAPORAN -->
   <section id="report" class="page">
     <div class="section"><h2>📊 Laporan Penjualan</h2><button type="button" class="btn" onclick="exportCSV()">⬇ Export CSV</button></div>
     <div class="stats">
@@ -446,7 +433,7 @@ button{cursor:pointer}
     </div>
   </section>
 
-  <!-- HALAMAN 7: LOG AKTIVITAS (ADMIN) -->
+  <!-- HALAMAN 7: LOG AKTIVITAS -->
   <section id="logs" class="page">
     <div class="section">
       <h2>📜 Log Aktivitas Sistem</h2>
@@ -542,7 +529,6 @@ function toast(msg, icon = 'info') {
   });
 }
 
-// --- WHATSAPP DIRECT ---
 function openWhatsAppAdmin(event) {
   if (event) event.preventDefault();
   const phoneAdmin = '6287859005758'; 
@@ -551,7 +537,6 @@ function openWhatsAppAdmin(event) {
   window.open(waUrl, '_blank');
 }
 
-// --- LOGGING SYSTEM ---
 async function addLog(category, actor, message) {
   const timestamp = new Date().toLocaleString('id-ID', {
     day: '2-digit', month: '2-digit', year: 'numeric',
@@ -796,21 +781,27 @@ async function loadDataFromSupabase() {
 
       const { data: oData } = await _supabase.from('orders').select('*').order('created_at', { ascending: false });
       if (oData) {
-        orders = oData.map(x => ({
-          id: x.id,
-          name: x.customer_name,
-          phone: x.phone,
-          address: x.address,
-          lat: x.lat || null,
-          lng: x.lng || null,
-          items: x.items,
-          subtotal: Number(x.subtotal),
-          shipping: Number(x.shipping),
-          total: Number(x.total),
-          status: x.status,
-          date: x.order_date,
-          createdAt: x.created_at ? new Date(x.created_at) : new Date()
-        }));
+        orders = oData.map(x => {
+          let parsedItems = x.items;
+          if (typeof parsedItems === 'string') {
+            try { parsedItems = JSON.parse(parsedItems); } catch(e){}
+          }
+          return {
+            id: x.id,
+            name: x.customer_name,
+            phone: x.phone,
+            address: x.address,
+            lat: x.lat || null,
+            lng: x.lng || null,
+            items: parsedItems,
+            subtotal: Number(x.subtotal),
+            shipping: Number(x.shipping),
+            total: Number(x.total),
+            status: x.status,
+            date: x.order_date,
+            createdAt: x.created_at ? new Date(x.created_at) : new Date()
+          };
+        });
       }
     }
   } catch(err) {
@@ -1026,6 +1017,9 @@ function initCheckoutMap() {
     checkoutMap = null;
   }
 
+  const mapContainer = document.getElementById('map');
+  if (!mapContainer) return;
+
   checkoutMap = L.map('map').setView([selectedLat, selectedLng], 14);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1046,6 +1040,11 @@ function initCheckoutMap() {
     selectedLng = e.latlng.lng;
     checkoutMarker.setLatLng([selectedLat, selectedLng]);
   });
+
+  /* Fix rendering Leaflet ubin di Modal */
+  setTimeout(() => {
+    if (checkoutMap) checkoutMap.invalidateSize();
+  }, 200);
 }
 
 function getMyLocationGPS() {
@@ -1058,6 +1057,7 @@ function getMyLocationGPS() {
         if (checkoutMap && checkoutMarker) {
           checkoutMap.setView([selectedLat, selectedLng], 16);
           checkoutMarker.setLatLng([selectedLat, selectedLng]);
+          checkoutMap.invalidateSize();
         }
         toast('Lokasi GPS berhasil ditemukan! ✓', 'success');
       },
@@ -1201,7 +1201,11 @@ async function searchMyOrders() {
   }
 
   resultDiv.innerHTML = myOrders.map(o => {
-    let itemsText = Array.isArray(o.items) ? o.items.map(i => `${i.n} ×${i.qty}`).join(', ') : o.items;
+    let itemsArr = o.items;
+    if (typeof itemsArr === 'string') {
+      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+    }
+    let itemsText = Array.isArray(itemsArr) ? itemsArr.map(i => `${i.n} ×${i.qty}`).join(', ') : itemsArr;
     let canCancel = (o.status === 'Baru');
 
     return `
@@ -1242,8 +1246,12 @@ async function cancelMyOrder(orderId) {
   if (result.isConfirmed) {
     try {
       if (_supabase) {
-        if (Array.isArray(o.items)) {
-          for (let item of o.items) {
+        let itemsArr = o.items;
+        if (typeof itemsArr === 'string') {
+          try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+        }
+        if (Array.isArray(itemsArr)) {
+          for (let item of itemsArr) {
             let prod = products.find(p => p.id == item.id);
             if (prod) {
               let restoredStock = prod.s + item.qty;
@@ -1280,8 +1288,13 @@ function printReceipt(id) {
 
   addLog('Order', 'Admin', `Mencetak nota struk kasir untuk pesanan <b>#${o.id}</b>`);
 
-  let itemRows = Array.isArray(o.items) 
-    ? o.items.map(i => `<tr><td>${i.n} x${i.qty}</td><td style="text-align:right">${rp(i.p * i.qty)}</td></tr>`).join('')
+  let itemsArr = o.items;
+  if (typeof itemsArr === 'string') {
+    try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+  }
+
+  let itemRows = Array.isArray(itemsArr) 
+    ? itemsArr.map(i => `<tr><td>${i.n} x${i.qty}</td><td style="text-align:right">${rp(i.p * i.qty)}</td></tr>`).join('')
     : `<tr><td colspan="2">${o.items}</td></tr>`;
 
   modal('🧾 Nota Struk Kasir', `
@@ -1309,8 +1322,13 @@ function printReceipt(id) {
 function renderOrders() {
   document.getElementById('orderCount').textContent = orders.length + ' pesanan';
   document.getElementById('orderList').innerHTML = orders.map(o => {
-    let itemsText = Array.isArray(o.items) 
-      ? o.items.map(i => `${i.n} ×${i.qty}`).join(', ')
+    let itemsArr = o.items;
+    if (typeof itemsArr === 'string') {
+      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+    }
+
+    let itemsText = Array.isArray(itemsArr) 
+      ? itemsArr.map(i => `${i.n} ×${i.qty}`).join(', ')
       : o.items;
 
     let mapsButton = (o.lat && o.lng) ? `
@@ -1379,8 +1397,12 @@ async function deleteOrder(id) {
   if (result.isConfirmed) {
     try {
       if (_supabase) {
-        if (Array.isArray(o.items)) {
-          for (let item of o.items) {
+        let itemsArr = o.items;
+        if (typeof itemsArr === 'string') {
+          try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+        }
+        if (Array.isArray(itemsArr)) {
+          for (let item of itemsArr) {
             let prod = products.find(p => p.id == item.id);
             if (prod) {
               let restoredStock = prod.s + item.qty;
@@ -1411,8 +1433,11 @@ async function deleteOrder(id) {
 
 function openProduct(id) {
   if (!isAdminLoggedIn) return promptLoginAdmin();
-  let p = id ? products.find(x => x.id === id) : {n:'', c:'Cake', p:'', s:10, img:''};
-  if (!p) p = {n:'', c:'Cake', p:'', s:10, img:''};
+  
+  let p = id ? products.find(x => x.id === id) : null;
+  if (!p) {
+    p = { n: '', c: 'Cake', p: '', s: 10, img: '' };
+  }
   
   selectedImageFile = null;
   tempImgBase64 = p.img || '';
@@ -1420,7 +1445,7 @@ function openProduct(id) {
   modal(id ? '✎ Edit Produk' : '＋ Tambah Produk', `
     <form class="form" onsubmit="return false;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <label>Nama Produk
-        <input id="itemTitle" type="text" value="${p.n}" autocomplete="chrome-off">
+        <input id="itemTitle" type="text" value="${p.n}" autocomplete="off">
       </label>
       <div class="grid2">
         <label>Kategori
@@ -1749,8 +1774,12 @@ function renderDashboardStats() {
   document.getElementById('custStat').textContent = customers.length;
 
   let sold = orders.reduce((acc, o) => {
-    if (Array.isArray(o.items)) {
-      return acc + o.items.reduce((sum, item) => sum + item.qty, 0);
+    let itemsArr = o.items;
+    if (typeof itemsArr === 'string') {
+      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+    }
+    if (Array.isArray(itemsArr)) {
+      return acc + itemsArr.reduce((sum, item) => sum + (item.qty || 0), 0);
     }
     return acc;
   }, 0);
@@ -1789,9 +1818,13 @@ function renderBestSellers() {
   let productSales = {};
 
   orders.forEach(o => {
-    if (Array.isArray(o.items)) {
-      o.items.forEach(i => {
-        productSales[i.id] = (productSales[i.id] || 0) + i.qty;
+    let itemsArr = o.items;
+    if (typeof itemsArr === 'string') {
+      try { itemsArr = JSON.parse(itemsArr); } catch(e){}
+    }
+    if (Array.isArray(itemsArr)) {
+      itemsArr.forEach(i => {
+        productSales[i.id] = (productSales[i.id] || 0) + (i.qty || 0);
       });
     }
   });
