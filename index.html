@@ -4,48 +4,63 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Habinara Bakehouse — Kasir & Penjualan Kue</title>
+<!-- Supabase JS Client SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#f8f6f4;--card:#fff;--ink:#2d2522;--muted:#8b7d77;--line:#eee6e2;--p:#d76559;--p2:#b94e44;--ok:#4c9a71;--warn:#c58a36;--shadow:0 12px 34px #4c30220d}
+:root{
+  --bg:#fdf8f8;
+  --card:#fff;
+  --ink:#2d1a1a;
+  --muted:#8c6b6b;
+  --line:#f4e2e2;
+  --p:#d31027; /* Merah khas Habinara */
+  --p2:#b00b1e;
+  --p-light:#fceef0;
+  --ok:#2e8b57;
+  --warn:#d97706;
+  --shadow:0 12px 34px rgba(211,16,39,0.06);
+}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .app{min-height:100vh}
 .side{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 15px;z-index:10}
-.brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:900;padding:4px 10px 25px}
-.logo{width:43px;height:43px;border-radius:14px;background:linear-gradient(135deg,#f3a094,#d45d52);display:grid;place-items:center;color:white;font-size:22px;flex-shrink:0}
+.brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:900;padding:4px 10px 25px;color:var(--p)}
+.logo{width:43px;height:43px;border-radius:14px;background:var(--p-light);display:grid;place-items:center;flex-shrink:0;padding:6px}
+.logo svg{width:100%;height:100%}
 .nav{display:grid;gap:6px}
-.nav button,.mobile button{background:none;border:0;color:#776b66;font-weight:700;padding:13px;border-radius:13px;text-align:left}
-.nav button.active,.nav button:hover,.mobile button.active{background:#fff0ed;color:var(--p2)}
+.nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:13px;border-radius:13px;text-align:left}
+.nav button.active,.nav button:hover,.mobile button.active{background:var(--p-light);color:var(--p)}
 .main{margin-left:250px;padding:25px 32px 90px}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
 .top h1{margin:0;font-size:27px}
 .sub{font-size:13px;color:var(--muted);margin-top:4px}
 .admin{display:flex;align-items:center;gap:10px}
-.pill{padding:5px 9px;border-radius:20px;background:#f8ebe8;color:#a84e45;font-size:11px;font-weight:800}
-.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#f7d7d1}
+.pill{padding:5px 9px;border-radius:20px;background:var(--p-light);color:var(--p);font-size:11px;font-weight:800}
+.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:var(--p-light);color:var(--p)}
 .page{display:none}
 .page.active{display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
 .stat{padding:19px}
 .stat small{color:var(--muted)}
-.stat b{display:block;font-size:25px;margin:7px 0}
+.stat b{display:block;font-size:25px;margin:7px 0;color:var(--p)}
 .up{color:var(--ok);font-size:12px}
 .layout{display:grid;grid-template-columns:1.5fr 1fr;gap:17px;margin-top:17px}
 .panel{padding:20px}
 .panel h2{font-size:17px;margin:0 0 15px}
 .bars{height:230px;display:flex;align-items:end;gap:10px}
 .bw{flex:1;height:100%;display:flex;align-items:center;flex-direction:column;justify-content:end;gap:7px}
-.bar{width:min(35px,70%);border-radius:8px 8px 2px 2px;background:linear-gradient(#ee978d,#d56054)}
+.bar{width:min(35px,70%);border-radius:8px 8px 2px 2px;background:linear-gradient(var(--p), var(--p2))}
 .bw span{font-size:11px;color:var(--muted)}
 .section{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
 .section h2{margin:0}
 .btn{border:0;background:var(--p);color:white;padding:11px 15px;border-radius:12px;font-weight:800}
 .btn:hover{background:var(--p2)}
 .btn:disabled{background:#ccc;cursor:not-allowed}
-.btn.gray{background:#f2ece9;color:#665b57}
-.btn.danger{background:#fbe8e5;color:#a33e36}
+.btn.gray{background:#f5ecec;color:#664d4d}
+.btn.danger{background:#fde8e8;color:#a33e36}
 .tools{display:flex;gap:9px;margin-bottom:16px}
 .input{width:100%;border:1px solid var(--line);background:white;border-radius:12px;padding:11px 13px;outline:0}
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:13px}
@@ -56,8 +71,8 @@ button{cursor:pointer}
 .muted{color:var(--muted);font-size:12px}
 .price{display:flex;justify-content:space-between;align-items:center;margin-top:11px}
 .actions{display:flex;gap:5px}
-.icon{width:33px;height:33px;border-radius:10px;border:0;background:#fff0ed;color:var(--p2)}
-.icon.dark{background:#f1edeb;color:#655b57}
+.icon{width:33px;height:33px;border-radius:10px;border:0;background:var(--p-light);color:var(--p)}
+.icon.dark{background:#f2e6e6;color:#654d4d}
 .icon:disabled{opacity:0.4;cursor:not-allowed}
 .orders{display:grid;gap:11px}
 .order{padding:16px;display:grid;grid-template-columns:1fr auto;gap:12px}
@@ -65,35 +80,35 @@ button{cursor:pointer}
 .order p{margin:2px 0;color:var(--muted);font-size:12px}
 .right{text-align:right}
 .status{display:inline-block;margin-top:6px;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800}
-.baru{background:#fff3dc;color:#a87318}
-.proses{background:#e9f2ff;color:#3672ad}
-.selesai{background:#e7f5ed;color:#3c8660}
+.baru{background:#fef3c7;color:#b45309}
+.proses{background:#e0f2fe;color:#0369a1}
+.selesai{background:#dcfce7;color:#15803d}
 .tablewrap{overflow:auto}
 .table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
 .table th,.table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}
 .table th{color:var(--muted);font-size:11px;text-transform:uppercase}
 .empty{text-align:center;padding:45px;color:var(--muted)}
-.modalbg{position:fixed;inset:0;background:#26181488;display:none;align-items:center;justify-content:center;z-index:30;padding:15px}
+.modalbg{position:fixed;inset:0;background:rgba(45,26,26,0.5);display:none;align-items:center;justify-content:center;z-index:30;padding:15px}
 .modalbg.show{display:flex}
 .modal{background:white;width:min(600px,100%);max-height:90vh;overflow:auto;border-radius:22px;padding:21px}
 .mh{display:flex;justify-content:space-between;align-items:center}
-.mh h2{margin:0;font-size:19px}
-.close{border:0;background:#f3eeeb;width:36px;height:36px;border-radius:10px}
+.mh h2{margin:0;font-size:19px;color:var(--p)}
+.close{border:0;background:#f5ecec;width:36px;height:36px;border-radius:10px}
 .form{display:grid;gap:11px;margin-top:17px}
 .form label{font-size:12px;color:var(--muted);font-weight:700}
 .form input,.form select,.form textarea{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;background:white}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .formfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
-.cart{position:fixed;right:22px;bottom:22px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:14px 18px;font-weight:900;box-shadow:0 10px 25px #d765594d;z-index:15}
-.cart small{background:white;color:var(--p2);border-radius:12px;padding:2px 6px}
+.cart{position:fixed;right:22px;bottom:22px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:14px 18px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
+.cart small{background:white;color:var(--p);border-radius:12px;padding:2px 6px}
 .cartrow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}
 .cartrow img{width:50px;height:50px;border-radius:12px;object-fit:cover}
 .cartinfo{flex:1}
 .qty{display:flex;align-items:center;gap:7px}
-.qty button{width:27px;height:27px;border:0;border-radius:8px;background:#f2ece9}
+.qty button{width:27px;height:27px;border:0;border-radius:8px;background:#f5ecec}
 .sum{margin-top:15px;display:grid;gap:9px}
 .sum div{display:flex;justify-content:space-between}
-.sum .grand{font-size:19px;font-weight:900;border-top:1px solid var(--line);padding-top:11px}
+.sum .grand{font-size:19px;font-weight:900;border-top:1px solid var(--line);padding-top:11px;color:var(--p)}
 .mobile{display:none}
 
 .img-preview {
@@ -138,7 +153,15 @@ button{cursor:pointer}
 </head>
 <body>
 <aside class="side">
-  <div class="brand"><div class="logo">🧁</div>Habinara Bakehouse</div>
+  <div class="brand">
+    <div class="logo">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 20C45 20 42 23 42 26V30C28 30 20 42 20 58C20 70 30 75 50 75C70 75 80 70 80 58C80 42 72 30 58 30V26C58 23 55 20 50 20Z" fill="#d31027"/>
+        <path d="M44 50C44 44 46 42 50 42C54 42 56 44 56 50V75H44V50Z" fill="#ffffff"/>
+      </svg>
+    </div>
+    Habinara
+  </div>
   <div class="nav">
     <button class="active" onclick="page('dash')">🏠 &nbsp; Dashboard</button>
     <button onclick="page('prod')">🍰 &nbsp; Produk</button>
@@ -239,43 +262,78 @@ button{cursor:pointer}
 </div>
 
 <script>
-const defaultPlaceholderImg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"><rect width="100%" height="100%" fill="%23f2ece9"/><text x="50%" y="50%" font-family="sans-serif" font-size="16" fill="%238b7d77" dominant-baseline="middle" text-anchor="middle">Foto Produk</text></svg>';
+// --- SUPABASE CONFIGURATION ---
+const SUPABASE_URL = 'https://jcwiliyfzsrfrhnknnaa.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impjd2lsaXlmenNyZnJobmtubmFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NjM2MzgsImV4cCI6MjEwNTAzOTYzOH0.KhsH2ZzOcpnKTYX6aI2MGbn91ZQjDFR-b9MI5oawTIg';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const seedProducts = [
-  {id:1, n:'Brownies Cokelat', c:'Cake', p:55000, img:defaultPlaceholderImg, s:20},
-  {id:2, n:'Donat Glaze', c:'Roti', p:35000, img:defaultPlaceholderImg, s:30},
-  {id:3, n:'Red Velvet Cake', c:'Cake', p:125000, img:defaultPlaceholderImg, s:8},
-  {id:4, n:'Klepon', c:'Kue Basah', p:28000, img:defaultPlaceholderImg, s:24},
-  {id:5, n:'Cookies Choco Chip', c:'Kue Kering', p:48000, img:defaultPlaceholderImg, s:17},
-  {id:6, n:'Cheese Cake', c:'Cake', p:95000, img:defaultPlaceholderImg, s:10},
-  {id:7, n:'Roti Sobek', c:'Roti', p:32000, img:defaultPlaceholderImg, s:18},
-  {id:8, n:'Nastar Premium', c:'Kue Kering', p:65000, img:defaultPlaceholderImg, s:12}
-];
+const defaultPlaceholderImg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"><rect width="100%" height="100%" fill="%23fceef0"/><text x="50%" y="50%" font-family="sans-serif" font-size="16" fill="%23d31027" dominant-baseline="middle" text-anchor="middle">Foto Produk</text></svg>';
 
-const seedOrders = [
-  {id:'HB-1028', name:'Siti Rahma', phone:'0812-1111-2233', address:'Jl. Melati No. 12, Bekasi', items:[{id:1, n:'Brownies Cokelat', qty:2, p:55000}, {id:4, n:'Klepon', qty:1, p:28000}], subtotal:138000, shipping:10000, total:148000, status:'Diproses', date:'15/09/2026'},
-  {id:'HB-1027', name:'Andi Pratama', phone:'0813-2222-3344', address:'Perum Asri Blok B3, Jakarta', items:[{id:3, n:'Red Velvet Cake', qty:1, p:125000}], subtotal:125000, shipping:10000, total:135000, status:'Selesai', date:'15/09/2026'},
-  {id:'HB-1026', name:'Dewi Lestari', phone:'0857-3333-4455', address:'Gg. Mawar No. 4, Cikarang', items:[{id:2, n:'Donat Glaze', qty:3, p:35000}], subtotal:105000, shipping:10000, total:115000, status:'Selesai', date:'15/09/2026'}
-];
-
-const seedCustomers = [
-  {id:1, n:'Siti Rahma', t:'0812-1111-2233', a:'Jl. Melati No. 12, Bekasi', v:148000},
-  {id:2, n:'Andi Pratama', t:'0813-2222-3344', a:'Perum Asri Blok B3, Jakarta', v:135000},
-  {id:3, n:'Dewi Lestari', t:'0857-3333-4455', a:'Gg. Mawar No. 4, Cikarang', v:115000}
-];
-
-let products = JSON.parse(localStorage.hb_products || 'null') || seedProducts;
-let orders = JSON.parse(localStorage.hb_orders || 'null') || seedOrders;
-let customers = JSON.parse(localStorage.hb_customers || 'null') || seedCustomers;
+let products = [];
+let orders = [];
+let customers = [];
 let cart = {};
 let tempImgBase64 = '';
 
 const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 
-function save() {
-  localStorage.hb_products = JSON.stringify(products);
-  localStorage.hb_orders = JSON.stringify(orders);
-  localStorage.hb_customers = JSON.stringify(customers);
+async function loadDataFromSupabase() {
+  toast('Memuat data...');
+  
+  // 1. Load Products
+  const { data: pData } = await _supabase.from('products').select('*').order('id', { ascending: true });
+  if (pData && pData.length > 0) {
+    products = pData.map(x => ({
+      id: x.id,
+      n: x.name,
+      c: x.category,
+      p: Number(x.price),
+      s: x.stock,
+      img: x.image_url || defaultPlaceholderImg
+    }));
+  } else {
+    // Initial Seed Data jika DB kosong
+    const seedP = [
+      { name: 'Brownies Cokelat', category: 'Cake', price: 55000, stock: 20, image_url: defaultPlaceholderImg },
+      { name: 'Donat Glaze', category: 'Roti', price: 35000, stock: 30, image_url: defaultPlaceholderImg },
+      { name: 'Red Velvet Cake', category: 'Cake', price: 125000, stock: 8, image_url: defaultPlaceholderImg },
+      { name: 'Klepon', category: 'Kue Basah', price: 28000, stock: 24, image_url: defaultPlaceholderImg },
+      { name: 'Cookies Choco Chip', category: 'Kue Kering', price: 48000, stock: 17, image_url: defaultPlaceholderImg }
+    ];
+    await _supabase.from('products').insert(seedP);
+    return loadDataFromSupabase();
+  }
+
+  // 2. Load Customers
+  const { data: cData } = await _supabase.from('customers').select('*').order('id', { ascending: true });
+  if (cData) {
+    customers = cData.map(x => ({
+      id: x.id,
+      n: x.name,
+      t: x.phone,
+      a: x.address,
+      v: Number(x.total_spend)
+    }));
+  }
+
+  // 3. Load Orders
+  const { data: oData } = await _supabase.from('orders').select('*').order('created_at', { ascending: false });
+  if (oData) {
+    orders = oData.map(x => ({
+      id: x.id,
+      name: x.customer_name,
+      phone: x.phone,
+      address: x.address,
+      items: x.items,
+      subtotal: Number(x.subtotal),
+      shipping: Number(x.shipping),
+      total: Number(x.total),
+      status: x.status,
+      date: x.order_date
+    }));
+  }
+
+  renderAll();
 }
 
 function page(id) {
@@ -438,7 +496,7 @@ function autoFillCustomer() {
   }
 }
 
-function checkout() {
+async function checkout() {
   let name = document.getElementById('coName').value.trim();
   let phone = document.getElementById('coPhone').value.trim();
   let address = document.getElementById('coAddress').value.trim();
@@ -465,23 +523,19 @@ function checkout() {
   let today = new Date();
   let dateStr = String(today.getDate()).padStart(2,'0') + '/' + String(today.getMonth()+1).padStart(2,'0') + '/' + today.getFullYear();
 
+  // 1. Simpan/Update Pelanggan di Supabase
   let existingCust = customers.find(c => c.t === phone || c.n.toLowerCase() === name.toLowerCase());
   if (existingCust) {
-    existingCust.v += grandTotal;
-    if (address) existingCust.a = address;
+    let newSpend = existingCust.v + grandTotal;
+    await _supabase.from('customers').update({ total_spend: newSpend, address: address || existingCust.a }).eq('id', existingCust.id);
   } else {
-    customers.push({
-      id: Date.now(),
-      n: name,
-      t: phone,
-      a: address || '-',
-      v: grandTotal
-    });
+    await _supabase.from('customers').insert([{ name, phone, address: address || '-', total_spend: grandTotal }]);
   }
 
-  orders.unshift({
+  // 2. Simpan Pesanan ke Supabase
+  await _supabase.from('orders').insert([{
     id: newId,
-    name: name,
+    customer_name: name,
     phone: phone,
     address: address || '-',
     items: itemsArr,
@@ -489,19 +543,21 @@ function checkout() {
     shipping: shipping,
     total: grandTotal,
     status: 'Baru',
-    date: dateStr
-  });
+    order_date: dateStr
+  }]);
 
-  Object.entries(cart).forEach(([id, q]) => {
+  // 3. Update Stok Produk di Supabase
+  for (let [id, q] of Object.entries(cart)) {
     let p = products.find(x => x.id == id);
-    if (p) p.s = Math.max(0, p.s - q);
-  });
+    if (p) {
+      let updatedStock = Math.max(0, p.s - q);
+      await _supabase.from('products').update({ stock: updatedStock }).eq('id', p.id);
+    }
+  }
 
   cart = {};
-  save();
-  updateCart();
   closeModal();
-  renderAll();
+  await loadDataFromSupabase();
   toast('Pesanan berhasil dibuat 🎉');
 }
 
@@ -515,7 +571,7 @@ function printReceipt(id) {
 
   modal('🧾 Nota Struk', `
     <div style="font-family:monospace; font-size:12px;">
-      <h3 style="text-align:center;margin:0">HABINARA BAKEHOUSE</h3>
+      <h3 style="text-align:center;margin:0;color:var(--p)">HABINARA BAKEHOUSE</h3>
       <p style="text-align:center;margin:0 0 10px;font-size:10px">Nota Pembayaran Struk Kasir</p>
       <hr style="border:dashed 1px #ccc">
       <p>ID: #${o.id}<br>Tanggal: ${o.date}<br>Pelanggan: ${o.name}<br>WA: ${o.phone || '-'}<br>Alamat: ${o.address || '-'}</p>
@@ -526,7 +582,7 @@ function printReceipt(id) {
       <hr style="border:dashed 1px #ccc">
       <div style="display:flex;justify-content:space-between"><span>Subtotal:</span><span>${rp(o.subtotal || o.total)}</span></div>
       <div style="display:flex;justify-content:space-between"><span>Ongkir:</span><span>${rp(o.shipping || 0)}</span></div>
-      <div style="display:flex;justify-content:space-between;font-weight:bold;margin-top:5px"><span>Total:</span><span>${rp(o.total)}</span></div>
+      <div style="display:flex;justify-content:space-between;font-weight:bold;margin-top:5px;color:var(--p)"><span>Total:</span><span>${rp(o.total)}</span></div>
       <hr style="border:dashed 1px #ccc">
       <p style="text-align:center">Terima Kasih Sudah Belanja! ✨</p>
       <button class="btn" style="width:100%;margin-top:10px" onclick="window.print()">🖨️ Cetak Struk</button>
@@ -550,7 +606,7 @@ function renderOrders() {
           <p><b>Tanggal:</b> ${o.date}</p>
         </div>
         <div class="right">
-          <b>${rp(o.total)}</b><br>
+          <b style="color:var(--p)">${rp(o.total)}</b><br>
           <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
           <div style="margin-top:8px; display:flex; gap:5px; justify-content:flex-end">
             <button class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
@@ -562,13 +618,13 @@ function renderOrders() {
   }).join('') || '<div class="empty">Belum ada pesanan.</div>';
 }
 
-function nextStatus(id) {
+async function nextStatus(id) {
   let o = orders.find(x => x.id === id);
   if (!o) return;
-  o.status = o.status === 'Baru' ? 'Diproses' : o.status === 'Diproses' ? 'Selesai' : 'Baru';
-  save();
-  renderOrders();
-  renderReport();
+  let next = o.status === 'Baru' ? 'Diproses' : o.status === 'Diproses' ? 'Selesai' : 'Baru';
+  
+  await _supabase.from('orders').update({ status: next }).eq('id', id);
+  await loadDataFromSupabase();
 }
 
 function openProduct(id) {
@@ -613,35 +669,32 @@ function previewImage(event) {
   }
 }
 
-function saveProduct(id) {
-  let n = document.getElementById('fn').value.trim();
-  let p = +document.getElementById('fp').value;
-  let s = +document.getElementById('fs').value;
-  let c = document.getElementById('fc').value;
-  let img = tempImgBase64 || defaultPlaceholderImg;
+async function saveProduct(id) {
+  let name = document.getElementById('fn').value.trim();
+  let price = +document.getElementById('fp').value;
+  let stock = +document.getElementById('fs').value;
+  let category = document.getElementById('fc').value;
+  let image_url = tempImgBase64 || defaultPlaceholderImg;
 
-  if (!n || isNaN(p) || p <= 0) return toast('Nama dan harga valid wajib diisi!');
-  if (isNaN(s) || s < 0) s = 0;
+  if (!name || isNaN(price) || price <= 0) return toast('Nama dan harga valid wajib diisi!');
+  if (isNaN(stock) || stock < 0) stock = 0;
 
   if (id) {
-    let x = products.find(x => x.id === id);
-    if (x) Object.assign(x, {n, c, p, s, img});
+    await _supabase.from('products').update({ name, category, price, stock, image_url }).eq('id', id);
   } else {
-    products.push({id: Date.now(), n, c, p, s, img});
+    await _supabase.from('products').insert([{ name, category, price, stock, image_url }]);
   }
 
-  save();
   closeModal();
-  renderAll();
-  toast('Produk tersimpan ✓');
+  await loadDataFromSupabase();
+  toast('Produk tersimpan ke database ✓');
 }
 
-function delProduct(id) {
+async function delProduct(id) {
   if (confirm('Hapus produk ini?')) {
-    products = products.filter(x => x.id !== id);
-    save();
+    await _supabase.from('products').delete().eq('id', id);
     closeModal();
-    renderAll();
+    await loadDataFromSupabase();
     toast('Produk dihapus');
   }
 }
@@ -671,26 +724,22 @@ function openCustomer() {
   `);
 }
 
-function saveCustomer() {
-  let n = document.getElementById('cn').value.trim();
-  let t = document.getElementById('ct').value.trim();
-  let a = document.getElementById('ca').value.trim();
-  if (!n) return toast('Nama wajib diisi');
+async function saveCustomer() {
+  let name = document.getElementById('cn').value.trim();
+  let phone = document.getElementById('ct').value.trim();
+  let address = document.getElementById('ca').value.trim();
+  if (!name) return toast('Nama wajib diisi');
   
-  customers.push({id: Date.now(), n, t: t || '-', a: a || '-', v: 0});
-  save();
+  await _supabase.from('customers').insert([{ name, phone: phone || '-', address: address || '-', total_spend: 0 }]);
   closeModal();
-  renderCustomers();
-  renderDashboardStats();
+  await loadDataFromSupabase();
   toast('Pelanggan tersimpan ✓');
 }
 
-function delCustomer(id) {
+async function delCustomer(id) {
   if (confirm('Hapus pelanggan ini?')) {
-    customers = customers.filter(x => x.id !== id);
-    save();
-    renderCustomers();
-    renderDashboardStats();
+    await _supabase.from('customers').delete().eq('id', id);
+    await loadDataFromSupabase();
     toast('Pelanggan dihapus');
   }
 }
@@ -752,7 +801,7 @@ function closeModal() {
 function toast(t) {
   let e = document.createElement('div');
   e.textContent = t;
-  e.style = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#2d2522;color:#fff;padding:12px 17px;border-radius:12px;z-index:50;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.15)';
+  e.style = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#2d1a1a;color:#fff;padding:12px 17px;border-radius:12px;z-index:50;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.15)';
   document.body.appendChild(e);
   setTimeout(() => e.remove(), 1700);
 }
@@ -766,12 +815,6 @@ function renderDashboardStats() {
   let sold = orders.reduce((acc, o) => {
     if (Array.isArray(o.items)) {
       return acc + o.items.reduce((sum, item) => sum + item.qty, 0);
-    } else if (typeof o.items === 'string') {
-      let parts = o.items.split(',');
-      parts.forEach(p => {
-        let match = p.match(/×(\d+)/);
-        if (match) acc += parseInt(match[1]);
-      });
     }
     return acc;
   }, 0);
@@ -800,7 +843,7 @@ document.getElementById('best').innerHTML = products.slice(0, 4).map((p, i) => `
       <b style="font-size:13px">${p.n}</b>
       <div class="muted">${[24,19,15,12][i] || 10} terjual</div>
     </div>
-    <b>#${i+1}</b>
+    <b style="color:var(--p)">#${i+1}</b>
   </div>
 `).join('');
 
@@ -808,7 +851,7 @@ document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-renderAll();
+loadDataFromSupabase();
 </script>
 </body>
 </html>
