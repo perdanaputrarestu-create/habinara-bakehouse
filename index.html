@@ -157,6 +157,37 @@ button{cursor:pointer}
 .cart{position:fixed;right:20px;bottom:82px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
 .cart small{background:white;color:var(--p);border-radius:12px;padding:2px 6px}
 
+/* FLOATING BUTTON WHATSAPP */
+.wa-float {
+  position: fixed;
+  left: 20px;
+  bottom: 82px;
+  background-color: #25d366;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.wa-float:hover {
+  background-color: #128c7e;
+  transform: translateY(-2px);
+  color: #fff;
+}
+.wa-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
 .cartrow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}
 .cartrow img{width:50px;height:50px;border-radius:12px;object-fit:cover}
 .cartinfo{flex:1}
@@ -220,6 +251,7 @@ button{cursor:pointer}
   
   .grid2{grid-template-columns:1fr}
   .cart{bottom:74px;right:12px;padding:10px 14px;font-size:13px;}
+  .wa-float{bottom:74px;left:12px;padding:10px 14px;font-size:12px;}
   .order-actions{grid-template-columns:1fr 1fr;}
 }
 </style>
@@ -361,6 +393,14 @@ button{cursor:pointer}
   </section>
 </main>
 
+<!-- Tombol WhatsApp Melayang -->
+<a href="#" class="wa-float" onclick="openWhatsAppAdmin(event)">
+  <svg class="wa-icon" viewBox="0 0 24 24">
+    <path d="M12.031 2c-5.517 0-9.993 4.476-9.993 9.993 0 1.763.459 3.479 1.332 4.996l-1.417 5.176 5.297-1.389c1.464.798 3.116 1.217 4.781 1.217 5.517 0 9.993-4.476 9.993-9.993 0-5.517-4.476-9.993-9.993-9.993zm0 18.293c-1.493 0-2.955-.401-4.232-1.161l-.304-.182-3.143.824.838-3.064-.2-.318c-.832-1.325-1.272-2.863-1.272-4.437 0-4.57 3.718-8.288 8.288-8.288s8.288 3.718 8.288 8.288-3.718 8.288-8.288 8.288zm4.542-6.196c-.249-.125-1.472-.727-1.699-.81-.228-.083-.394-.125-.56.125-.166.249-.643.81-.788.976-.145.166-.291.187-.54.062s-1.053-.388-2.006-1.238c-.742-.662-1.243-1.48-1.388-1.729-.145-.249-.015-.384.109-.508.112-.112.249-.291.374-.436.125-.145.166-.249.249-.415.083-.166.042-.311-.021-.436-.062-.125-.56-1.349-.768-1.847-.203-.487-.41-.42-.56-.428l-.478-.009c-.166 0-.436.062-.664.311s-.871.851-.871 2.075c0 1.224.892 2.407 1.017 2.573.125.166 1.756 2.681 4.254 3.761.594.257 1.058.411 1.42.526.597.19 1.141.163 1.571.099.48-.071 1.472-.602 1.679-1.183.208-.581.208-1.079.145-1.183-.062-.104-.228-.187-.478-.312z"/>
+  </svg>
+  <span>Chat Admin</span>
+</a>
+
 <button type="button" class="cart" onclick="openCart()">🛒 Keranjang <small id="cartCount">0</small></button>
 
 <!-- Navbar Bawah HP -->
@@ -425,6 +465,16 @@ function toast(msg, icon = 'info') {
   });
 }
 
+// --- WHATSAPP DIRECT ---
+function openWhatsAppAdmin(event) {
+  if (event) event.preventDefault();
+  // Silakan sesuaikan nomor WhatsApp admin di sini (gunakan format kode negara, misal: 628123456789)
+  const phoneAdmin = '6287859005758'; 
+  const textMessage = 'Halo Admin Habinara Bakehouse ✨, saya ingin bertanya tentang katalog produk / pesanan kue.';
+  const waUrl = `https://wa.me/${phoneAdmin}?text=${encodeURIComponent(textMessage)}`;
+  window.open(waUrl, '_blank');
+}
+
 // --- LOGGING SYSTEM ---
 async function addLog(category, actor, message) {
   const timestamp = new Date().toLocaleString('id-ID', {
@@ -435,17 +485,15 @@ async function addLog(category, actor, message) {
   const logEntry = {
     id: Date.now(),
     time: timestamp,
-    category: category, // 'Order', 'Product', 'Customer', 'System'
-    actor: actor,       // 'Admin', 'Pembeli', 'Sistem'
+    category: category,
+    actor: actor,
     message: message
   };
 
-  // Simpan Local
   activityLogs.unshift(logEntry);
-  if (activityLogs.length > 200) activityLogs.pop(); // limit 200 log
+  if (activityLogs.length > 200) activityLogs.pop();
   localStorage.setItem('habinara_activity_logs', JSON.stringify(activityLogs));
 
-  // Simpan Supabase (Opsional jika tabel 'activity_logs' ada)
   if (_supabase) {
     try {
       await _supabase.from('activity_logs').insert([{
@@ -454,9 +502,7 @@ async function addLog(category, actor, message) {
         message: message,
         created_at: new Date().toISOString()
       }]);
-    } catch(e) {
-      // Ignore jika tabel belum dibuat di Supabase
-    }
+    } catch(e) {}
   }
 
   if (activePageId === 'logs') renderLogs();
@@ -1033,7 +1079,6 @@ async function checkout() {
     console.error(e);
   }
 
-  // Catat Log Aktivitas
   let summaryItems = itemsArr.map(i => `${i.n} (${i.qty})`).join(', ');
   addLog('Order', 'Pembeli', `Pesanan baru <b>#${newId}</b> oleh <b>${name}</b> (${rp(grandTotal)}). Item: ${summaryItems}`);
 
