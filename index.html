@@ -6,6 +6,8 @@
 <title>Habinara Bakehouse — Kasir & Penjualan Kue</title>
 <!-- Supabase JS Client SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- SweetAlert2 untuk Pop-up Keren -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 :root{
   --bg:#fdf8f8;
@@ -25,21 +27,36 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .app{min-height:100vh}
-.side{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 15px;z-index:10}
+
+/* Sidebar Desktop */
+.side{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 15px;z-index:20;transition:transform 0.3s ease;}
 .brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:900;padding:4px 10px 25px;color:var(--p)}
 .logo{width:42px;height:42px;border-radius:12px;background:var(--p-light);display:grid;place-items:center;flex-shrink:0;overflow:hidden}
 .logo img{width:100%;height:100%;object-fit:cover}
 .nav{display:grid;gap:6px}
 .nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:13px;border-radius:13px;text-align:left}
 .nav button.active,.nav button:hover,.mobile button.active{background:var(--p-light);color:var(--p)}
-.main{margin-left:250px;padding:25px 32px 90px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.top-left {display:flex;align-items:center;gap:14px}
-.top h1{margin:0;font-size:24px}
-.sub{font-size:13px;color:var(--muted);margin-top:2px}
-.admin{display:flex;align-items:center;gap:10px}
-.pill{padding:5px 9px;border-radius:20px;background:var(--p-light);color:var(--p);font-size:11px;font-weight:800}
-.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:var(--p-light);color:var(--p)}
+
+/* Burger Menu Overlay untuk HP */
+.overlay {position:fixed;inset:0;background:rgba(45,26,26,0.5);display:none;z-index:18;opacity:0;transition:opacity 0.3s ease;}
+.overlay.show {display:block;opacity:1;}
+
+.main{margin-left:250px;padding:25px 32px 110px}
+
+/* Header Rapi & Sejajar */
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:10px}
+.top-left {display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.top-text {display:flex;flex-direction:column;min-width:0;}
+.top h1{margin:0;font-size:22px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* Tombol Burger */
+.burger-btn {background:var(--p-light);border:0;width:38px;height:38px;border-radius:10px;display:none;place-items:center;color:var(--p);font-size:18px;cursor:pointer;flex-shrink:0;}
+
+.admin{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.pill{padding:4px 8px;border-radius:20px;background:var(--p-light);color:var(--p);font-size:10px;font-weight:800}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--p-light);color:var(--p);font-size:15px;}
+
 .page{display:none}
 .page.active{display:block}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
@@ -100,8 +117,11 @@ button{cursor:pointer}
 .form input,.form select,.form textarea{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:11px;padding:10px;background:white}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .formfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
-.cart{position:fixed;right:22px;bottom:22px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:14px 18px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
+
+/* Tombol Keranjang Posisi Aman */
+.cart{position:fixed;right:20px;bottom:82px;background:var(--p);color:#fff;border:0;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px rgba(211,16,39,0.3);z-index:15}
 .cart small{background:white;color:var(--p);border-radius:12px;padding:2px 6px}
+
 .cartrow{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}
 .cartrow img{width:50px;height:50px;border-radius:12px;object-fit:cover}
 .cartinfo{flex:1}
@@ -130,31 +150,39 @@ button{cursor:pointer}
 }
 
 @media(max-width:850px){
-  .side{display:none}
-  .main{margin:0;padding:17px 14px 88px}
-  .top h1{font-size:20px}
-  .top-left{gap:10px}
+  .side{transform: translateX(-100%);}
+  .side.open{transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.15);}
+  .burger-btn{display:grid;}
+  .main{margin:0;padding:14px 12px 100px}
+  .top h1{font-size:18px}
+  .top-left{gap:8px}
   .stats{grid-template-columns:1fr 1fr;gap:10px}
   .stat{padding:14px;border-radius:16px}
-  .stat b{font-size:21px}
+  .stat b{font-size:20px}
   .layout{grid-template-columns:1fr}
   .products{grid-template-columns:1fr 1fr;gap:10px}
   .prod{border-radius:16px}
-  .prod img{height:120px}
-  .prod .body{padding:11px}
+  .prod img{height:115px}
+  .prod .body{padding:10px}
   .tools{flex-direction:column}
-  .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:68px;background:#fff;border-top:1px solid var(--line);z-index:12;justify-content:space-around;padding:6px}
-  .mobile button{text-align:center;font-size:10px;padding:5px;display:flex;flex-direction:column;align-items:center}
-  .mobile span{font-size:20px}
+  
+  /* Navbar Bawah HP */
+  .mobile{position:fixed;display:flex;left:0;right:0;bottom:0;height:65px;background:#fff;border-top:1px solid var(--line);z-index:16;justify-content:space-around;padding:4px}
+  .mobile button{text-align:center;font-size:10px;padding:4px;display:flex;flex-direction:column;align-items:center;flex:1}
+  .mobile span{font-size:18px}
+  
   .order{grid-template-columns:1fr}
   .right{text-align:left}
   .grid2{grid-template-columns:1fr}
-  .cart{bottom:77px;right:14px}
+  .cart{bottom:74px;right:12px;padding:10px 14px;font-size:13px;}
 }
 </style>
 </head>
 <body>
-<aside class="side">
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="side" id="sidebar">
   <div class="brand">
     <div class="logo">
       <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
@@ -162,26 +190,30 @@ button{cursor:pointer}
     Habinara
   </div>
   <div class="nav">
-    <button class="active" onclick="page('dash')">🏠 &nbsp; Dashboard</button>
-    <button onclick="page('prod')">🍰 &nbsp; Produk</button>
-    <button onclick="page('orders')">🛍️ &nbsp; Pesanan</button>
-    <button onclick="page('customers')">👥 &nbsp; Pelanggan</button>
-    <button onclick="page('report')">📊 &nbsp; Laporan</button>
+    <button class="active" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
+    <button onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Produk</button>
+    <button onclick="page('orders'); toggleSidebar()">🛍️ &nbsp; Pesanan</button>
+    <button onclick="page('customers'); toggleSidebar()">👥 &nbsp; Pelanggan</button>
+    <button onclick="page('report'); toggleSidebar()">📊 &nbsp; Laporan</button>
   </div>
 </aside>
 
 <main class="main">
   <header class="top">
     <div class="top-left">
-      <div class="logo" style="width:40px;height:40px;">
+      <button class="burger-btn" onclick="toggleSidebar()">☰</button>
+      <div class="logo">
         <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
       </div>
-      <div>
+      <div class="top-text">
         <h1 id="title">Dashboard</h1>
         <div class="sub">Habinara Bakehouse ✨</div>
       </div>
     </div>
-    <div class="admin"><span class="pill">ADMIN</span><div class="avatar">👨‍🍳</div></div>
+    <div class="admin">
+      <span class="pill">ADMIN</span>
+      <div class="avatar">👨‍🍳</div>
+    </div>
   </header>
 
   <section id="dash" class="page active">
@@ -287,12 +319,18 @@ let tempImgBase64 = '';
 
 const rp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+
 async function loadDataFromSupabase() {
   let t = toast('Memuat data...');
   
   try {
     if (_supabase) {
-      // 1. Load Products
       const { data: pData, error: pErr } = await _supabase.from('products').select('*').order('id', { ascending: true });
       if (pErr) console.error("Error Load Products:", pErr.message);
       
@@ -309,7 +347,6 @@ async function loadDataFromSupabase() {
         products = [];
       }
 
-      // 2. Load Customers
       const { data: cData } = await _supabase.from('customers').select('*').order('id', { ascending: true });
       if (cData) {
         customers = cData.map(x => ({
@@ -321,7 +358,6 @@ async function loadDataFromSupabase() {
         }));
       }
 
-      // 3. Load Orders
       const { data: oData } = await _supabase.from('orders').select('*').order('created_at', { ascending: false });
       if (oData) {
         orders = oData.map(x => ({
@@ -351,7 +387,7 @@ function page(id) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav button, .mobile button').forEach(x => x.classList.remove('active'));
-  document.querySelectorAll(`[onclick="page('${id}')"]`).forEach(x => x.classList.add('active'));
+  document.querySelectorAll(`[onclick*="page('${id}')"]`).forEach(x => x.classList.add('active'));
   
   const titles = {dash:'Dashboard', prod:'Produk Kue', orders:'Pesanan', customers:'Pelanggan', report:'Laporan'};
   document.getElementById('title').textContent = titles[id] || 'Dashboard';
@@ -624,7 +660,8 @@ function renderOrders() {
           <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
           <div style="margin-top:8px; display:flex; gap:5px; justify-content:flex-end">
             <button class="btn gray" onclick="printReceipt('${o.id}')">🧾 Nota</button>
-            <button class="btn gray" onclick="nextStatus('${o.id}')">Ubah Status</button>
+            <button class="btn gray" onclick="nextStatus('${o.id}')">Status</button>
+            <button class="btn danger" onclick="deleteOrder('${o.id}')" title="Hapus Pesanan">🗑️ Hapus</button>
           </div>
         </div>
       </div>
@@ -641,6 +678,54 @@ async function nextStatus(id) {
     await _supabase.from('orders').update({ status: next }).eq('id', id);
   }
   await loadDataFromSupabase();
+}
+
+async function deleteOrder(id) {
+  let o = orders.find(x => x.id === id);
+  if (!o) return;
+
+  const result = await Swal.fire({
+    title: 'Hapus Pesanan ini?',
+    text: `Pesanan #${id} atas nama ${o.name} akan dihapus permanen!`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b',
+    confirmButtonText: 'Ya, Hapus!',
+    cancelButtonText: 'Batal',
+    background: '#fff',
+    color: '#2d1a1a'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      if (_supabase) {
+        if (Array.isArray(o.items)) {
+          for (let item of o.items) {
+            let prod = products.find(p => p.id == item.id);
+            if (prod) {
+              let restoredStock = prod.s + item.qty;
+              await _supabase.from('products').update({ stock: restoredStock }).eq('id', prod.id);
+            }
+          }
+        }
+        await _supabase.from('orders').delete().eq('id', id);
+      }
+
+      await loadDataFromSupabase();
+      
+      Swal.fire({
+        title: 'Terhapus!',
+        text: 'Pesanan berhasil dihapus dan stok dikembalikan.',
+        icon: 'success',
+        timer: 1800,
+        showConfirmButton: false
+      });
+    } catch(err) {
+      console.error(err);
+      Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus pesanan.', 'error');
+    }
+  }
 }
 
 function openProduct(id) {
@@ -758,32 +843,44 @@ function renderCustomers() {
       <td>${c.t || '-'}</td>
       <td>${c.a || '-'}</td>
       <td>${rp(c.v)}</td>
-      <td><button class="icon dark" onclick="delCustomer(${c.id})" title="Hapus">🗑</button></td>
+      <td>
+        <div style="display:flex;gap:5px;">
+          <button class="icon dark" onclick="openCustomer(${c.id})" title="Edit">✎</button>
+          <button class="icon dark" onclick="delCustomer(${c.id})" title="Hapus">🗑</button>
+        </div>
+      </td>
     </tr>
   `).join('') || '<tr><td colspan="5" class="empty">Belum ada pelanggan.</td></tr>';
 }
 
-function openCustomer() {
-  modal('＋ Tambah Pelanggan', `
+function openCustomer(id) {
+  let c = id ? customers.find(x => x.id === id) : {n:'', t:'', a:''};
+  if (!c) return;
+
+  modal(id ? '✎ Edit Pelanggan' : '＋ Tambah Pelanggan', `
     <div class="form">
-      <label>Nama<input id="cn"></label>
-      <label>No. WhatsApp / Telepon<input id="ct"></label>
-      <label>Alamat<textarea id="ca" rows="2"></textarea></label>
+      <label>Nama<input id="cn" value="${c.n}"></label>
+      <label>No. WhatsApp / Telepon<input id="ct" value="${c.t || ''}"></label>
+      <label>Alamat<textarea id="ca" rows="2">${c.a || ''}</textarea></label>
     </div>
     <div class="formfoot">
-      <button class="btn" onclick="saveCustomer()">Simpan</button>
+      <button class="btn" onclick="saveCustomer(${id || 0})">Simpan</button>
     </div>
   `);
 }
 
-async function saveCustomer() {
+async function saveCustomer(id) {
   let name = document.getElementById('cn').value.trim();
   let phone = document.getElementById('ct').value.trim();
   let address = document.getElementById('ca').value.trim();
   if (!name) return toast('Nama wajib diisi');
   
   if (_supabase) {
-    await _supabase.from('customers').insert([{ name, phone: phone || '-', address: address || '-', total_spend: 0 }]);
+    if (id) {
+      await _supabase.from('customers').update({ name, phone: phone || '-', address: address || '-' }).eq('id', id);
+    } else {
+      await _supabase.from('customers').insert([{ name, phone: phone || '-', address: address || '-', total_spend: 0 }]);
+    }
   }
   closeModal();
   await loadDataFromSupabase();
