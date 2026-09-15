@@ -29,13 +29,17 @@ button{cursor:pointer}
 .app{min-height:100vh}
 
 /* Sidebar Desktop */
-.side{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 15px;z-index:20;transition:transform 0.3s ease;}
+.side{position:fixed;width:250px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 15px;z-index:20;transition:transform 0.3s ease;display:flex;flex-direction:column;justify-content:space-between;}
 .brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:900;padding:4px 10px 25px;color:var(--p)}
 .logo{width:42px;height:42px;border-radius:12px;background:var(--p-light);display:grid;place-items:center;flex-shrink:0;overflow:hidden}
 .logo img{width:100%;height:100%;object-fit:cover}
-.nav{display:grid;gap:6px}
+.nav{display:grid;gap:6px;flex:1;}
 .nav button,.mobile button{background:none;border:0;color:#775b5b;font-weight:700;padding:13px;border-radius:13px;text-align:left}
 .nav button.active,.nav button:hover,.mobile button.active{background:var(--p-light);color:var(--p)}
+
+/* Lisensi di Footer Sidebar */
+.sidebar-footer {font-size:10px;color:var(--muted);text-align:center;padding:15px 5px 5px;border-top:1px solid var(--line);line-height:1.4;}
+.sidebar-footer b {color:var(--ink);display:block;margin-top:2px;font-size:11px;}
 
 /* Burger Menu Overlay untuk HP */
 .overlay {position:fixed;inset:0;background:rgba(45,26,26,0.5);display:none;z-index:18;opacity:0;transition:opacity 0.3s ease;}
@@ -182,14 +186,19 @@ button{cursor:pointer}
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
 <aside class="side" id="sidebar">
-  <div class="brand">
-    <div class="logo">
-      <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
+  <div>
+    <div class="brand">
+      <div class="logo">
+        <img src="https://jcwiliyfzsrfrhnknnaa.supabase.co/storage/v1/object/public/asset/images%20(24).jpeg" alt="Habinara Logo">
+      </div>
+      Habinara
     </div>
-    Habinara
+    <div class="nav" id="sidebarNav">
+      <!-- Menu akan dirender dinamis -->
+    </div>
   </div>
-  <div class="nav" id="sidebarNav">
-    <!-- Menu akan dirender dinamis sesuai role (Pembeli / Admin) -->
+  <div class="sidebar-footer">
+    Licensed by<br><b>Restu Putra Perdana</b>
   </div>
 </aside>
 
@@ -210,9 +219,12 @@ button{cursor:pointer}
     </div>
   </header>
 
-  <!-- HALAMAN 1: KATALOG PRODUK (DEFAULT UNTUK PEMBELI) -->
+  <!-- HALAMAN 1: KATALOG PRODUK (DEFAULT PEMBELI) -->
   <section id="catalog" class="page active">
-    <div class="section"><h2>🍰 Katalog Kue Pilihan</h2></div>
+    <div class="section">
+      <h2>🍰 Katalog Kue Pilihan</h2>
+      <button class="btn gray" onclick="openTrackOrderModal()">🔍 Cek Pesanan Saya</button>
+    </div>
     <div class="tools">
       <input id="q" class="input" placeholder="Cari kue kesukaanmu..." oninput="renderCatalogProducts()">
       <select id="cat" class="input" onchange="renderCatalogProducts()">
@@ -292,6 +304,7 @@ button{cursor:pointer}
 <nav class="mobile" id="mobileNav">
   <button class="active" onclick="page('catalog')"><span>🍰</span>Katalog</button>
   <button onclick="openCart()"><span>🛒</span>Keranjang</button>
+  <button onclick="openTrackOrderModal()"><span>🔍</span>Cek Pesanan</button>
   <button onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
 </nav>
 
@@ -332,27 +345,26 @@ function toggleSidebar() {
   overlay.classList.toggle('show');
 }
 
-// Render Navigasi Sesuai Status Login
 function renderNavigation() {
   const navEl = document.getElementById('sidebarNav');
   const adminArea = document.getElementById('adminArea');
   const mobileNav = document.getElementById('mobileNav');
 
   if (!isAdminLoggedIn) {
-    // Menu untuk Pembeli Publik
     navEl.innerHTML = `
       <button class="active" onclick="page('catalog'); toggleSidebar()">🍰 &nbsp; Katalog Kue</button>
       <button onclick="openCart(); toggleSidebar()">🛒 &nbsp; Keranjang Belanja</button>
+      <button onclick="openTrackOrderModal(); toggleSidebar()">🔍 &nbsp; Cek & Batalkan Pesanan</button>
       <button onclick="promptLoginAdmin(); toggleSidebar()">🔐 &nbsp; Login Admin</button>
     `;
     adminArea.innerHTML = `<button class="btn" style="padding:7px 12px;font-size:11px;" onclick="promptLoginAdmin()">🔐 Login Admin</button>`;
     mobileNav.innerHTML = `
       <button class="active" onclick="page('catalog')"><span>🍰</span>Katalog</button>
       <button onclick="openCart()"><span>🛒</span>Keranjang</button>
+      <button onclick="openTrackOrderModal()"><span>🔍</span>Cek Pesanan</button>
       <button onclick="promptLoginAdmin()"><span>🔐</span>Admin</button>
     `;
   } else {
-    // Menu untuk Admin
     navEl.innerHTML = `
       <button class="active" onclick="page('dash'); toggleSidebar()">🏠 &nbsp; Dashboard</button>
       <button onclick="page('prod'); toggleSidebar()">🍰 &nbsp; Kelola Produk</button>
@@ -390,7 +402,6 @@ async function promptLoginAdmin() {
     cancelButtonColor: '#8c6b6b'
   });
 
-  // Password default admin diset "habinara2026" (bisa diubah sesuai keinginan)
   if (password === 'habinara2026') {
     isAdminLoggedIn = true;
     renderNavigation();
@@ -472,7 +483,6 @@ async function loadDataFromSupabase() {
 }
 
 function page(id) {
-  // Proteksi halaman admin jika belum login
   const adminPages = ['dash', 'prod', 'orders', 'customers', 'report'];
   if (adminPages.includes(id) && !isAdminLoggedIn) {
     promptLoginAdmin();
@@ -498,7 +508,6 @@ function page(id) {
   window.scrollTo(0, 0);
 }
 
-// Render Produk di Katalog Pembeli
 function renderCatalogProducts() {
   const qEl = document.getElementById('q');
   const catEl = document.getElementById('cat');
@@ -717,6 +726,110 @@ async function checkout() {
     icon: 'success',
     confirmButtonColor: '#d31027'
   });
+}
+
+// --- FITUR CEK & BATALKAN PESANAN OLEH PEMBELI ---
+function openTrackOrderModal() {
+  modal('🔍 Cek & Batalkan Pesanan', `
+    <div class="form">
+      <label>Masukkan No. WhatsApp yang digunakan saat memesan:
+        <input id="trackPhone" placeholder="Contoh: 08123456789">
+      </label>
+    </div>
+    <div class="formfoot">
+      <button class="btn" onclick="searchMyOrders()">Cek Pesanan Saya</button>
+    </div>
+    <div id="trackResult" style="margin-top:15px"></div>
+  `);
+}
+
+async function searchMyOrders() {
+  let phoneInput = document.getElementById('trackPhone').value.trim();
+  let resultDiv = document.getElementById('trackResult');
+
+  if (!phoneInput) {
+    resultDiv.innerHTML = '<div class="empty" style="padding:15px">Masukkan nomor WhatsApp terlebih dahulu!</div>';
+    return;
+  }
+
+  let myOrders = orders.filter(o => o.phone === phoneInput);
+
+  if (myOrders.length === 0) {
+    resultDiv.innerHTML = '<div class="empty" style="padding:15px">Tidak ditemukan pesanan dengan nomor WhatsApp tersebut.</div>';
+    return;
+  }
+
+  resultDiv.innerHTML = myOrders.map(o => {
+    let itemsText = Array.isArray(o.items) ? o.items.map(i => `${i.n} ×${i.qty}`).join(', ') : o.items;
+    let canCancel = (o.status === 'Baru');
+
+    return `
+      <div class="card" style="padding:14px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start">
+          <div>
+            <b>#${o.id} · ${o.date}</b>
+            <p style="margin:4px 0; font-size:12px; color:var(--muted)"><b>Item:</b> ${itemsText}</p>
+            <p style="margin:2px 0; font-size:12px; color:var(--muted)"><b>Total:</b> ${rp(o.total)}</p>
+          </div>
+          <span class="status ${o.status === 'Selesai' ? 'selesai' : o.status === 'Diproses' ? 'proses' : 'baru'}">${o.status}</span>
+        </div>
+        ${canCancel ? `
+          <button class="btn danger" style="width:100%; margin-top:10px; padding:8px;" onclick="cancelMyOrder('${o.id}')">Batalkan Pesanan Ini</button>
+        ` : `
+          <div style="font-size:11px; color:var(--muted); margin-top:8px; text-align:center;">Pesanan sudah diproses/selesai dan tidak dapat dibatalkan otomatis.</div>
+        `}
+      </div>
+    `;
+  }).join('');
+}
+
+async function cancelMyOrder(orderId) {
+  let o = orders.find(x => x.id === orderId);
+  if (!o) return;
+
+  const result = await Swal.fire({
+    title: 'Batalkan Pesanan?',
+    text: `Pesanan #${orderId} akan dibatalkan dan stok kue akan dikembalikan.`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d31027',
+    cancelButtonColor: '#8c6b6b',
+    confirmButtonText: 'Ya, Batalkan!',
+    cancelButtonText: 'Tutup'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      if (_supabase) {
+        // Kembalikan stok produk
+        if (Array.isArray(o.items)) {
+          for (let item of o.items) {
+            let prod = products.find(p => p.id == item.id);
+            if (prod) {
+              let restoredStock = prod.s + item.qty;
+              await _supabase.from('products').update({ stock: restoredStock }).eq('id', prod.id);
+            }
+          }
+        }
+        // Hapus pesanan dari database
+        await _supabase.from('orders').delete().eq('id', orderId);
+      }
+
+      await loadDataFromSupabase();
+      closeModal();
+      
+      Swal.fire({
+        title: 'Berhasil Dibatalkan',
+        text: 'Pesanan kamu telah dibatalkan.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } catch(err) {
+      console.error(err);
+      Swal.fire('Gagal', 'Terjadi kesalahan saat membatalkan pesanan.', 'error');
+    }
+  }
 }
 
 function printReceipt(id) {
@@ -1170,7 +1283,6 @@ document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// Inisialisasi awal load data dan set halaman publik
 renderNavigation();
 loadDataFromSupabase();
 </script>
