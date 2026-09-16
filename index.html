@@ -935,6 +935,366 @@ button:active,.btn:active{transform:scale(.97)}
 
 <style id="habinara-v2-overflow">
 html,body{max-width:100%;overflow-x:hidden}
+
+/* =========================================================
+   HABINARA UI MODERN POLISH — UI ONLY
+   Tidak mengubah Supabase / login / security / data flow.
+========================================================= */
+:root{
+  --hb-radius:20px;
+  --hb-radius-sm:14px;
+  --hb-shadow:0 10px 30px rgba(45,26,26,.07);
+  --hb-shadow-hover:0 16px 38px rgba(45,26,26,.12);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.side{
+  box-shadow:4px 0 24px rgba(45,26,26,.025);
+}
+
+.nav button,
+.mobile button{
+  transition:background .2s ease,color .2s ease,transform .15s ease;
+}
+
+.nav button:hover,
+.mobile button:hover{
+  transform:translateX(2px);
+}
+
+.top{
+  backdrop-filter:saturate(140%) blur(10px);
+}
+
+.welcome-banner{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(211,16,39,.08);
+  box-shadow:var(--hb-shadow);
+  background:
+    radial-gradient(circle at 95% 15%,rgba(211,16,39,.10),transparent 28%),
+    radial-gradient(circle at 8% 90%,rgba(211,16,39,.055),transparent 24%),
+    #fff;
+}
+
+.welcome-banner:after{
+  content:"🍰";
+  position:absolute;
+  right:28px;
+  bottom:-14px;
+  font-size:76px;
+  opacity:.07;
+  transform:rotate(-12deg);
+  pointer-events:none;
+}
+
+.welcome-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  padding:6px 10px;
+  background:var(--p-light);
+  border:1px solid rgba(211,16,39,.08);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.5px;
+}
+
+.section h2{
+  letter-spacing:-.3px;
+}
+
+.tools{
+  gap:10px;
+  position:sticky;
+  top:8px;
+  z-index:8;
+  padding:7px;
+  margin-bottom:15px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.86);
+  box-shadow:0 8px 24px rgba(45,26,26,.045);
+  backdrop-filter:blur(12px);
+}
+
+.tools .input{
+  min-height:44px;
+  border-radius:13px;
+  border:1px solid var(--line);
+  background:#fff;
+  transition:border-color .2s,box-shadow .2s,transform .2s;
+}
+
+.tools .input:focus{
+  border-color:rgba(211,16,39,.38);
+  box-shadow:0 0 0 4px rgba(211,16,39,.07);
+  outline:none;
+}
+
+.products{
+  align-items:stretch;
+}
+
+.prod{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:var(--hb-radius);
+  background:#fff;
+  box-shadow:0 6px 22px rgba(45,26,26,.045);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+
+.prod:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--hb-shadow-hover);
+  border-color:rgba(211,16,39,.12);
+}
+
+.prod img{
+  display:block;
+  width:100%;
+  aspect-ratio:1.55/1;
+  height:auto !important;
+  object-fit:cover;
+  background:#faf5f5;
+  transition:transform .35s ease;
+}
+
+.prod:hover img{
+  transform:scale(1.025);
+}
+
+.prod .body{
+  position:relative;
+}
+
+.prod h3{
+  margin-top:7px;
+  margin-bottom:10px;
+  line-height:1.25;
+  letter-spacing:-.2px;
+}
+
+.prod .muted{
+  display:inline-block;
+  max-width:100%;
+  font-size:11px;
+  line-height:1.4;
+}
+
+.prod .price{
+  align-items:center;
+  gap:8px;
+}
+
+.prod .price b{
+  font-size:17px;
+  letter-spacing:-.2px;
+}
+
+.prod .price .btn{
+  border-radius:12px;
+  min-height:38px;
+  padding:8px 13px;
+  font-weight:800;
+  box-shadow:0 5px 14px rgba(211,16,39,.10);
+  transition:transform .15s,box-shadow .15s,filter .15s;
+}
+
+.prod .price .btn:hover:not(:disabled){
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(211,16,39,.16);
+  filter:saturate(1.06);
+}
+
+.prod .price .btn:active:not(:disabled){
+  transform:scale(.97);
+}
+
+.prod .price .btn:disabled{
+  opacity:.55;
+  box-shadow:none;
+}
+
+.cart{
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 12px 30px rgba(45,26,26,.20);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+
+.cart:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 34px rgba(45,26,26,.25);
+}
+
+.cart small{
+  min-width:21px;
+  height:21px;
+  display:inline-grid;
+  place-items:center;
+  padding:0 5px;
+  border-radius:999px;
+  background:#fff;
+  color:var(--p);
+  font-weight:900;
+}
+
+.empty{
+  border:1px dashed #e8cccc;
+  border-radius:18px;
+  background:#fff;
+  padding:30px 18px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.stat{
+  border:1px solid var(--line);
+  box-shadow:0 6px 20px rgba(45,26,26,.045);
+  transition:transform .2s,box-shadow .2s;
+}
+
+.stat:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--hb-shadow);
+}
+
+.modalbg{
+  backdrop-filter:blur(5px);
+  background:rgba(30,14,14,.55);
+}
+
+.modal{
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:22px;
+  box-shadow:0 28px 80px rgba(0,0,0,.25);
+  overflow:hidden;
+}
+
+.mh{
+  background:linear-gradient(180deg,#fff,#fffafa);
+}
+
+.input,
+textarea,
+select{
+  transition:border-color .2s,box-shadow .2s;
+}
+
+.input:focus,
+textarea:focus,
+select:focus{
+  outline:none;
+  border-color:rgba(211,16,39,.38);
+  box-shadow:0 0 0 4px rgba(211,16,39,.07);
+}
+
+@media(max-width:850px){
+  .tools{
+    position:sticky;
+    top:5px;
+    padding:6px;
+    border-radius:16px;
+  }
+
+  .products{
+    gap:11px;
+  }
+
+  .prod{
+    border-radius:17px;
+  }
+
+  .prod img{
+    aspect-ratio:1.15/1;
+  }
+
+  .prod h3{
+    font-size:14px;
+  }
+
+  .prod .price{
+    flex-wrap:wrap;
+  }
+
+  .prod .price b{
+    font-size:15px;
+  }
+
+  .prod .price .btn{
+    width:100%;
+    min-height:36px;
+  }
+
+  .welcome-banner:after{
+    right:10px;
+    font-size:56px;
+  }
+
+  .cart{
+    border-radius:14px;
+  }
+
+  .mobile{
+    box-shadow:0 -8px 25px rgba(45,26,26,.08);
+    backdrop-filter:blur(12px);
+  }
+}
+
+@media(max-width:430px){
+  .welcome-title{
+    max-width:78%;
+  }
+
+  .tools{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .tools .input{
+    width:100%;
+  }
+
+  .prod img{
+    aspect-ratio:1.08/1;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    scroll-behavior:auto !important;
+    transition:none !important;
+    animation:none !important;
+  }
+}
+
+
+/* UI FIX: banner text */
+.welcome .tag,
+.welcome .tag * {
+  color: var(--p) !important;
+  -webkit-text-fill-color: var(--p) !important;
+  text-shadow: none !important;
+}
+
+
+/* FIX FINAL: teks badge banner harus merah */
+.welcome-banner .welcome-tag {
+  color: #d31027 !important;
+  -webkit-text-fill-color: #d31027 !important;
+  background: #fceef0 !important;
+  border: 1px solid rgba(211,16,39,.18) !important;
+  text-shadow: none !important;
+}
+
 </style>
 
 </head>
