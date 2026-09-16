@@ -1187,6 +1187,29 @@ JSON.parse(
 );
 
 let cart = {};
+try{
+  const savedCart = JSON.parse(
+    localStorage.getItem('habinara_cart') || '{}'
+  );
+  if(savedCart && typeof savedCart === 'object' && !Array.isArray(savedCart)){
+    cart = Object.fromEntries(
+      Object.entries(savedCart)
+        .map(([id,qty]) => [id, Number(qty)])
+        .filter(([,qty]) => Number.isFinite(qty) && qty > 0)
+    );
+  }
+}catch(e){
+  console.warn('Cart localStorage tidak valid, keranjang dikosongkan.', e);
+  cart = {};
+}
+
+function saveCart(){
+  try{
+    localStorage.setItem('habinara_cart', JSON.stringify(cart));
+  }catch(e){
+    console.warn('Gagal menyimpan keranjang ke localStorage.', e);
+  }
+}
 
 let selectedImageFile = null;
 let tempImgBase64 = '';
@@ -2451,6 +2474,8 @@ function add(id) {
 
 
 function updateCart() {
+
+  saveCart();
 
   document
     .getElementById('cartCount')
@@ -5900,6 +5925,7 @@ document
 ========================================================= */
 
 renderNavigation();
+updateCart();
 
 /*
   Kalau sebelumnya Admin sedang di:
