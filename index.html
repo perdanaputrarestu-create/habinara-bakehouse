@@ -835,6 +835,108 @@ button{cursor:pointer}
 }
 
 </style>
+
+<style id="habinara-permak-css">
+/* HABINARA UI POLISH */
+:root{
+  --hb-radius:16px;
+  --hb-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+.card,.product-card,.prod{
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.card:hover,.product-card:hover,.prod:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--hb-shadow);
+}
+button,.btn{
+  transition:transform .12s ease,opacity .12s ease,box-shadow .12s ease;
+}
+button:active,.btn:active{transform:scale(.97)}
+#catalogProducts img,#products img{
+  cursor:zoom-in;
+}
+.hb-stock-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700;
+  margin-top:5px;background:#f1f5f9;color:#475569;
+}
+.hb-stock-badge.low{background:#fff7ed;color:#c2410c}
+.hb-stock-badge.out{background:#fef2f2;color:#b91c1c}
+.hb-price{
+  font-size:1.08em;font-weight:800;
+}
+.hb-item-total{
+  font-weight:800;white-space:nowrap;
+}
+.hb-remove{
+  border:0;background:transparent;cursor:pointer;font-size:18px;line-height:1;
+  padding:6px;border-radius:8px;
+}
+.hb-remove:hover{background:#fee2e2}
+.hb-cart-empty{
+  text-align:center;padding:28px 12px;color:#64748b;
+}
+.hb-order-tools{
+  display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px;
+}
+.hb-copy-btn{
+  border:0;cursor:pointer;padding:6px 9px;border-radius:8px;
+  background:#f1f5f9;font-weight:700;
+}
+@media(max-width:600px){
+  .card,.product-card,.prod{border-radius:var(--hb-radius)}
+  button,.btn{min-height:40px}
+  #catalogProducts,#products{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+
+
+<style id="habinara-v2-css">
+/* ===== HABINARA V2 FRONT-END POLISH ===== */
+.hb-v2-stock{
+  display:inline-flex;align-items:center;gap:5px;margin-top:6px;
+  padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;
+  background:#f1f5f9;color:#475569;
+}
+.hb-v2-stock.low{background:#fff7ed;color:#c2410c}
+.hb-v2-stock.out{background:#fef2f2;color:#b91c1c}
+.hb-v2-total{font-weight:800}
+.hb-v2-search{
+  width:100%;box-sizing:border-box;padding:11px 13px;border:1px solid #e2e8f0;
+  border-radius:12px;outline:none;background:#fff;
+}
+.hb-v2-search:focus{border-color:#94a3b8;box-shadow:0 0 0 3px rgba(148,163,184,.18)}
+.hb-v2-empty{text-align:center;padding:28px 12px;color:#64748b}
+.hb-v2-top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  flex-wrap:wrap;margin-bottom:12px;
+}
+.hb-v2-filter{
+  display:flex;gap:7px;overflow:auto;padding-bottom:3px;
+}
+.hb-v2-filter button{
+  border:1px solid #e2e8f0;background:#fff;border-radius:999px;
+  padding:7px 11px;cursor:pointer;white-space:nowrap;font-weight:700;
+}
+.hb-v2-filter button.active{background:#0f172a;color:#fff;border-color:#0f172a}
+.hb-v2-backtop{
+  position:fixed;right:16px;bottom:68px;z-index:998;display:none;
+  width:42px;height:42px;border:0;border-radius:50%;cursor:pointer;
+  background:#111827;color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.18);font-size:18px;
+}
+.hb-v2-backtop.show{display:block}
+@media(max-width:600px){
+  .hb-v2-top{align-items:stretch}
+  .hb-v2-filter{width:100%}
+}
+</style>
+
+
+<style id="habinara-v2-overflow">
+html,body{max-width:100%;overflow-x:hidden}
+</style>
+
 </head>
 
 <body>
@@ -1201,6 +1303,20 @@ try{
 }catch(e){
   console.warn('Cart localStorage tidak valid, keranjang dikosongkan.', e);
   cart = {};
+}
+
+
+function sanitizeCart(){
+  const valid = {};
+  Object.entries(cart || {}).forEach(([id, qty]) => {
+    const p = products.find(x => x.id == id);
+    const n = Math.max(0, Math.floor(Number(qty) || 0));
+    if(p && Number(p.s) > 0 && n > 0){
+      valid[id] = Math.min(n, Number(p.s));
+    }
+  });
+  cart = valid;
+  saveCart();
 }
 
 function saveCart(){
@@ -2495,6 +2611,11 @@ function openCart() {
 
 }
 
+
+
+function cartLineTotal(p, qty){
+  return (Number(p?.p) || 0) * (Number(qty) || 0);
+}
 
 function cartHTML() {
 
@@ -5974,13 +6095,97 @@ document.addEventListener('click',function(e){
   const img=e.target.closest('img');
   if(!img || !img.src || img.closest('#cakeLightbox')) return;
   // Product/cake images: use existing product image URLs, without touching Supabase.
-  const productCard=img.closest('[data-product-id], .product-card, .product, .card');
+  const productCard=img.closest('[data-product-id], .product-card, .product, #catalogProducts .card, #products .card');
   const looksLikeCake=productCard || /produk|product|kue|cake/i.test((img.alt||'')+' '+(img.className||''));
   if(looksLikeCake){
     img.classList.add('cake-zoomable');
     openCakeZoom(img.currentSrc||img.src,img.alt||'Preview kue');
   }
 });
+</script>
+
+
+<script id="habinara-permak-init">
+/* Front-end-only polish; does not alter Supabase schema, credentials, or login. */
+document.addEventListener('DOMContentLoaded', function(){
+  try { if(typeof updateCart === 'function') updateCart(); } catch(e) {}
+});
+</script>
+
+
+<script id="habinara-v2-cart-wrap">
+(function(){
+  const oldUpdateCart = window.updateCart;
+  if(typeof oldUpdateCart === 'function'){
+    window.updateCart = function(){
+      const result = oldUpdateCart.apply(this, arguments);
+      try{
+        if(typeof cart !== 'undefined'){
+          localStorage.setItem('habinara_cart', JSON.stringify(cart || {}));
+        }
+      }catch(e){}
+      return result;
+    };
+  }
+
+  // Back-to-top for long catalog/order pages.
+  const btn=document.createElement('button');
+  btn.className='hb-v2-backtop';
+  btn.type='button';
+  btn.setAttribute('aria-label','Kembali ke atas');
+  btn.textContent='↑';
+  document.body.appendChild(btn);
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  
+})();
+</script>
+
+
+
+
+
+<script id="habinara-gps-fix">
+(function(){
+  window.getLocation = function(success, failure){
+    if(!navigator.geolocation){
+      const err={code:0,message:'Browser ini tidak mendukung GPS.'};
+      if(typeof failure==='function') failure(err);
+      else if(typeof showToast==='function') showToast(err.message);
+      return;
+    }
+
+    if(window.isSecureContext===false && location.hostname!=='localhost'){
+      const err={code:0,message:'GPS membutuhkan HTTPS. Buka website dengan HTTPS.'};
+      if(typeof failure==='function') failure(err);
+      else if(typeof showToast==='function') showToast(err.message);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      function(pos){
+        if(typeof success==='function'){
+          success({
+            lat:pos.coords.latitude,
+            lng:pos.coords.longitude,
+            latitude:pos.coords.latitude,
+            longitude:pos.coords.longitude,
+            accuracy:pos.coords.accuracy
+          });
+        }
+      },
+      function(err){
+        let msg='Lokasi gagal dideteksi.';
+        if(err.code===1) msg='Izin lokasi ditolak. Aktifkan izin lokasi untuk browser ini.';
+        else if(err.code===2) msg='Lokasi tidak tersedia. Aktifkan GPS/lokasi dan coba lagi.';
+        else if(err.code===3) msg='GPS terlalu lama merespons. Coba lagi di tempat dengan sinyal lebih baik.';
+        const e={code:err.code,message:msg,nativeError:err};
+        if(typeof failure==='function') failure(e);
+        else if(typeof showToast==='function') showToast(msg);
+      },
+      {enableHighAccuracy:true, timeout:15000, maximumAge:30000}
+    );
+  };
+})();
 </script>
 
 </body>
