@@ -802,6 +802,38 @@ button{cursor:pointer}
     grid-template-columns:1fr 1fr
   }
 }
+
+/* Cake image float zoom */
+.cake-lightbox{
+  position:fixed; inset:0; z-index:99999;
+  display:none; align-items:center; justify-content:center;
+  padding:24px; background:rgba(0,0,0,.78);
+  backdrop-filter:blur(4px);
+  cursor:zoom-out;
+}
+.cake-lightbox.show{display:flex; animation:cakeLbIn .18s ease-out}
+.cake-lightbox img{
+  display:block; max-width:min(92vw,900px); max-height:88vh;
+  width:auto; height:auto; object-fit:contain;
+  border-radius:16px; box-shadow:0 18px 60px rgba(0,0,0,.45);
+  cursor:default; animation:cakeZoomIn .22s ease-out;
+}
+.cake-lightbox .cake-close{
+  position:absolute; top:16px; right:18px;
+  width:42px; height:42px; border:0; border-radius:50%;
+  background:rgba(255,255,255,.92); color:#222;
+  font-size:26px; line-height:42px; text-align:center;
+  cursor:pointer; box-shadow:0 5px 20px rgba(0,0,0,.25);
+}
+.cake-zoomable{cursor:zoom-in; transition:transform .15s ease}
+.cake-zoomable:hover{transform:scale(1.02)}
+@keyframes cakeLbIn{from{opacity:0}to{opacity:1}}
+@keyframes cakeZoomIn{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+@media(max-width:600px){
+  .cake-lightbox{padding:12px}
+  .cake-lightbox img{max-width:96vw;max-height:84vh;border-radius:12px}
+}
+
 </style>
 </head>
 
@@ -5878,6 +5910,51 @@ page(activePageId);
 
 loadDataFromSupabase();
 
+</script>
+
+
+<!-- Cake image float zoom -->
+<div id="cakeLightbox" class="cake-lightbox" aria-hidden="true" onclick="closeCakeZoom(event)">
+  <button class="cake-close" type="button" aria-label="Tutup" onclick="closeCakeZoom(event)">×</button>
+  <img id="cakeLightboxImg" src="" alt="Preview kue" onclick="event.stopPropagation()">
+</div>
+
+
+<script>
+function openCakeZoom(src, alt){
+  const box=document.getElementById('cakeLightbox');
+  const img=document.getElementById('cakeLightboxImg');
+  if(!box || !img || !src) return;
+  img.src=src;
+  img.alt=alt||'Preview kue';
+  box.classList.add('show');
+  box.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeCakeZoom(e){
+  if(e && e.target && e.target.id==='cakeLightboxImg') return;
+  const box=document.getElementById('cakeLightbox');
+  const img=document.getElementById('cakeLightboxImg');
+  if(!box) return;
+  box.classList.remove('show');
+  box.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  if(img) img.src='';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closeCakeZoom();
+});
+document.addEventListener('click',function(e){
+  const img=e.target.closest('img');
+  if(!img || !img.src || img.closest('#cakeLightbox')) return;
+  // Product/cake images: use existing product image URLs, without touching Supabase.
+  const productCard=img.closest('[data-product-id], .product-card, .product, .card');
+  const looksLikeCake=productCard || /produk|product|kue|cake/i.test((img.alt||'')+' '+(img.className||''));
+  if(looksLikeCake){
+    img.classList.add('cake-zoomable');
+    openCakeZoom(img.currentSrc||img.src,img.alt||'Preview kue');
+  }
+});
 </script>
 
 </body>
